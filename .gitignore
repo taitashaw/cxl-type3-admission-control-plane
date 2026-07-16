@@ -5,3 +5,10 @@ sim/verilator/obj_*/
 __pycache__/
 .venv/
 tools/
+sim/xsim/xsim.dir/
+sim/xsim/*.log
+sim/xsim/*_snap*
+sim/xsim/*.vec
+sim/xsim/.Xil/
+sim/xsim/*.jou
+sim/xsim/*.pb

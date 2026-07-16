@@ -1,0 +1,55 @@
+%Warning-TIMESCALEMOD: rtl/interfaces/cxl_types_pkg.sv:13:9: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+   13 | package cxl_types_pkg;
+      |         ^~~~~~~~~~~~~
+                       tb/sv/tb_hdm_decoder.sv:25:8: ... Location of module with timescale
+   25 | module tb_hdm_decoder;
+      |        ^~~~~~~~~~~~~~
+                       ... For warning description see https://verilator.org/warn/TIMESCALEMOD?v=5.020
+                       ... Use "/* verilator lint_off TIMESCALEMOD */" and lint_on around source to disable this message.
+%Warning-TIMESCALEMOD: rtl/core/hdm_decoder.sv:22:8: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+   22 | module hdm_decoder #(
+      |        ^~~~~~~~~~~
+                       tb/sv/tb_hdm_decoder.sv:25:8: ... Location of module with timescale
+   25 | module tb_hdm_decoder;
+      |        ^~~~~~~~~~~~~~
+%Warning-TIMESCALEMOD: rtl/core/dpa_translator.sv:17:8: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+   17 | module dpa_translator #(
+      |        ^~~~~~~~~~~~~~
+                       tb/sv/tb_hdm_decoder.sv:25:8: ... Location of module with timescale
+   25 | module tb_hdm_decoder;
+      |        ^~~~~~~~~~~~~~
+%Warning-INITIALDLY: tb/sv/tb_hdm_decoder.sv:101:23: Non-blocking assignment '<=' in initial/final block
+                                                   : ... This will be executed as a blocking assignment '='!
+  101 |         win_en_r[k]   <= t_en[k];
+      |                       ^~
+%Warning-INITIALDLY: tb/sv/tb_hdm_decoder.sv:102:19: Non-blocking assignment '<=' in initial/final block
+                                                   : ... This will be executed as a blocking assignment '='!
+  102 |         win_base_r[k] <= t_base[k];
+      |                   ^
+%Warning-INITIALDLY: tb/sv/tb_hdm_decoder.sv:103:19: Non-blocking assignment '<=' in initial/final block
+                                                   : ... This will be executed as a blocking assignment '='!
+  103 |         win_size_r[k] <= t_size[k];
+      |                   ^
+%Warning-INITIALDLY: tb/sv/tb_hdm_decoder.sv:104:18: Non-blocking assignment '<=' in initial/final block
+                                                   : ... This will be executed as a blocking assignment '='!
+  104 |         win_dpa_r[k]  <= t_dpa[k];
+      |                  ^
+%Warning-INITIALDLY: tb/sv/tb_hdm_decoder.sv:106:13: Non-blocking assignment '<=' in initial/final block
+                                                   : ... This will be executed as a blocking assignment '='!
+  106 |       cap_r <= u_cap[DPA_W:0];
+      |             ^~
+%Warning-INITIALDLY: tb/sv/tb_hdm_decoder.sv:107:13: Non-blocking assignment '<=' in initial/final block
+                                                   : ... This will be executed as a blocking assignment '='!
+  107 |       hpa_r <= u_hpa[HPA_W-1:0];
+      |             ^~
+make: Entering directory '/home/jotshawlinux/Downloads/project2_cxl_validation/sim/verilator/obj_tb_hdm_decoder_8w_44x36'
+g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -c -o verilated.o /usr/share/verilator/include/verilated.cpp
+g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -c -o verilated_timing.o /usr/share/verilator/include/verilated_timing.cpp
+g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -c -o verilated_threads.o /usr/share/verilator/include/verilated_threads.cpp
+/usr/bin/python3 /usr/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Vtb_hdm_decoder.cpp Vtb_hdm_decoder___024root__DepSet_he25b8532__0.cpp Vtb_hdm_decoder___024root__DepSet_haf08af9d__0.cpp Vtb_hdm_decoder__main.cpp Vtb_hdm_decoder__ConstPool_0.cpp Vtb_hdm_decoder___024root__Slow.cpp Vtb_hdm_decoder___024root__DepSet_he25b8532__0__Slow.cpp Vtb_hdm_decoder___024root__DepSet_haf08af9d__0__Slow.cpp Vtb_hdm_decoder__Syms.cpp > Vtb_hdm_decoder__ALL.cpp
+g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -c -o Vtb_hdm_decoder__ALL.o Vtb_hdm_decoder__ALL.cpp
+echo "" > Vtb_hdm_decoder__ALL.verilator_deplist.tmp
+Archive ar -rcs Vtb_hdm_decoder__ALL.a Vtb_hdm_decoder__ALL.o
+g++     verilated.o verilated_timing.o verilated_threads.o Vtb_hdm_decoder__ALL.a    -pthread -lpthread -latomic   -o Vtb_hdm_decoder
+rm Vtb_hdm_decoder__ALL.verilator_deplist.tmp
+make: Leaving directory '/home/jotshawlinux/Downloads/project2_cxl_validation/sim/verilator/obj_tb_hdm_decoder_8w_44x36'

@@ -1,126 +1,96 @@
 // hdm_decoder.sv
-// Project-owned HDM (Host-managed Device Memory) range validator.
-// Combinational decode of one HPA against N configurable windows.
+// Project-owned HDM range validator — combinational decode of one HPA against
+// N ACTIVE (already-committed, validated) windows.
 //
-// This is a VALIDATION MODEL of address decoding — it does not implement or
-// claim full CXL specification HDM decoder behaviour.
+// FAIL-CLOSED by construction:
+//   0 matches  -> miss           (no accept)
+//   1 match    -> single_match   (accept path; translation authorized)
+//  >=2 matches -> overlap_reject  (no accept — never silently priority-selects)
 //
-// Errors are split into two classes:
-//   * per-request  : miss, unaligned            (depend on the presented HPA)
-//   * config-level : cfg_overlap_err            (depend only on window config)
+// `win_id` is a DIAGNOSTIC (lowest matching index) only; it never authorizes a
+// transaction on its own. Authorization is `single_match & ~unaligned` gated
+// further downstream by the translator's overflow/OOB checks.
 //
-// Overflow-safe: window limit is computed with one extra bit so base+size that
-// wraps the HPA space is compared correctly and flagged.
+// No operation-type input: address decode is a pure function of the address and
+// window config. (An earlier revision added an op-based alignment bypass to
+// silence a lint warning — that was removed; a lint warning must not create
+// protocol behavior.)
 `ifndef HDM_DECODER_SV
 `define HDM_DECODER_SV
 `include "cxl_types_pkg.sv"
 
 module hdm_decoder #(
-  parameter int unsigned HPA_W  = 40,   // host physical address width
-  parameter int unsigned DPA_W  = 32,   // device physical address width
-  parameter int unsigned N_WIN  = 4     // number of HDM windows
+  parameter int unsigned HPA_W  = 40,
+  parameter int unsigned DPA_W  = 32,
+  parameter int unsigned N_WIN  = 4,
+  // derived index width; safe for N_WIN==1 ($clog2(1)==0). Do not override.
+  parameter int unsigned IDX_W  = (N_WIN > 1) ? $clog2(N_WIN) : 1
 ) (
-  // Window configuration (packed 2-D: [window][field])
-  input  logic [N_WIN-1:0]              win_en,       // per-window enable
-  input  logic [N_WIN-1:0][HPA_W-1:0]  win_base,     // window HPA base (64B aligned by contract)
-  input  logic [N_WIN-1:0][HPA_W-1:0]  win_size,     // window size in bytes (>0)
-  input  logic [N_WIN-1:0][DPA_W-1:0]  win_dpa_base, // device offset for the window
+  input  logic [N_WIN-1:0]              win_en,
+  input  logic [N_WIN-1:0][HPA_W-1:0]  win_base,
+  input  logic [N_WIN-1:0][HPA_W-1:0]  win_size,
+  input  logic [N_WIN-1:0][DPA_W-1:0]  win_dpa_base,
 
-  // Lookup request
   input  logic [HPA_W-1:0]             hpa,
-  input  cxl_types_pkg::cxl_op_e       op,           // maintenance ops bypass alignment rejection
 
-  // Decode result
-  output logic                         hit,
-  output logic                         miss,
-  output logic                         unaligned,
-  output logic [$clog2(N_WIN)-1:0]     win_id,
+  output logic [N_WIN-1:0]             match_onehot,
+  output logic                         single_match, // exactly one -> accept path
+  output logic                         miss,         // zero matches
+  output logic                         overlap_reject,// >=2 matches (fail closed)
+  output logic                         unaligned,    // hpa not 64B aligned
+  output logic [IDX_W-1:0]             win_id,       // DIAGNOSTIC lowest match idx
   output logic [HPA_W-1:0]             matched_base,
-  output logic [HPA_W-1:0]             matched_size,
-  output logic [DPA_W-1:0]             matched_dpa_base,
-
-  // Config-level diagnostic (independent of hpa)
-  output logic                         cfg_overlap_err
+  output logic [DPA_W-1:0]             matched_dpa_base
 );
-
   import cxl_types_pkg::*;
 
-  // ---- Per-window bounds (hoisted to module-scope arrays so both the match
-  //      and the overlap check share portable continuous-assign values; no
-  //      block-local decls inside always_comb -> Icarus + Verilator agree) ----
-  logic [N_WIN-1:0] win_match;
-  logic [HPA_W:0]   hpa_ext;
-  logic [HPA_W:0]   win_lo [N_WIN];   // inclusive base (guard bit)
-  logic [HPA_W:0]   win_hi [N_WIN];   // exclusive limit (guard bit)
+  // ---- per-window containment (overflow-safe guard bit) -------------------
+  logic [HPA_W:0] hpa_ext;
   assign hpa_ext = {1'b0, hpa};
 
   genvar gi;
   generate
-    for (gi = 0; gi < N_WIN; gi++) begin : g_bounds
-      assign win_lo[gi]    = {1'b0, win_base[gi]};
-      assign win_hi[gi]    = {1'b0, win_base[gi]} + {1'b0, win_size[gi]};
-      assign win_match[gi] = win_en[gi] && (hpa_ext >= win_lo[gi]) && (hpa_ext < win_hi[gi]);
+    for (gi = 0; gi < N_WIN; gi++) begin : g_match
+      logic [HPA_W:0] lo, hi;
+      assign lo = {1'b0, win_base[gi]};
+      assign hi = {1'b0, win_base[gi]} + {1'b0, win_size[gi]}; // exclusive, guard bit
+      assign match_onehot[gi] = win_en[gi] && (hpa_ext >= lo) && (hpa_ext < hi);
     end
   endgenerate
 
-  // ---- Priority encode: lowest index wins ---------------------------------
-  logic                     any_hit;
-  logic [$clog2(N_WIN)-1:0] sel;
-  always_comb begin
-    any_hit = 1'b0;
-    sel     = '0;
-    for (int i = N_WIN-1; i >= 0; i--) begin
-      if (win_match[i]) begin
-        any_hit = 1'b1;
-        sel     = i[$clog2(N_WIN)-1:0];
-      end
-    end
-  end
+  // ---- population count of matches (fail-closed classification) -----------
+  logic [$clog2(N_WIN+1)-1:0] n_match;
+  assign n_match        = $countones(match_onehot);
+  assign miss           = (n_match == '0);
+  assign single_match   = (n_match == 1);
+  assign overlap_reject = (n_match >= 2);
 
-  // Maintenance / error-test transactions may deliberately target sub-line
-  // addresses, so alignment is only *rejected* for normal read/write ops.
-  assign unaligned        = (op != OP_MAINT) &&
-                            !is_line_aligned({{(64-HPA_W){1'b0}}, hpa});
-  assign hit              = any_hit;
-  assign miss             = !any_hit;
+  // ---- diagnostic lowest-index selector (does NOT authorize) --------------
+  logic [IDX_W-1:0] sel;
+  always_comb begin
+    sel = '0;
+    for (int i = N_WIN-1; i >= 0; i--)
+      if (match_onehot[i]) sel = i[IDX_W-1:0];
+  end
   assign win_id           = sel;
   assign matched_base     = win_base[sel];
-  assign matched_size     = win_size[sel];
   assign matched_dpa_base = win_dpa_base[sel];
 
-  // ---- Config-level overlap detection (all enabled pairs) ------------------
-  // Two enabled windows i<j overlap iff lo_i < hi_j AND lo_j < hi_i.
-  // Built with CONSTANT generate indices only (no runtime index into unpacked
-  // arrays inside always_comb) so Icarus and Verilator evaluate it identically
-  // and it is directly synthesizable.
-  logic [N_WIN*N_WIN-1:0] pair_ovl;
-  genvar oi, oj;
-  generate
-    for (oi = 0; oi < N_WIN; oi++) begin : g_ovi
-      for (oj = 0; oj < N_WIN; oj++) begin : g_ovj
-        if (oi < oj) begin : g_pair
-          // Inline the bounds from the packed ports (constant indices) rather
-          // than reading the unpacked win_lo/win_hi arrays here.
-          wire [HPA_W:0] lo_i = {1'b0, win_base[oi]};
-          wire [HPA_W:0] lo_j = {1'b0, win_base[oj]};
-          wire [HPA_W:0] hi_i = {1'b0, win_base[oi]} + {1'b0, win_size[oi]};
-          wire [HPA_W:0] hi_j = {1'b0, win_base[oj]} + {1'b0, win_size[oj]};
-          assign pair_ovl[oi*N_WIN + oj] =
-              win_en[oi] && win_en[oj] && (lo_i < hi_j) && (lo_j < hi_i);
-        end else begin : g_nopair
-          assign pair_ovl[oi*N_WIN + oj] = 1'b0;
-        end
-      end
-    end
-  endgenerate
-  assign cfg_overlap_err = |pair_ovl;
+  assign unaligned = !is_line_aligned({{(64-HPA_W){1'b0}}, hpa});
 
-`ifndef SYNTHESIS
-  // Assertion: a hit must never coincide with a miss (mutual exclusion).
+`ifdef FORMAL
+  // Fail-closed / containment properties. Guarded to FORMAL so they are proved
+  // on stable states (SymbiYosys) rather than fired on combinational transients
+  // in event-driven simulation. The testbench checks the same invariants at the
+  // settled sample point every vector.
   always_comb begin
-    if (hit && miss) $error("hdm_decoder: hit && miss asserted simultaneously");
+    // classification is one-hot and total
+    assert ((miss + single_match + overlap_reject) == 1);
+    // the diagnostic win_id points at a genuine match whenever any match exists
+    if (single_match || overlap_reject) assert (match_onehot[win_id]);
+    // single_match <-> exactly one matching window
+    assert (single_match == ($countones(match_onehot) == 1));
   end
 `endif
-
 endmodule
 `endif

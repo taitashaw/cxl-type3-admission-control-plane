@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+# run_xsim_crosscheck.sh — third-engine (AMD XSim) cross-check on a REDUCED
+# golden set, for the 4-window/40x32 config. Compares architectural PASS/FAIL
+# against the Icarus/Verilator result. XSim is licence-metered and slower, so a
+# reduced vector subset is used (reviewer's "reduced golden-vector suite").
+set -u
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"; cd "$ROOT"
+RAW=evidence/raw; XD=sim/xsim; mkdir -p "$RAW" "$XD"
+command -v xvlog >/dev/null || { echo "XSIM: BLOCKED (xvlog not found)"; exit 3; }
+
+# Build reduced vec files (header count adjusted to first N vectors)
+reduce() { # src dst N
+  python3 - "$1" "$2" "$3" <<'PY'
+import sys
+src,dst,n=sys.argv[1],sys.argv[2],int(sys.argv[3])
+lines=open(src).read().splitlines()
+hdr=lines[0].split()
+body=lines[1:1+n]
+hdr[3]=str(len(body))
+open(dst,'w').write(" ".join(hdr)+"\n"+"\n".join(body)+"\n")
+PY
+}
+reduce tb/vectors/dec_4w_40x32.vec "$XD/dec_red.vec" 400
+reduce tb/vectors/cfg_4w_40x32.vec "$XD/cfg_red.vec" 400
+
+fail=0
+run_xsim() { # tb srcs vecbasename tag
+  local tb=$1 srcs=$2 vec=$3 tag=$4
+  ( cd "$XD" && rm -rf xsim.dir ${tag}_snap* 2>/dev/null
+    xvlog -sv -d NWIN=4 -d HPAW=40 -d DPAW=32 -i ../../rtl/interfaces $srcs   > "xvlog_${tag}.log" 2>&1
+    xelab $tb -s ${tag}_snap -timescale 1ns/1ps                               > "xelab_${tag}.log" 2>&1
+    xsim ${tag}_snap -R -testplusarg "VEC=$vec"                               > "xsim_${tag}.log" 2>&1 )
+  cp "$XD/xsim_${tag}.log" "$RAW/xsim_${tag}_run.log" 2>/dev/null
+  if grep -q "TB_RESULT: PASS" "$XD/xsim_${tag}.log"; then
+    echo "   $tag : XSim PASS ($(grep -oE 'checks=[0-9]+' "$XD/xsim_${tag}.log" | head -1))"
+  else
+    echo "   $tag : XSim FAIL"; grep -E "ERROR|TB_RESULT|Error" "$XD/xsim_${tag}.log" | head -5; fail=1
+  fi
+}
+
+echo "## XSim cross-check (reduced golden set, 4w/40x32)"
+run_xsim tb_hdm_decoder \
+  "../../rtl/interfaces/cxl_types_pkg.sv ../../rtl/core/hdm_decoder.sv ../../rtl/core/dpa_translator.sv ../../tb/sv/tb_hdm_decoder.sv" \
+  "dec_red.vec" dec
+run_xsim tb_hdm_config \
+  "../../rtl/interfaces/cxl_types_pkg.sv ../../rtl/csr/hdm_config.sv ../../tb/sv/tb_hdm_config.sv" \
+  "cfg_red.vec" cfg
+
+[ $fail -eq 0 ] && echo "XSIM CROSSCHECK: PASS" || echo "XSIM CROSSCHECK: FAIL"
+exit $fail

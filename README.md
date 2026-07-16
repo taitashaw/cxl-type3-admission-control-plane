@@ -24,10 +24,17 @@ make all-free    # inventory + lint + unit
 `make all-free` never invokes Quartus, XSim, or hardware programming, and never
 requires a commercial licence or connected FPGA.
 
-### Current verified status
-- **RTL_SIMULATED**: HDM decoder + HPA→DPA translator — **15/15 checks pass on
-  Icarus 12.0 and Verilator 5.020** (independent engines must agree).
-  Logs: `evidence/raw/{icarus,verilator}_tb_hdm_decode_run.log`.
+### Current verified status (hardened M1)
+- **RTL_SIMULATED**: registered-config → fail-closed decode → HPA→DPA translate.
+  ~29k differential checks/engine against an **independent Python reference
+  model** across a **1/2/4/8-window, reduced/production-width sweep** on both
+  Icarus 12.0 and Verilator 5.020, plus a reduced **AMD XSim** tri-engine
+  cross-check, plus **5/5 mutation tests** proving each protection is observable.
+- Defensible résumé wording: *"Implemented and dual-simulator verified a
+  parameterized HDM-style address-window decoder and HPA-to-DPA translator with
+  overlap, alignment, overflow and capacity checks."* Not yet a full "CXL Type-3
+  validation platform" — see `evidence/claims_matrix.csv`.
+- Formal proof: properties written under `` `ifdef FORMAL ``; **BLOCKED** on sby install.
 
 ### Requirements (present on the reference host)
 Verilator 5.020, Icarus 12.0, GTKWave, Python 3.12, make, gcc. QEMU 8.2.2 (with
