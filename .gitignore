@@ -1,0 +1,7 @@
+sim/icarus/*.vvp
+sim/verilator/obj_*/
+*.fst
+*.vcd
+__pycache__/
+.venv/
+tools/

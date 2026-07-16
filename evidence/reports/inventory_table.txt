@@ -1,0 +1,52 @@
+verilator                FOUND_AND_RUNNABLE   /usr/bin/verilator
+iverilog                 FOUND_AND_RUNNABLE   /usr/bin/iverilog
+vvp                      FOUND_AND_RUNNABLE   /usr/bin/vvp
+gtkwave                  FOUND_AND_RUNNABLE   /usr/bin/gtkwave
+yosys                    MISSING              
+sby                      MISSING              
+boolector                MISSING              
+z3                       MISSING              
+verible-verilog-lint     MISSING              
+slang                    MISSING              
+python3                  FOUND_AND_RUNNABLE   /usr/bin/python3
+pip                      FOUND_AND_RUNNABLE   /usr/bin/pip
+pipx                     MISSING              
+cocotb-config            MISSING              
+pytest                   FOUND_AND_RUNNABLE   /home/jotshawlinux/.local/bin/pytest
+gcc                      FOUND_AND_RUNNABLE   /usr/bin/gcc
+g++                      FOUND_AND_RUNNABLE   /usr/bin/g++
+clang                    MISSING              
+cmake                    MISSING              
+ninja                    FOUND_AND_RUNNABLE   /tools/Xilinx/2025.2/Vivado/bin/ninja
+make                     FOUND_AND_RUNNABLE   /usr/bin/make
+git                      FOUND_AND_RUNNABLE   /usr/bin/git
+jq                       FOUND_AND_RUNNABLE   /usr/bin/jq
+qemu-system-x86_64       FOUND_AND_RUNNABLE   /usr/bin/qemu-system-x86_64
+ndctl                    MISSING              
+cxl                      MISSING              
+daxctl                   MISSING              
+lspci                    FOUND_AND_RUNNABLE   /usr/bin/lspci
+setpci                   FOUND_AND_RUNNABLE   /usr/bin/setpci
+numactl                  FOUND_AND_RUNNABLE   /usr/bin/numactl
+fio                      MISSING              
+perf                     FOUND_AND_RUNNABLE   /usr/bin/perf
+trace-cmd                FOUND_AND_RUNNABLE   /usr/bin/trace-cmd
+bpftrace                 FOUND_AND_RUNNABLE   /usr/bin/bpftrace
+vivado                   FOUND_AND_RUNNABLE   /tools/Xilinx/2025.2/Vivado/bin/vivado
+xvlog                    FOUND_AND_RUNNABLE   /tools/Xilinx/2025.2/Vivado/bin/xvlog
+xelab                    FOUND_AND_RUNNABLE   /tools/Xilinx/2025.2/Vivado/bin/xelab
+xsim                     FOUND_AND_RUNNABLE   /tools/Xilinx/2025.2/Vivado/bin/xsim
+vitis                    MISSING              
+xsct                     MISSING              
+quartus                  MISSING              
+quartus_sh               MISSING              
+quartus_map              MISSING              
+quartus_fit              MISSING              
+quartus_sta              MISSING              
+quartus_pgm              MISSING              
+qsys-script              MISSING              
+qsys-generate            MISSING              
+jtagconfig               MISSING              
+vsim                     MISSING              
+vcs                      MISSING              
+xrun                     MISSING              

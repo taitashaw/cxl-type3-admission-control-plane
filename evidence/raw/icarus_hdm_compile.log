@@ -1,0 +1,3 @@
+rtl/core/hdm_decoder.sv:67: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+rtl/core/hdm_decoder.sv:108: warning: System task ($error) cannot be synthesized in an always_comb process.
+rtl/core/hdm_decoder.sv:91: warning: A for statement must have a constant initial value to be synthesized in an always_comb process.
