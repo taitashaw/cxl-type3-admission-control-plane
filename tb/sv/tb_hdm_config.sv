@@ -35,6 +35,7 @@ module tb_hdm_config;
   logic [3:0]              cfg_reason;
   logic [15:0]             cfg_epoch;
   logic [1:0]              cfg_state;
+  logic                    cfg_busy, cfg_busy_seen;
   logic [N_WIN-1:0]              win_en;
   logic [N_WIN-1:0][HPA_W-1:0]  win_base, win_size;
   logic [N_WIN-1:0][DPA_W-1:0]  win_dpa_base;
@@ -218,34 +219,55 @@ module tb_hdm_config;
         errors++; $display("[FAIL] D4 TOCTOU: committed base=%h size=%h (expected A=30000/10000)",win_base[0],win_size[0]);
       end else $display("[pass] D4 snapshot: shadow rewrite while pending did not corrupt commit");
 
-      // D5: second cfg_update_req while an update is pending is ignored.
+      // D5: second cfg_update_req while an update is pending gets an OBSERVABLE
+      // BUSY disposition (reject pulse + CFG_BUSY reason + sticky bit), and the
+      // in-flight update is unaffected.
       for (k=0;k<N_WIN;k++) begin t_en[k]=0; t_base[k]=0; t_size[k]=0; t_dpa[k]=0; end
       t_en[0]=1; t_base[0]='h0006_0000; t_size[0]='h0001_0000; t_dpa[0]=0;
       load_shadow('h40_0000);
       outstanding_cnt=16'd2;
       @(negedge clk); cfg_update_req=1; @(negedge clk); cfg_update_req=0;     // pending (FREEZE)
       epoch_snapshot = cfg_epoch;
-      @(negedge clk); cfg_update_req=1; @(negedge clk); cfg_update_req=0;     // SECOND req while pending
-      @(negedge clk); checks++;
-      if (traffic_freeze!==1'b1 || cfg_epoch!==epoch_snapshot || cfg_update_done!==1'b0) begin
-        errors++; $display("[FAIL] D5 second update-req not ignored: freeze=%b epoch=%0d done=%b",traffic_freeze,cfg_epoch,cfg_update_done);
-      end else $display("[pass] D5 second update-req while pending is ignored");
+      @(negedge clk); cfg_update_req=1;                                       // SECOND req while busy
+      @(negedge clk);                                                         // FSM registers busy-reject
+      cfg_update_req=0;
+      checks++;
+      if (cfg_reject!==1'b1 || cfg_reason!==4'd9 /*CFG_BUSY*/ || cfg_busy!==1'b1 ||
+          cfg_busy_seen!==1'b1 || cfg_epoch!==epoch_snapshot) begin
+        errors++; $display("[FAIL] D5 second update disposition: reject=%b reason=%0d busy=%b seen=%b epoch=%0d",
+                           cfg_reject,cfg_reason,cfg_busy,cfg_busy_seen,cfg_epoch);
+      end else $display("[pass] D5 second update-req while busy -> observable BUSY reject (sticky set)");
       outstanding_cnt=0;                                                      // drain the first update
       guard=0; while (!cfg_update_done && guard<50) begin @(negedge clk); guard++; end
 
-      // D6: reset asserted mid-FREEZE recovers to ACTIVE with a disabled active
-      // config and no partial commit.
+      // D6: reset asserted mid-FREEZE (DRAIN, traffic present) recovers to ACTIVE
+      // with a disabled active config and no partial commit.
       for (k=0;k<N_WIN;k++) begin t_en[k]=0; t_base[k]=0; t_size[k]=0; t_dpa[k]=0; end
       t_en[0]=1; t_base[0]='h0007_0000; t_size[0]='h0001_0000; t_dpa[0]=0;
       load_shadow('h40_0000);
-      outstanding_cnt=16'd4;
+      outstanding_cnt=16'd4;                                                  // DRAIN with traffic
       @(negedge clk); cfg_update_req=1; @(negedge clk); cfg_update_req=0;     // -> FREEZE
-      @(negedge clk);                                                         // in FREEZE
-      rst_n=0; repeat(2) @(negedge clk); rst_n=1; @(negedge clk);             // reset during FREEZE
+      @(negedge clk);                                                         // draining
+      rst_n=0; repeat(2) @(negedge clk); rst_n=1; @(negedge clk);
       checks++;
       if (cfg_state!==2'd0 || win_en!=='0 || req_accept_enable!==1'b1 || cfg_epoch!==16'd0) begin
-        errors++; $display("[FAIL] D6 reset-from-FREEZE: state=%0d win_en=%b accept=%b epoch=%0d",cfg_state,win_en,req_accept_enable,cfg_epoch);
-      end else $display("[pass] D6 reset during FREEZE recovers to ACTIVE, active disabled, no partial commit");
+        errors++; $display("[FAIL] D6 reset-from-DRAIN: state=%0d win_en=%b accept=%b epoch=%0d",cfg_state,win_en,req_accept_enable,cfg_epoch);
+      end else $display("[pass] D6 reset during DRAIN recovers to ACTIVE, active disabled, no partial commit");
+
+      // D7: reset asserted in the COMMIT cycle. Poll for state==COMMIT then reset.
+      for (k=0;k<N_WIN;k++) begin t_en[k]=0; t_base[k]=0; t_size[k]=0; t_dpa[k]=0; end
+      t_en[0]=1; t_base[0]='h0008_0000; t_size[0]='h0001_0000; t_dpa[0]=0;
+      load_shadow('h40_0000);
+      outstanding_cnt=0;                                                      // will drain immediately
+      @(negedge clk); cfg_update_req=1; @(negedge clk); cfg_update_req=0;     // ACTIVE->FREEZE->COMMIT
+      guard=0;
+      while (cfg_state!==2'd2 /*COMMIT*/ && guard<20) begin @(negedge clk); guard++; end
+      // now in COMMIT: assert reset before it completes
+      rst_n=0; repeat(2) @(negedge clk); rst_n=1; @(negedge clk);
+      checks++;
+      if (cfg_state!==2'd0 || win_en!=='0 || cfg_epoch!==16'd0 || req_accept_enable!==1'b1) begin
+        errors++; $display("[FAIL] D7 reset-from-COMMIT: state=%0d win_en=%b epoch=%0d accept=%b",cfg_state,win_en,cfg_epoch,req_accept_enable);
+      end else $display("[pass] D7 reset during COMMIT recovers to ACTIVE, no partial commit");
     end
   endtask
 

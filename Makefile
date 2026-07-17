@@ -45,6 +45,10 @@ formal:
 	@bash scripts/run_formal.sh
 
 reports evidence:
+	@bash scripts/run_hdm_regression.sh >/dev/null 2>&1 || true
+	@bash scripts/run_mutation_tests.sh 2>&1 | tee evidence/raw/sim_mutation.log >/dev/null || true
+	@bash scripts/run_formal.sh >/dev/null 2>&1 || true
+	@bash scripts/gen_evidence.sh
 	@bash scripts/make_manifest.sh
 
 all-free: inventory regression mutation

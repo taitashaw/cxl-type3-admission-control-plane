@@ -31,12 +31,13 @@ requires a commercial licence or connected FPGA.
   {(32,24),(40,32),(44,36)}` on Icarus 12.0 + Verilator 5.020, a reduced **AMD
   XSim 2025.2** tri-engine cross-check, and **6/6 mutation tests**.
 - **FORMAL (verified)**: `make formal` runs SymbiYosys (local OSS CAD Suite,
-  rootless) — bounded model check + **unbounded induction** safety proofs, plus
-  **cover** tasks demonstrating non-vacuity, plus a **formal-mutation** check
-  (breaking a protection makes the proof fail). Covers decoder/translator
-  containment + translation, and the config FSM (atomic commit from an immutable
-  pending snapshot, drain-before-commit, TOCTOU-safety, epoch monotonicity,
-  reset-from-each-state).
+  rootless) — **inductively verified safety properties under documented formal
+  assumptions** (bounded model check + induction), plus **cover** tasks
+  demonstrating non-vacuity, plus a **formal-mutation** check (breaking a
+  protection makes the proof fail). Covers decoder/translator containment +
+  translation, and the config FSM (atomic commit from an immutable pending
+  snapshot, drain-before-commit, TOCTOU-safety, epoch monotonicity, observable
+  busy disposition, reset-recovery from each state).
 - Bounds cover the **complete 64-byte cache line** (HPA+63 in window, DPA+63 <
   capacity), guard-bit arithmetic throughout.
 - The config controller proves **the active configuration stays stable until

@@ -34,6 +34,8 @@ module hdm_decode_top #(
   output logic [3:0]               cfg_reason,
   output logic [15:0]              cfg_epoch,
   output logic [1:0]               cfg_state,
+  output logic                     cfg_busy,
+  output logic                     cfg_busy_seen,
   // decode request (combinational against active config)
   input  logic [HPA_W-1:0]         hpa,
   output logic                     accept,
@@ -56,7 +58,7 @@ module hdm_decode_top #(
     .clk, .rst_n, .sh_we, .sh_idx, .sh_en_i, .sh_base_i, .sh_size_i, .sh_dpa_i,
     .sh_cap_we, .sh_cap_i, .cfg_update_req, .outstanding_cnt,
     .traffic_freeze, .req_accept_enable, .cfg_update_done, .cfg_ok,
-    .cfg_reject, .cfg_reason, .cfg_epoch, .cfg_state,
+    .cfg_reject, .cfg_reason, .cfg_epoch, .cfg_state, .cfg_busy, .cfg_busy_seen,
     .win_en(a_en), .win_base(a_base), .win_size(a_size),
     .win_dpa_base(a_dpa), .dev_capacity(a_cap)
   );

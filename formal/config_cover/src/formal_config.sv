@@ -29,6 +29,7 @@ module formal_config #(
   logic [3:0]              cfg_reason;
   logic [15:0]             cfg_epoch;
   logic [1:0]              cfg_state;
+  logic                    cfg_busy, cfg_busy_seen;
   logic [N_WIN-1:0]              win_en;
   logic [N_WIN-1:0][HPA_W-1:0]  win_base, win_size;
   logic [N_WIN-1:0][DPA_W-1:0]  win_dpa_base;

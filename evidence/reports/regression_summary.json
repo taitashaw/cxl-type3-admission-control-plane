@@ -1,0 +1,222 @@
+{
+  "git_commit": "c564f7be77497d461f165429e092ca0363b5838a",
+  "git_dirty": true,
+  "utc": "2026-07-17T02:29:55Z",
+  "kind": "regression",
+  "engines": [
+    "icarus",
+    "verilator"
+  ],
+  "param_sweep": {
+    "N_WIN": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "HPA_W_DPA_W": [
+      [
+        32,
+        24
+      ],
+      [
+        40,
+        32
+      ],
+      [
+        40,
+        32
+      ],
+      [
+        44,
+        36
+      ]
+    ]
+  },
+  "seeds": {
+    "gen_vectors": "0xC5100"
+  },
+  "total": 16,
+  "passed": 16,
+  "failed": 0,
+  "results": [
+    {
+      "engine": "icarus",
+      "tb": "tb_hdm_config_1w_32x24",
+      "result": "PASS",
+      "checks": 2018,
+      "errors": 0
+    },
+    {
+      "engine": "icarus",
+      "tb": "tb_hdm_config_2w_40x32",
+      "result": "PASS",
+      "checks": 2018,
+      "errors": 0
+    },
+    {
+      "engine": "icarus",
+      "tb": "tb_hdm_config_4w_40x32",
+      "result": "PASS",
+      "checks": 2018,
+      "errors": 0
+    },
+    {
+      "engine": "icarus",
+      "tb": "tb_hdm_config_8w_44x36",
+      "result": "PASS",
+      "checks": 2018,
+      "errors": 0
+    },
+    {
+      "engine": "icarus",
+      "tb": "tb_hdm_decoder_1w_32x24",
+      "result": "PASS",
+      "checks": 4207,
+      "errors": 0
+    },
+    {
+      "engine": "icarus",
+      "tb": "tb_hdm_decoder_2w_40x32",
+      "result": "PASS",
+      "checks": 4712,
+      "errors": 0
+    },
+    {
+      "engine": "icarus",
+      "tb": "tb_hdm_decoder_4w_40x32",
+      "result": "PASS",
+      "checks": 5722,
+      "errors": 0
+    },
+    {
+      "engine": "icarus",
+      "tb": "tb_hdm_decoder_8w_44x36",
+      "result": "PASS",
+      "checks": 7742,
+      "errors": 0
+    },
+    {
+      "engine": "verilator",
+      "tb": "tb_hdm_config_1w_32x24",
+      "result": "PASS",
+      "checks": 2018,
+      "errors": 0
+    },
+    {
+      "engine": "verilator",
+      "tb": "tb_hdm_config_2w_40x32",
+      "result": "PASS",
+      "checks": 2018,
+      "errors": 0
+    },
+    {
+      "engine": "verilator",
+      "tb": "tb_hdm_config_4w_40x32",
+      "result": "PASS",
+      "checks": 2018,
+      "errors": 0
+    },
+    {
+      "engine": "verilator",
+      "tb": "tb_hdm_config_8w_44x36",
+      "result": "PASS",
+      "checks": 2018,
+      "errors": 0
+    },
+    {
+      "engine": "verilator",
+      "tb": "tb_hdm_decoder_1w_32x24",
+      "result": "PASS",
+      "checks": 4207,
+      "errors": 0
+    },
+    {
+      "engine": "verilator",
+      "tb": "tb_hdm_decoder_2w_40x32",
+      "result": "PASS",
+      "checks": 4712,
+      "errors": 0
+    },
+    {
+      "engine": "verilator",
+      "tb": "tb_hdm_decoder_4w_40x32",
+      "result": "PASS",
+      "checks": 5722,
+      "errors": 0
+    },
+    {
+      "engine": "verilator",
+      "tb": "tb_hdm_decoder_8w_44x36",
+      "result": "PASS",
+      "checks": 7742,
+      "errors": 0
+    }
+  ],
+  "raw_logs": [
+    {
+      "path": "evidence/raw/icarus_tb_hdm_config_1w_32x24_run.log",
+      "sha256": "56cdb33ea05915a9094c870c481f29925bd7f49fb5ba5603482c80f5437dea1f"
+    },
+    {
+      "path": "evidence/raw/icarus_tb_hdm_config_2w_40x32_run.log",
+      "sha256": "2ee661f055ab342621ab1e0e9b311326c473c24ec4f921d1afead512b5c08dca"
+    },
+    {
+      "path": "evidence/raw/icarus_tb_hdm_config_4w_40x32_run.log",
+      "sha256": "298076c91cf4ca84fc6dd61359c3d0fe5ea871833624fb37054c5c8d2adeeede"
+    },
+    {
+      "path": "evidence/raw/icarus_tb_hdm_config_8w_44x36_run.log",
+      "sha256": "2c515afd6a13ae65959edd7253c172cde0e53967d2bfdfb126453dd1822cb8a4"
+    },
+    {
+      "path": "evidence/raw/icarus_tb_hdm_decoder_1w_32x24_run.log",
+      "sha256": "8b88fa03cc6bce8aaccd5a2a27242d43d6a6feebb76fd2b73eebd1e9128a1c9f"
+    },
+    {
+      "path": "evidence/raw/icarus_tb_hdm_decoder_2w_40x32_run.log",
+      "sha256": "7b1250ae2354dbde6ec612d65362b9e00b51b30a8760c38cf17a67c94e1ca55a"
+    },
+    {
+      "path": "evidence/raw/icarus_tb_hdm_decoder_4w_40x32_run.log",
+      "sha256": "14cbc1bfac4727d5759ad5f09c36953c932e36a7f1fc782161782d3087884f2b"
+    },
+    {
+      "path": "evidence/raw/icarus_tb_hdm_decoder_8w_44x36_run.log",
+      "sha256": "79abb7a7f807ed6233592efbf294bb20ca8e4b2a6c5491c4b5c57eb4f0360451"
+    },
+    {
+      "path": "evidence/raw/verilator_tb_hdm_config_1w_32x24_run.log",
+      "sha256": "8040fab1fce923efb5abf8f1db3c7ef0eee3a4011ea846505f5a84b719e1acf3"
+    },
+    {
+      "path": "evidence/raw/verilator_tb_hdm_config_2w_40x32_run.log",
+      "sha256": "4599a612d2944207696eefa436224421a832854aa90bd375ebf8986f5f2a653f"
+    },
+    {
+      "path": "evidence/raw/verilator_tb_hdm_config_4w_40x32_run.log",
+      "sha256": "63c54f5b7e4bc0c9ea481a267d489f5d07af6ef42ed90fdd53562cc506609d32"
+    },
+    {
+      "path": "evidence/raw/verilator_tb_hdm_config_8w_44x36_run.log",
+      "sha256": "e88b3bd73bb25a5577197b7a7275e992afaffeddcae98a0b235c52253d9b4847"
+    },
+    {
+      "path": "evidence/raw/verilator_tb_hdm_decoder_1w_32x24_run.log",
+      "sha256": "bf75de6cb2869004bb43e4c24eee5a0016a63c4dc6125c9a90d07190068380b1"
+    },
+    {
+      "path": "evidence/raw/verilator_tb_hdm_decoder_2w_40x32_run.log",
+      "sha256": "fe7c946d435b3a17b7334f72a7d4c684c571902cc64c35b1f0663976057d0e5a"
+    },
+    {
+      "path": "evidence/raw/verilator_tb_hdm_decoder_4w_40x32_run.log",
+      "sha256": "a5854c698eda6c54e8357f99985f044e1943e78341eee2714819bc164f969a12"
+    },
+    {
+      "path": "evidence/raw/verilator_tb_hdm_decoder_8w_44x36_run.log",
+      "sha256": "4ee96dc8381f1299d414981f8d5496828218dfcf8697476a009eeab22b6a2768"
+    }
+  ]
+}

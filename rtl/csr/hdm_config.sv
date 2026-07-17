@@ -52,6 +52,8 @@ module hdm_config #(
   output logic [3:0]                 cfg_reason,      // reason for last attempt
   output logic [15:0]                cfg_epoch,       // increments per successful commit
   output logic [1:0]                 cfg_state,       // FSM state (observability/formal)
+  output logic                       cfg_busy,        // level: an update is in flight
+  output logic                       cfg_busy_seen,   // sticky: a req arrived while busy
 
   // Active (validated) configuration for the decoder
   output logic [N_WIN-1:0]           win_en,
@@ -64,7 +66,7 @@ module hdm_config #(
   // reason codes (match hdm_model.py)
   localparam logic [3:0] CFG_OK=0, CFG_ZERO_SIZE=1, CFG_BASE_ALIGN=2, CFG_SIZE_ALIGN=3,
                          CFG_DPA_ALIGN=4, CFG_HPA_OVF=5, CFG_DPA_OVF=6, CFG_CAP_EXCEED=7,
-                         CFG_OVERLAP=8;
+                         CFG_OVERLAP=8, CFG_BUSY=9;   // update requested while one in flight
 
   // ---- shadow + active storage (unpacked for portable element writes) -----
   logic              sh_en   [N_WIN];
@@ -177,6 +179,7 @@ module hdm_config #(
   assign traffic_freeze    = (state != S_ACTIVE);
   assign req_accept_enable = (state == S_ACTIVE);
   assign cfg_state         = 2'(state);
+  assign cfg_busy          = (state != S_ACTIVE);   // update in flight
 
   integer k;
   always_ff @(posedge clk or negedge rst_n) begin
@@ -190,7 +193,7 @@ module hdm_config #(
       end
       sh_cap<='0; act_cap<='0; pend_cap<='0;
       cfg_ok<=1'b0; cfg_reject<=1'b0; cfg_update_done<=1'b0;
-      cfg_reason<=CFG_OK; cfg_epoch<='0; state<=S_ACTIVE;
+      cfg_reason<=CFG_OK; cfg_epoch<='0; state<=S_ACTIVE; cfg_busy_seen<=1'b0;
     end else begin
       cfg_ok          <= 1'b0;
       cfg_reject      <= 1'b0;
@@ -230,9 +233,19 @@ module hdm_config #(
           end
         end
         S_FREEZE: begin
+          // A second update request while busy gets an OBSERVABLE disposition
+          // (reject pulse + BUSY reason + sticky bit); the in-flight update
+          // continues unaffected.
+          if (cfg_update_req) begin
+            cfg_reject <= 1'b1; cfg_update_done <= 1'b1; cfg_reason <= CFG_BUSY; cfg_busy_seen <= 1'b1;
+          end
           if (outstanding_cnt == '0) state <= S_COMMIT;  // fully drained
         end
         S_COMMIT: begin
+          // The commit's cfg_ok/cfg_update_done owns the pulse this cycle; a
+          // concurrent request is recorded only in the sticky bit (no conflicting
+          // reject pulse). It can retry next cycle (ACTIVE).
+          if (cfg_update_req) cfg_busy_seen <= 1'b1;
           for (k = 0; k < N_WIN; k++) begin
             act_en[k]   <= pend_en[k];
             act_base[k] <= pend_base[k];
@@ -259,6 +272,7 @@ module hdm_config #(
   logic [15:0]          f_pepoch;
   logic                 f_pen0;      // active window-0 enable, previous cycle
   logic                 f_ppend0;    // pending window-0 enable, previous cycle
+  logic                 f_prst_n;    // rst_n, previous cycle
   initial f_init = 1'b0;
   always_ff @(posedge clk) begin
     f_init   <= 1'b1;
@@ -267,9 +281,23 @@ module hdm_config #(
     f_pepoch <= cfg_epoch;
     f_pen0   <= act_en[0];
     f_ppend0 <= pend_en[0];
+    f_prst_n <= rst_n;
   end
 
   always @(posedge clk) begin
+    // ---- reset recovery: the cycle after a reset cycle must be a clean IDLE
+    if (f_init && !f_prst_n && rst_n) begin
+      assert (cfg_state == S_ACTIVE);        // FSM returns to ACTIVE/IDLE
+      assert (cfg_update_done == 1'b0);       // reset never produces a done pulse
+      assert (!cfg_ok && !cfg_reject);
+      assert (pend_en[0] == 1'b0);            // update_pending cleared
+      assert (act_en[0]  == 1'b0);            // documented default: active disabled
+      assert (cfg_epoch  == 16'd0);           // epoch reset
+      assert (req_accept_enable == 1'b1);     // admission deterministic (open)
+    end
+    // during a reset cycle, no done pulse is produced
+    if (f_init && !rst_n) assert (cfg_update_done == 1'b0);
+
     if (rst_n && f_init) begin
       // epoch increments by exactly one on commit, else unchanged (mod 2^16)
       assert (cfg_epoch == (f_pepoch + (cfg_ok ? 16'd1 : 16'd0)));

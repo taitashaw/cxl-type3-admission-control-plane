@@ -1,0 +1,46 @@
+{
+  "git_commit": "c564f7be77497d461f165429e092ca0363b5838a",
+  "git_dirty": true,
+  "utc": "2026-07-17T02:29:55Z",
+  "kind": "formal",
+  "engine": "smtbmc/yices",
+  "modes": [
+    "bmc",
+    "prove(induction)",
+    "cover"
+  ],
+  "assumptions": "initial reset then rst_n free; sh_*/cfg_update_req/outstanding_cnt free; safety-only (see docs/limitations.md)",
+  "jobs": [
+    {
+      "job": "decode",
+      "bmc": "PASS",
+      "induction": "PASS",
+      "cover": "PASS",
+      "raw": {
+        "path": "evidence/raw/formal_decode.log",
+        "sha256": "420299da2b430e2dbaa3229af1b4008082419b211d5d46cd4f655d3f9245bf38"
+      }
+    },
+    {
+      "job": "config",
+      "bmc": "PASS",
+      "induction": "PASS",
+      "cover": "PASS",
+      "raw": {
+        "path": "evidence/raw/formal_config.log",
+        "sha256": "3b0c12b05661d60169ee6abe2339834e4cbc509bc00a2c2dbae3cb3eab9dafad"
+      }
+    }
+  ],
+  "non_vacuity": {
+    "cover": "all reachable",
+    "formal_mutation": {
+      "killed": 5,
+      "survived": 0,
+      "raw": {
+        "path": "evidence/raw/formal_mutation.log",
+        "sha256": "3b57cc9b26fa0f13cba9a5c922291ccb99af7756171e5d025903a1b231550481"
+      }
+    }
+  }
+}

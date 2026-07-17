@@ -21,53 +21,54 @@ Found 0 SCCs.
 4. Executing MEMORY_NORDFF pass (extracting $dff cells from memories).
 
 5. Executing ASYNC2SYNC pass.
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$675 ($adff): ARST=\rst_n, D=$0\cfg_update_done[0:0], Q=\cfg_update_done
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$680 ($adff): ARST=\rst_n, D=$0\cfg_ok[0:0], Q=\cfg_ok
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$685 ($adff): ARST=\rst_n, D=$0\cfg_reject[0:0], Q=\cfg_reject
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$690 ($adff): ARST=\rst_n, D=$0\cfg_reason[3:0], Q=\cfg_reason
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$695 ($adff): ARST=\rst_n, D=$0\cfg_epoch[15:0], Q=\cfg_epoch
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$700 ($adff): ARST=\rst_n, D=$0\sh_cap[12:0], Q=\sh_cap
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$705 ($adff): ARST=\rst_n, D=$0\act_cap[12:0], Q=\act_cap
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$710 ($adff): ARST=\rst_n, D=$0\pend_cap[12:0], Q=\pend_cap
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$715 ($adff): ARST=\rst_n, D=$0\state[1:0], Q=\state
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$725 ($adff): ARST=\rst_n, D=$0\sh_en[0][0:0], Q=\sh_en[0]
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$730 ($adff): ARST=\rst_n, D=$0\sh_en[1][0:0], Q=\sh_en[1]
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$735 ($adff): ARST=\rst_n, D=$0\sh_base[0][15:0], Q=\sh_base[0]
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$740 ($adff): ARST=\rst_n, D=$0\sh_base[1][15:0], Q=\sh_base[1]
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$745 ($adff): ARST=\rst_n, D=$0\sh_size[0][15:0], Q=\sh_size[0]
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$750 ($adff): ARST=\rst_n, D=$0\sh_size[1][15:0], Q=\sh_size[1]
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$755 ($adff): ARST=\rst_n, D=$0\sh_dpa[0][11:0], Q=\sh_dpa[0]
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$760 ($adff): ARST=\rst_n, D=$0\sh_dpa[1][11:0], Q=\sh_dpa[1]
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$765 ($adff): ARST=\rst_n, D=$0\act_en[0][0:0], Q=\act_en[0]
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$770 ($adff): ARST=\rst_n, D=$0\act_en[1][0:0], Q=\act_en[1]
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$775 ($adff): ARST=\rst_n, D=$0\act_base[0][15:0], Q=\act_base[0]
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$780 ($adff): ARST=\rst_n, D=$0\act_base[1][15:0], Q=\act_base[1]
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$785 ($adff): ARST=\rst_n, D=$0\act_size[0][15:0], Q=\act_size[0]
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$790 ($adff): ARST=\rst_n, D=$0\act_size[1][15:0], Q=\act_size[1]
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$795 ($adff): ARST=\rst_n, D=$0\act_dpa[0][11:0], Q=\act_dpa[0]
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$800 ($adff): ARST=\rst_n, D=$0\act_dpa[1][11:0], Q=\act_dpa[1]
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$805 ($adff): ARST=\rst_n, D=$0\pend_en[0][0:0], Q=\pend_en[0]
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$810 ($adff): ARST=\rst_n, D=$0\pend_en[1][0:0], Q=\pend_en[1]
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$815 ($adff): ARST=\rst_n, D=$0\pend_base[0][15:0], Q=\pend_base[0]
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$820 ($adff): ARST=\rst_n, D=$0\pend_base[1][15:0], Q=\pend_base[1]
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$825 ($adff): ARST=\rst_n, D=$0\pend_size[0][15:0], Q=\pend_size[0]
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$830 ($adff): ARST=\rst_n, D=$0\pend_size[1][15:0], Q=\pend_size[1]
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$835 ($adff): ARST=\rst_n, D=$0\pend_dpa[0][11:0], Q=\pend_dpa[0]
-Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$840 ($adff): ARST=\rst_n, D=$0\pend_dpa[1][11:0], Q=\pend_dpa[1]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$756 ($adff): ARST=\rst_n, D=$0\cfg_update_done[0:0], Q=\cfg_update_done
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$761 ($adff): ARST=\rst_n, D=$0\cfg_ok[0:0], Q=\cfg_ok
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$766 ($adff): ARST=\rst_n, D=$0\cfg_reject[0:0], Q=\cfg_reject
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$771 ($adff): ARST=\rst_n, D=$0\cfg_reason[3:0], Q=\cfg_reason
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$776 ($adff): ARST=\rst_n, D=$0\cfg_epoch[15:0], Q=\cfg_epoch
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$781 ($adff): ARST=\rst_n, D=$0\cfg_busy_seen[0:0], Q=\cfg_busy_seen
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$786 ($adff): ARST=\rst_n, D=$0\sh_cap[12:0], Q=\sh_cap
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$791 ($adff): ARST=\rst_n, D=$0\act_cap[12:0], Q=\act_cap
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$796 ($adff): ARST=\rst_n, D=$0\pend_cap[12:0], Q=\pend_cap
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$801 ($adff): ARST=\rst_n, D=$0\state[1:0], Q=\state
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$811 ($adff): ARST=\rst_n, D=$0\sh_en[0][0:0], Q=\sh_en[0]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$816 ($adff): ARST=\rst_n, D=$0\sh_en[1][0:0], Q=\sh_en[1]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$821 ($adff): ARST=\rst_n, D=$0\sh_base[0][15:0], Q=\sh_base[0]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$826 ($adff): ARST=\rst_n, D=$0\sh_base[1][15:0], Q=\sh_base[1]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$831 ($adff): ARST=\rst_n, D=$0\sh_size[0][15:0], Q=\sh_size[0]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$836 ($adff): ARST=\rst_n, D=$0\sh_size[1][15:0], Q=\sh_size[1]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$841 ($adff): ARST=\rst_n, D=$0\sh_dpa[0][11:0], Q=\sh_dpa[0]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$846 ($adff): ARST=\rst_n, D=$0\sh_dpa[1][11:0], Q=\sh_dpa[1]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$851 ($adff): ARST=\rst_n, D=$0\act_en[0][0:0], Q=\act_en[0]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$856 ($adff): ARST=\rst_n, D=$0\act_en[1][0:0], Q=\act_en[1]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$861 ($adff): ARST=\rst_n, D=$0\act_base[0][15:0], Q=\act_base[0]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$866 ($adff): ARST=\rst_n, D=$0\act_base[1][15:0], Q=\act_base[1]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$871 ($adff): ARST=\rst_n, D=$0\act_size[0][15:0], Q=\act_size[0]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$876 ($adff): ARST=\rst_n, D=$0\act_size[1][15:0], Q=\act_size[1]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$881 ($adff): ARST=\rst_n, D=$0\act_dpa[0][11:0], Q=\act_dpa[0]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$886 ($adff): ARST=\rst_n, D=$0\act_dpa[1][11:0], Q=\act_dpa[1]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$891 ($adff): ARST=\rst_n, D=$0\pend_en[0][0:0], Q=\pend_en[0]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$896 ($adff): ARST=\rst_n, D=$0\pend_en[1][0:0], Q=\pend_en[1]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$901 ($adff): ARST=\rst_n, D=$0\pend_base[0][15:0], Q=\pend_base[0]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$906 ($adff): ARST=\rst_n, D=$0\pend_base[1][15:0], Q=\pend_base[1]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$911 ($adff): ARST=\rst_n, D=$0\pend_size[0][15:0], Q=\pend_size[0]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$916 ($adff): ARST=\rst_n, D=$0\pend_size[1][15:0], Q=\pend_size[1]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$921 ($adff): ARST=\rst_n, D=$0\pend_dpa[0][11:0], Q=\pend_dpa[0]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$926 ($adff): ARST=\rst_n, D=$0\pend_dpa[1][11:0], Q=\pend_dpa[1]
 
 6. Executing OPT_CLEAN pass (remove unused cells and wires).
 Finding unused cells or wires in module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config..
 Finding unused cells or wires in module \formal_config..
-Removed 45 unused cells and 45 unused wires.
-<suppressed ~47 debug messages>
+Removed 69 unused cells and 69 unused wires.
+<suppressed ~71 debug messages>
 
 7. Executing FORMALFF pass.
 
 8. Executing OPT_CLEAN pass (remove unused cells and wires).
 Finding unused cells or wires in module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config..
 Finding unused cells or wires in module \formal_config..
-Removed 45 unused cells and 45 unused wires.
-<suppressed ~53 debug messages>
+Removed 76 unused cells and 76 unused wires.
+<suppressed ~85 debug messages>
 
 9. Executing CHECK pass (checking for obvious problems).
 Checking module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config...
@@ -151,12 +152,12 @@ Optimizing module formal_config.
 
 11.2. Executing OPT_MERGE pass (detect identical cells).
 Finding identical cells in module `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config'.
-Computing hashes of 218 cells of `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config'.
+Computing hashes of 226 cells of `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config'.
 Finding duplicate cells in `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config'.
 Finding identical cells in module `\formal_config'.
-Computing hashes of 78 cells of `\formal_config'.
+Computing hashes of 79 cells of `\formal_config'.
 Finding duplicate cells in `\formal_config'.
-Computing hashes of 68 cells of `\formal_config'.
+Computing hashes of 69 cells of `\formal_config'.
 Finding duplicate cells in `\formal_config'.
 <suppressed ~30 debug messages>
 Removed a total of 10 cells.
@@ -166,7 +167,7 @@ Removed a total of 10 cells.
 11.4. Executing OPT_CLEAN pass (remove unused cells and wires).
 Finding unused cells or wires in module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config..
 Finding unused cells or wires in module \formal_config..
-Removed 0 unused cells and 28 unused wires.
+Removed 0 unused cells and 29 unused wires.
 <suppressed ~1 debug messages>
 
 11.5. Finished fast OPT passes.
@@ -174,13 +175,13 @@ Removed 0 unused cells and 28 unused wires.
 12. Executing OPT_CLEAN pass (remove unused cells and wires).
 Finding unused cells or wires in module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config..
 Finding unused cells or wires in module \formal_config..
-Removed 0 unused cells and 33 unused wires.
+Removed 0 unused cells and 34 unused wires.
 <suppressed ~1 debug messages>
 
 13. Executing RTLIL backend.
 Output filename: ../model/design_prep.il
 
 Warnings: 66 unique messages, 66 total
-End of script. Logfile hash: 49233f61e6, time: 0.02s, user: 0.01s, system: 0.01s, MEM: 19.43 MB peak
+End of script. Logfile hash: 43dda69b84, time: 0.02s, user: 0.02s, system: 0.01s, MEM: 19.58 MB peak
 Yosys 0.67+40 (git sha1 45ea2b8d6-dirty, Release, Clang /usr/bin/clang++ 18.1.8)
-Time spent: 43% 4x opt_clean (0 sec), 13% 1x check (0 sec), ...
+Time spent: 44% 4x opt_clean (0 sec), 13% 1x check (0 sec), ...

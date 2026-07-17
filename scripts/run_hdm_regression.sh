@@ -17,7 +17,12 @@ echo "## regenerate vectors"
 echo "## lint (Verilator -Wall, project-owned RTL via $FL/rtl.f)"
 verilator --lint-only -Wall -Wno-DECLFILENAME -Wno-UNUSEDPARAM \
   -f "$FL/rtl.f" --top-module hdm_decode_top > "$RAW/lint_core.log" 2>&1
-if [ -s "$RAW/lint_core.log" ]; then echo "   LINT WARNINGS/ERRORS:"; cat "$RAW/lint_core.log" | sed 's/^/   /'; fail=1; else echo "   lint clean"; fi
+lrc=$?
+# Robust across Verilator versions: fail only on real warnings/errors or a
+# non-zero exit (newer Verilator prints a benign report line even on success).
+if [ $lrc -ne 0 ] || grep -qE "%Warning|%Error" "$RAW/lint_core.log"; then
+  echo "   LINT WARNINGS/ERRORS:"; grep -E "%Warning|%Error" "$RAW/lint_core.log" | sed 's/^/   /'; fail=1
+else echo "   lint clean"; fi
 
 run_one() { # tb_name vecprefix N H D
   local tb=$1 pfx=$2 N=$3 H=$4 D=$5

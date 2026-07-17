@@ -34,39 +34,40 @@ Module formal_config directly or indirectly contains formal properties -> settin
 
         +----------Local Count, excluding submodules.
         | 
-      242 wires
-     2080 wire bits
-      101 public wires
-      996 public wire bits
-       25 ports
-      197 port bits
-      220 cells
+      251 wires
+     2092 wire bits
+      104 public wires
+      999 public wire bits
+       27 ports
+      199 port bits
+      228 cells
         5   $add
-       33   $anyinit
+       34   $anyinit
         1   $assume
         2   $eq
         6   $gt
         3   $logic_and
         5   $logic_not
         2   $lt
-      149   $mux
+      154   $mux
         1   $not
-        3   $pmux
+        4   $pmux
        10   $reduce_bool
+        1   $reduce_or
 
 === formal_config ===
 
         +----------Local Count, excluding submodules.
         | 
-       64 wires
-      237 wire bits
-       27 public wires
-      200 public wire bits
+       66 wires
+      239 wire bits
+       29 public wires
+      202 public wire bits
         1 ports
         1 port bits
-       69 cells
+       70 cells
         2   $anyinit
-       17   $anyseq
+       18   $anyseq
         2   $assume
        11   $cover
         4   $eq
@@ -83,24 +84,24 @@ Module formal_config directly or indirectly contains formal properties -> settin
 
         +----------Count including submodules.
         | 
-      289 formal_config
-      220 $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config
+      298 formal_config
+      228 $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config
 
         +----------Count including submodules.
         | 
-      306 wires
-     2317 wire bits
-      128 public wires
-     1196 public wire bits
-       26 ports
-      198 port bits
+      317 wires
+     2331 wire bits
+      133 public wires
+     1201 public wire bits
+       28 ports
+      200 port bits
         - memories
         - memory bits
         - processes
-      289 cells
+      298 cells
         5   $add
-       35   $anyinit
-       17   $anyseq
+       36   $anyinit
+       18   $anyseq
         3   $assume
        11   $cover
         6   $eq
@@ -110,10 +111,11 @@ Module formal_config directly or indirectly contains formal properties -> settin
        16   $logic_and
         8   $logic_not
         2   $lt
-      149   $mux
+      154   $mux
         3   $not
-        3   $pmux
+        4   $pmux
        12   $reduce_bool
+        1   $reduce_or
         1 submodules
         1   $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config
 
@@ -125,6 +127,6 @@ Module formal_config directly or indirectly contains formal properties -> settin
 Creating SMT-LIBv2 representation of module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.
 Creating SMT-LIBv2 representation of module formal_config.
 
-End of script. Logfile hash: c664fd7b36, time: 0.01s, user: 0.00s, system: 0.01s, MEM: 18.52 MB peak
+End of script. Logfile hash: 50765aa15e, time: 0.01s, user: 0.01s, system: 0.00s, MEM: 18.48 MB peak
 Yosys 0.67+40 (git sha1 45ea2b8d6-dirty, Release, Clang /usr/bin/clang++ 18.1.8)
-Time spent: 77% 2x write_smt2 (0 sec), 13% 2x read_rtlil (0 sec), ...
+Time spent: 76% 2x write_smt2 (0 sec), 13% 2x read_rtlil (0 sec), ...
