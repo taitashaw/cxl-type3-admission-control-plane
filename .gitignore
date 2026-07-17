@@ -22,3 +22,4 @@ formal/decode/
 formal/config/
 tb/vectors/*.vec
 evidence/raw/
+tb/vectors/tracker_*.vec

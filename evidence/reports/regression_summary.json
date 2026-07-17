@@ -1,7 +1,7 @@
 {
-  "git_commit": "c564f7be77497d461f165429e092ca0363b5838a",
+  "git_commit": "083872d24ab8459bcf05c5c53dc8773b1b856c48",
   "git_dirty": true,
-  "utc": "2026-07-17T02:29:55Z",
+  "utc": "2026-07-17T03:35:55Z",
   "kind": "regression",
   "engines": [
     "icarus",
@@ -36,10 +36,59 @@
   "seeds": {
     "gen_vectors": "0xC5100"
   },
-  "total": 16,
-  "passed": 16,
+  "total": 30,
+  "passed": 30,
   "failed": 0,
   "results": [
+    {
+      "engine": "icarus",
+      "tb": "ot_16d_4g",
+      "result": "PASS",
+      "checks": null,
+      "errors": null
+    },
+    {
+      "engine": "icarus",
+      "tb": "ot_1d_2g",
+      "result": "PASS",
+      "checks": null,
+      "errors": null
+    },
+    {
+      "engine": "icarus",
+      "tb": "ot_2d_4g",
+      "result": "PASS",
+      "checks": null,
+      "errors": null
+    },
+    {
+      "engine": "icarus",
+      "tb": "ot_3d_2g",
+      "result": "PASS",
+      "checks": null,
+      "errors": null
+    },
+    {
+      "engine": "icarus",
+      "tb": "ot_4d_4g",
+      "result": "PASS",
+      "checks": null,
+      "errors": null
+    },
+    {
+      "engine": "icarus",
+      "tb": "ot_7d_2g",
+      "result": "PASS",
+      "checks": null,
+      "errors": null
+    },
+    {
+      "engine": "icarus",
+      "tb": "ot_8d_4g",
+      "result": "PASS",
+      "checks": null,
+      "errors": null
+    },
     {
       "engine": "icarus",
       "tb": "tb_hdm_config_1w_32x24",
@@ -95,6 +144,55 @@
       "result": "PASS",
       "checks": 7742,
       "errors": 0
+    },
+    {
+      "engine": "verilator",
+      "tb": "ot_16d_4g",
+      "result": "PASS",
+      "checks": null,
+      "errors": null
+    },
+    {
+      "engine": "verilator",
+      "tb": "ot_1d_2g",
+      "result": "PASS",
+      "checks": null,
+      "errors": null
+    },
+    {
+      "engine": "verilator",
+      "tb": "ot_2d_4g",
+      "result": "PASS",
+      "checks": null,
+      "errors": null
+    },
+    {
+      "engine": "verilator",
+      "tb": "ot_3d_2g",
+      "result": "PASS",
+      "checks": null,
+      "errors": null
+    },
+    {
+      "engine": "verilator",
+      "tb": "ot_4d_4g",
+      "result": "PASS",
+      "checks": null,
+      "errors": null
+    },
+    {
+      "engine": "verilator",
+      "tb": "ot_7d_2g",
+      "result": "PASS",
+      "checks": null,
+      "errors": null
+    },
+    {
+      "engine": "verilator",
+      "tb": "ot_8d_4g",
+      "result": "PASS",
+      "checks": null,
+      "errors": null
     },
     {
       "engine": "verilator",
@@ -155,6 +253,34 @@
   ],
   "raw_logs": [
     {
+      "path": "evidence/raw/icarus_ot_16d_4g_run.log",
+      "sha256": "1dde0b9a417262f1ae0ac32f48f8f4aa6bfb10b2b356d73fc654d6ac9f5e2d75"
+    },
+    {
+      "path": "evidence/raw/icarus_ot_1d_2g_run.log",
+      "sha256": "d5681eec4c1192f4ffa4448598e1bfd7825a47d9b19e43fe9bc76b3f0ee047ee"
+    },
+    {
+      "path": "evidence/raw/icarus_ot_2d_4g_run.log",
+      "sha256": "478073e95dccf40991f79bc47ac83c68e339d5b5a7225eac7139605a96ce699f"
+    },
+    {
+      "path": "evidence/raw/icarus_ot_3d_2g_run.log",
+      "sha256": "40964180f44b16d275c9f998cc2a26e29fd6101d1495cbf6e04af9617075643e"
+    },
+    {
+      "path": "evidence/raw/icarus_ot_4d_4g_run.log",
+      "sha256": "b687468a824f1f8c959d5519235846789c1469e870b7c48156fce554afe80ba0"
+    },
+    {
+      "path": "evidence/raw/icarus_ot_7d_2g_run.log",
+      "sha256": "7888660db7c75656edae8aa5539eadc16245e4cb5509183ae5bf5eb0c4e28771"
+    },
+    {
+      "path": "evidence/raw/icarus_ot_8d_4g_run.log",
+      "sha256": "24733a8200aaafb39dc41d4c82b7e5b1f14d8c1a9b4e87b0d08b5206a227d960"
+    },
+    {
       "path": "evidence/raw/icarus_tb_hdm_config_1w_32x24_run.log",
       "sha256": "56cdb33ea05915a9094c870c481f29925bd7f49fb5ba5603482c80f5437dea1f"
     },
@@ -185,6 +311,34 @@
     {
       "path": "evidence/raw/icarus_tb_hdm_decoder_8w_44x36_run.log",
       "sha256": "79abb7a7f807ed6233592efbf294bb20ca8e4b2a6c5491c4b5c57eb4f0360451"
+    },
+    {
+      "path": "evidence/raw/verilator_ot_16d_4g_run.log",
+      "sha256": "c07cadc633927b3e718a79bafc3210bd5e5361751f9a1f014bae418e11bfb6a7"
+    },
+    {
+      "path": "evidence/raw/verilator_ot_1d_2g_run.log",
+      "sha256": "75e12ce89b8dcf02159c48e95173f9c5a9537bd59500550f605fed0740ea0e16"
+    },
+    {
+      "path": "evidence/raw/verilator_ot_2d_4g_run.log",
+      "sha256": "f199f6e1d2b34451fb3eac46fdfd0217883ac51a40a7a9b9d6a5d9ee1ed07706"
+    },
+    {
+      "path": "evidence/raw/verilator_ot_3d_2g_run.log",
+      "sha256": "06d55d7f478d1c6648afe8c5a7450f86e4433b3aaf5699c5f7f5d86f488a1e75"
+    },
+    {
+      "path": "evidence/raw/verilator_ot_4d_4g_run.log",
+      "sha256": "03f0c4cebfb75795c9c4065e53c3f51b49ab90afbc50abecb650009434d274af"
+    },
+    {
+      "path": "evidence/raw/verilator_ot_7d_2g_run.log",
+      "sha256": "e26307b8535c3c129cc6dbb48f9912dc8f77abda00df19a6ddf582744c4aef40"
+    },
+    {
+      "path": "evidence/raw/verilator_ot_8d_4g_run.log",
+      "sha256": "ca2a9ea144391f007e612a741ad9b7c8996f6acd395cfa63e0636bcf9c747a9c"
     },
     {
       "path": "evidence/raw/verilator_tb_hdm_config_1w_32x24_run.log",

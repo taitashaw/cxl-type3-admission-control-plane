@@ -1,0 +1,146 @@
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.67+40 (git sha1 45ea2b8d6-dirty, Release, Clang /usr/bin/clang++ 18.1.8)
+
+-- Executing script file `design_prep.ys' --
+
+1. Executing RTLIL frontend.
+Input filename: design.il
+
+2. Executing SCC pass (detecting logic loops).
+Found 0 SCCs in module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.
+Found 0 SCCs in module formal_tracker.
+Found 0 SCCs.
+
+3. Executing SIMPLEMAP pass (map simple cells to gate primitives).
+
+4. Executing MEMORY_NORDFF pass (extracting $dff cells from memories).
+
+5. Executing ASYNC2SYNC pass.
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1351 ($adff): ARST=\rst_n, D=\occ_next, Q=\occupancy
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1356 ($adff): ARST=\rst_n, D=$0\high_watermark[2:0], Q=\high_watermark
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1361 ($adff): ARST=\rst_n, D=$0\alloc_count[31:0], Q=\alloc_count
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1366 ($adff): ARST=\rst_n, D=$0\retire_count[31:0], Q=\retire_count
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1371 ($adff): ARST=\rst_n, D=$0\full_count[31:0], Q=\full_count
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1376 ($adff): ARST=\rst_n, D=$0\timeout_count[31:0], Q=\timeout_count
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1381 ($adff): ARST=\rst_n, D=$0\invalid_slot_count[31:0], Q=\invalid_slot_count
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1386 ($adff): ARST=\rst_n, D=$0\non_live_count[31:0], Q=\non_live_count
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1391 ($adff): ARST=\rst_n, D=$0\stale_gen_count[31:0], Q=\stale_gen_count
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1396 ($adff): ARST=\rst_n, D=$0\err_sticky[0:0], Q=\err_sticky
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1401 ($adff): ARST=\rst_n, D=$0\err_first_class[2:0], Q=\err_first_class
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1406 ($adff): ARST=\rst_n, D=$0\live[0][0:0], Q=\live[0]
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1411 ($adff): ARST=\rst_n, D=$0\live[1][0:0], Q=\live[1]
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1416 ($adff): ARST=\rst_n, D=$0\live[2][0:0], Q=\live[2]
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1421 ($adff): ARST=\rst_n, D=$0\gen[0][1:0], Q=\gen[0]
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1426 ($adff): ARST=\rst_n, D=$0\gen[1][1:0], Q=\gen[1]
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1431 ($adff): ARST=\rst_n, D=$0\gen[2][1:0], Q=\gen[2]
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1436 ($adff): ARST=\rst_n, D=$0\epoch[0][3:0], Q=\epoch[0]
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1441 ($adff): ARST=\rst_n, D=$0\epoch[1][3:0], Q=\epoch[1]
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1446 ($adff): ARST=\rst_n, D=$0\epoch[2][3:0], Q=\epoch[2]
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1451 ($adff): ARST=\rst_n, D=$0\op[0][0:0], Q=\op[0]
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1456 ($adff): ARST=\rst_n, D=$0\op[1][0:0], Q=\op[1]
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1461 ($adff): ARST=\rst_n, D=$0\op[2][0:0], Q=\op[2]
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1466 ($adff): ARST=\rst_n, D=$0\meta[0][3:0], Q=\meta[0]
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1471 ($adff): ARST=\rst_n, D=$0\meta[1][3:0], Q=\meta[1]
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1476 ($adff): ARST=\rst_n, D=$0\meta[2][3:0], Q=\meta[2]
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1481 ($adff): ARST=\rst_n, D=$0\issue_ts[0][3:0], Q=\issue_ts[0]
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1486 ($adff): ARST=\rst_n, D=$0\issue_ts[1][3:0], Q=\issue_ts[1]
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1491 ($adff): ARST=\rst_n, D=$0\issue_ts[2][3:0], Q=\issue_ts[2]
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1496 ($adff): ARST=\rst_n, D=$0\timed_out[0][0:0], Q=\timed_out[0]
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1501 ($adff): ARST=\rst_n, D=$0\timed_out[1][0:0], Q=\timed_out[1]
+Replacing $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procdff$1506 ($adff): ARST=\rst_n, D=$0\timed_out[2][0:0], Q=\timed_out[2]
+
+6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker..
+Finding unused cells or wires in module \formal_tracker..
+Removed 53 unused cells and 53 unused wires.
+<suppressed ~55 debug messages>
+
+7. Executing FORMALFF pass.
+
+8. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker..
+Finding unused cells or wires in module \formal_tracker..
+Removed 59 unused cells and 59 unused wires.
+<suppressed ~68 debug messages>
+
+9. Executing CHECK pass (checking for obvious problems).
+Checking module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker...
+Checking module formal_tracker...
+Warning: Wire formal_tracker.\timeout_thresh [3] is used but has no driver.
+Warning: Wire formal_tracker.\timeout_thresh [2] is used but has no driver.
+Warning: Wire formal_tracker.\timeout_thresh [1] is used but has no driver.
+Warning: Wire formal_tracker.\timeout_thresh [0] is used but has no driver.
+Warning: Wire formal_tracker.\resp_tag [3] is used but has no driver.
+Warning: Wire formal_tracker.\resp_tag [2] is used but has no driver.
+Warning: Wire formal_tracker.\resp_tag [1] is used but has no driver.
+Warning: Wire formal_tracker.\resp_tag [0] is used but has no driver.
+Warning: Wire formal_tracker.\reclaim_slot [1] is used but has no driver.
+Warning: Wire formal_tracker.\reclaim_slot [0] is used but has no driver.
+Warning: Wire formal_tracker.\reclaim_req is used but has no driver.
+Warning: Wire formal_tracker.\current_ts [3] is used but has no driver.
+Warning: Wire formal_tracker.\current_ts [2] is used but has no driver.
+Warning: Wire formal_tracker.\current_ts [1] is used but has no driver.
+Warning: Wire formal_tracker.\current_ts [0] is used but has no driver.
+Warning: Wire formal_tracker.\alloc_req is used but has no driver.
+Warning: Wire formal_tracker.\alloc_op is used but has no driver.
+Warning: Wire formal_tracker.\alloc_meta [3] is used but has no driver.
+Warning: Wire formal_tracker.\alloc_meta [2] is used but has no driver.
+Warning: Wire formal_tracker.\alloc_meta [1] is used but has no driver.
+Warning: Wire formal_tracker.\alloc_meta [0] is used but has no driver.
+Warning: Wire formal_tracker.\alloc_epoch [3] is used but has no driver.
+Warning: Wire formal_tracker.\alloc_epoch [2] is used but has no driver.
+Warning: Wire formal_tracker.\alloc_epoch [1] is used but has no driver.
+Warning: Wire formal_tracker.\alloc_epoch [0] is used but has no driver.
+Warning: Wire formal_tracker.\resp_valid is used but has no driver.
+Warning: Wire formal_tracker.\rst_n is used but has no driver.
+Found and reported 27 problems.
+
+10. Executing SETUNDEF pass (replace undef values with defined constants).
+
+11. Executing OPT pass (performing simple optimizations).
+
+11.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.
+Optimizing module formal_tracker.
+<suppressed ~1 debug messages>
+
+11.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker'.
+Computing hashes of 302 cells of `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker'.
+Finding duplicate cells in `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker'.
+Finding identical cells in module `\formal_tracker'.
+Computing hashes of 69 cells of `\formal_tracker'.
+Finding duplicate cells in `\formal_tracker'.
+Computing hashes of 61 cells of `\formal_tracker'.
+Finding duplicate cells in `\formal_tracker'.
+<suppressed ~24 debug messages>
+Removed a total of 8 cells.
+
+11.3. Executing OPT_DFF pass (perform DFF optimizations).
+
+11.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker..
+Finding unused cells or wires in module \formal_tracker..
+Removed 0 unused cells and 31 unused wires.
+<suppressed ~1 debug messages>
+
+11.5. Finished fast OPT passes.
+
+12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker..
+Finding unused cells or wires in module \formal_tracker..
+Removed 0 unused cells and 45 unused wires.
+<suppressed ~1 debug messages>
+
+13. Executing RTLIL backend.
+Output filename: ../model/design_prep.il
+
+Warnings: 27 unique messages, 27 total
+End of script. Logfile hash: 59f2c361a3, time: 0.02s, user: 0.02s, system: 0.00s, MEM: 19.51 MB peak
+Yosys 0.67+40 (git sha1 45ea2b8d6-dirty, Release, Clang /usr/bin/clang++ 18.1.8)
+Time spent: 43% 4x opt_clean (0 sec), 10% 1x check (0 sec), ...

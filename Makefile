@@ -11,13 +11,13 @@ help:
 	@echo "  make inventory   - regenerate tool/host inventory evidence"
 	@echo "  make vectors     - regenerate differential vectors from the Python model"
 	@echo "  make lint        - Verilator -Wall lint of project-owned RTL"
-	@echo "  make regression  - lint + decoder & config sweeps (Icarus+Verilator, 1/2/4/8 win)"
+	@echo "  make regression  - lint + decoder/config/tracker sweeps (Icarus+Verilator)"
 	@echo "  make mutation    - prove each protection is observable (mutation testing)"
 	@echo "  make all-free    - inventory + regression + mutation (no licence / no board)"
 	@echo "Opt-in extras:"
 	@echo "  make xsim        - AMD XSim tri-engine cross-check (reduced golden set)"
-	@echo "  make formal      - SymbiYosys formal (BLOCKED here: sby not installed)"
-	@echo "  make reports     - regenerate evidence manifest (SHA-256 hashes)"
+	@echo "  make formal      - SymbiYosys bmc+induction+cover, all 3 blocks (rootless OSS CAD Suite)"
+	@echo "  make evidence    - versioned JSON summaries + SHA-256 source manifest"
 
 inventory:
 	@bash scripts/inventory_tools.sh >/dev/null && echo "wrote evidence/environment_inventory.json"
@@ -34,6 +34,7 @@ lint:
 
 regression:
 	@bash scripts/run_hdm_regression.sh
+	@bash scripts/run_tracker_sweep.sh
 
 mutation:
 	@bash scripts/run_mutation_tests.sh

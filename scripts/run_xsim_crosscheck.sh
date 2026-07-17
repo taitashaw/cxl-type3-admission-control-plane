@@ -16,18 +16,19 @@ src,dst,n=sys.argv[1],sys.argv[2],int(sys.argv[3])
 lines=open(src).read().splitlines()
 hdr=lines[0].split()
 body=lines[1:1+n]
-hdr[3]=str(len(body))
+hdr[-1]=str(len(body))
 open(dst,'w').write(" ".join(hdr)+"\n"+"\n".join(body)+"\n")
 PY
 }
 reduce tb/vectors/dec_4w_40x32.vec "$XD/dec_red.vec" 400
 reduce tb/vectors/cfg_4w_40x32.vec "$XD/cfg_red.vec" 400
+reduce tb/vectors/tracker_8d_4g.vec "$XD/ot_red.vec" 400
 
 fail=0
-run_xsim() { # tb srcs vecbasename tag
-  local tb=$1 srcs=$2 vec=$3 tag=$4
+run_xsim() { # tb srcs vecbasename tag defines
+  local tb=$1 srcs=$2 vec=$3 tag=$4 defs=${5:-"-d NWIN=4 -d HPAW=40 -d DPAW=32"}
   ( cd "$XD" && rm -rf xsim.dir ${tag}_snap* 2>/dev/null
-    xvlog -sv -d NWIN=4 -d HPAW=40 -d DPAW=32 -i ../../rtl/interfaces $srcs   > "xvlog_${tag}.log" 2>&1
+    xvlog -sv $defs -i ../../rtl/interfaces $srcs                             > "xvlog_${tag}.log" 2>&1
     xelab $tb -s ${tag}_snap -timescale 1ns/1ps                               > "xelab_${tag}.log" 2>&1
     xsim ${tag}_snap -R -testplusarg "VEC=$vec"                               > "xsim_${tag}.log" 2>&1 )
   cp "$XD/xsim_${tag}.log" "$RAW/xsim_${tag}_run.log" 2>/dev/null
@@ -45,6 +46,9 @@ run_xsim tb_hdm_decoder \
 run_xsim tb_hdm_config \
   "../../rtl/interfaces/cxl_types_pkg.sv ../../rtl/csr/hdm_config.sv ../../tb/sv/tb_hdm_config.sv" \
   "cfg_red.vec" cfg
+run_xsim tb_outstanding_tracker \
+  "../../rtl/core/outstanding_tracker.sv ../../tb/sv/tb_outstanding_tracker.sv" \
+  "ot_red.vec" ot "-d DEPTH=8 -d GENW=4 -d EPOCHW=16 -d OPW=2 -d METAW=16 -d TSW=8"
 
 [ $fail -eq 0 ] && echo "XSIM CROSSCHECK: PASS" || echo "XSIM CROSSCHECK: FAIL"
 exit $fail

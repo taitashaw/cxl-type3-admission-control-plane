@@ -42,6 +42,12 @@ fmut "config: snapshot commit" formal/config.sby rtl/csr/hdm_config.sv \
 fmut "config: drain-before-commit" formal/config.sby rtl/csr/hdm_config.sv \
   "s/if (outstanding_cnt == '0) state <= S_COMMIT;/if (1'b1) state <= S_COMMIT;/" bmc
 
+# tracker: aggregate timeout counter -> per-slot +1 (undercounts simultaneous timeouts)
+fmut "tracker: timeout aggregate" formal/tracker.sby rtl/core/outstanding_tracker.sv \
+  "s/timeout_count <= timeout_count + {{(CNT_W-OCC_W){1'b0}}, n_new_timeout};/timeout_count <= timeout_count + 1'b1;/" bmc
+# tracker: retire without generation match -> stale response wrongly retires
+fmut "tracker: generation check" formal/tracker.sby rtl/core/outstanding_tracker.sv \
+  "s/else if (r_gen != gen\[r_slot\])      resp_class = RC_STALE_GEN;/else if (1'b0)                       resp_class = RC_STALE_GEN;/" bmc
 echo "=================================================="
 echo "formal mutations killed=$kills survived=$survivors"
 [ $survivors -eq 0 ] && { echo "FORMAL MUTATION: PASS (proofs are non-vacuous)"; exit 0; } || { echo "FORMAL MUTATION: FAIL"; exit 1; }

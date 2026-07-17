@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-<testsuite timestamp="2026-07-16T22:22:24" hostname="jotshawlinux-Legion" package="decode" id="0" name="cover" tests="20" errors="0" failures="0" time="0" skipped="13">
+<testsuite timestamp="2026-07-16T23:30:30" hostname="jotshawlinux-Legion" package="decode" id="0" name="cover" tests="20" errors="0" failures="0" time="0" skipped="13">
 <properties>
 <property name="os" value="Linux"/>
 <property name="expect" value="PASS"/>
@@ -61,320 +61,320 @@
 <testcase classname="cover" name="Property ASSERT in formal_decode/u_dec at hdm_decoder.sv:98.41-98.70" time="0" type="ASSERT" location="hdm_decoder.sv:98.41-98.70" id="_witness_.check_assert_hdm_decoder_sv_98_227">
 <skipped />
 </testcase>
-<system-out>SBY 22:22:24 [formal/decode_bmc] Removing directory '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/decode_bmc'.
-SBY 22:22:24 [formal/decode_prove] Removing directory '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/decode_prove'.
-SBY 22:22:24 [formal/decode_cover] Removing directory '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/decode_cover'.
-SBY 22:22:24 [formal/decode_cover] Copy '/home/jotshawlinux/Downloads/project2_cxl_validation/rtl/core/hdm_decoder.sv' to '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/decode_cover/src/hdm_decoder.sv'.
-SBY 22:22:24 [formal/decode_cover] Copy '/home/jotshawlinux/Downloads/project2_cxl_validation/rtl/core/dpa_translator.sv' to '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/decode_cover/src/dpa_translator.sv'.
-SBY 22:22:24 [formal/decode_cover] Copy '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/formal_decode.sv' to '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/decode_cover/src/formal_decode.sv'.
-SBY 22:22:24 [formal/decode_cover] engine_0: smtbmc yices
-SBY 22:22:24 [formal/decode_cover] base: starting process &quot;cd formal/decode_cover/src; yosys -ql ../model/design.log ../model/design.ys&quot;
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_en [1] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_en [0] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [31] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [30] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [29] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [28] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [27] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [26] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [25] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [24] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [23] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [22] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [21] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [20] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [19] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [18] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [17] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [16] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [15] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [14] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [13] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [12] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [11] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [10] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [9] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [8] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [7] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [6] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [5] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [4] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [3] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [2] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [1] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [0] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [31] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [30] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [29] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [28] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [27] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [26] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [25] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [24] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [23] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [22] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [21] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [20] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [19] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [18] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [17] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [16] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [15] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [14] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [13] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [12] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [11] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [10] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [9] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [8] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [7] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [6] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [5] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [4] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [3] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [2] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [1] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [0] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [23] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [22] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [21] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [20] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [19] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [18] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [17] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [16] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [15] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [14] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [13] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [12] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [11] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [10] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [9] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [8] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [7] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [6] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [5] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [4] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [3] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [2] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [1] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [0] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\dev_capacity [12] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\dev_capacity [11] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\dev_capacity [10] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\dev_capacity [9] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\dev_capacity [8] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\dev_capacity [7] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\dev_capacity [6] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\dev_capacity [5] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\dev_capacity [4] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\dev_capacity [3] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\dev_capacity [2] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\dev_capacity [1] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\dev_capacity [0] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [15] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [14] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [13] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [12] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [11] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [10] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [9] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [8] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [7] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [6] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [5] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [4] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [3] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [2] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [1] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [0] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] base: finished (returncode=0)
-SBY 22:22:24 [formal/decode_cover] prep: starting process &quot;cd formal/decode_cover/model; yosys -ql design_prep.log design_prep.ys&quot;
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\dev_capacity [12] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\dev_capacity [11] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\dev_capacity [10] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\dev_capacity [9] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\dev_capacity [8] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\dev_capacity [7] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\dev_capacity [6] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\dev_capacity [5] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\dev_capacity [4] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\dev_capacity [3] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\dev_capacity [2] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\dev_capacity [1] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\dev_capacity [0] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [31] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [30] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [29] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [28] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [27] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [26] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [25] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [24] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [23] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [22] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [21] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [20] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [19] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [18] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [17] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [16] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [15] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [14] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [13] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [12] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [11] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [10] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [9] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [8] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [7] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [6] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [5] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [4] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [3] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [2] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [1] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [0] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_en [1] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_en [0] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [23] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [22] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [21] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [20] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [19] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [18] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [17] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [16] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [15] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [14] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [13] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [12] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [11] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [10] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [9] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [8] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [7] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [6] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [5] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [4] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [3] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [2] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [1] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [0] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [31] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [30] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [29] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [28] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [27] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [26] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [25] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [24] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [23] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [22] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [21] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [20] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [19] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [18] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [17] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [16] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [15] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [14] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [13] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [12] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [11] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [10] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [9] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [8] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [7] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [6] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [5] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [4] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [3] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [2] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [1] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [0] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [15] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [14] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [13] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [12] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [11] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [10] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [9] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [8] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [7] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [6] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [5] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [4] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [3] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [2] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [1] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [0] is used but has no driver.
-SBY 22:22:24 [formal/decode_cover] prep: finished (returncode=0)
-SBY 22:22:24 [formal/decode_cover] smt2: starting process &quot;cd formal/decode_cover/model; yosys -ql design_smt2.log design_smt2.ys&quot;
-SBY 22:22:24 [formal/decode_cover] smt2: finished (returncode=0)
-SBY 22:22:24 [formal/decode_cover] engine_0: starting process &quot;cd formal/decode_cover; yosys-smtbmc -s yices --presat --unroll -c --noprogress -t 4  --append 0 --dump-vcd engine_0/trace%.vcd --dump-yw engine_0/trace%.yw --dump-vlogtb engine_0/trace%_tb.v --dump-smtc engine_0/trace%.smtc model/design_smt2.smt2&quot;
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Solver: yices
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Checking cover reachability in step 0..
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Reached cover statement in step 0 at formal_decode: formal_decode.sv:67.5-67.17 (_witness_.check_cover_formal_decode_sv_67_153)
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace0.vcd
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace0_tb.v
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace0.smtc
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace0.yw
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Checking cover reachability in step 0..
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Reached cover statement in step 0 at formal_decode: formal_decode.sv:69.5-69.38 (_witness_.check_cover_formal_decode_sv_69_155)
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace1.vcd
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace1_tb.v
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace1.smtc
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace1.yw
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Checking cover reachability in step 0..
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Reached cover statement in step 0 at formal_decode: formal_decode.sv:71.5-71.36 (_witness_.check_cover_formal_decode_sv_71_159)
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace2.vcd
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace2_tb.v
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace2.smtc
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace2.yw
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Checking cover reachability in step 0..
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Reached cover statement in step 0 at formal_decode: formal_decode.sv:72.5-72.43 (_witness_.check_cover_formal_decode_sv_72_161)
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace3.vcd
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace3_tb.v
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace3.smtc
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace3.yw
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Checking cover reachability in step 0..
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Reached cover statement in step 0 at formal_decode: formal_decode.sv:70.5-70.37 (_witness_.check_cover_formal_decode_sv_70_157)
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace4.vcd
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace4_tb.v
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace4.smtc
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace4.yw
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Checking cover reachability in step 0..
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Reached cover statement in step 0 at formal_decode: formal_decode.sv:66.5-66.35 (_witness_.check_cover_formal_decode_sv_66_151)
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace5.vcd
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace5_tb.v
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace5.smtc
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace5.yw
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Checking cover reachability in step 0..
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Reached cover statement in step 0 at formal_decode: formal_decode.sv:68.5-68.27 (_witness_.check_cover_formal_decode_sv_68_154)
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace6.vcd
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace6_tb.v
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace6.smtc
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace6.yw
-SBY 22:22:24 [formal/decode_cover] engine_0: ##   0:00:00  Status: passed
-SBY 22:22:24 [formal/decode_cover] engine_0: finished (returncode=0)
-SBY 22:22:24 [formal/decode_cover] engine_0: Status returned by engine: pass
-SBY 22:22:24 [formal/decode_cover] summary: Elapsed clock time [H:MM:SS (secs)]: 0:00:00 (0)
-SBY 22:22:24 [formal/decode_cover] summary: Elapsed process time [H:MM:SS (secs)]: 0:00:00 (0)
-SBY 22:22:24 [formal/decode_cover] summary: engine_0 (smtbmc yices) returned pass
-SBY 22:22:24 [formal/decode_cover] summary: cover trace: formal/decode_cover/engine_0/trace0.vcd
-SBY 22:22:24 [formal/decode_cover] summary:   reached cover statement formal_decode._witness_.check_cover_formal_decode_sv_67_153 at formal_decode.sv:67.5-67.17
-SBY 22:22:24 [formal/decode_cover] summary: cover trace: formal/decode_cover/engine_0/trace1.vcd
-SBY 22:22:24 [formal/decode_cover] summary:   reached cover statement formal_decode._witness_.check_cover_formal_decode_sv_69_155 at formal_decode.sv:69.5-69.38
-SBY 22:22:24 [formal/decode_cover] summary: cover trace: formal/decode_cover/engine_0/trace2.vcd
-SBY 22:22:24 [formal/decode_cover] summary:   reached cover statement formal_decode._witness_.check_cover_formal_decode_sv_71_159 at formal_decode.sv:71.5-71.36
-SBY 22:22:24 [formal/decode_cover] summary: cover trace: formal/decode_cover/engine_0/trace3.vcd
-SBY 22:22:24 [formal/decode_cover] summary:   reached cover statement formal_decode._witness_.check_cover_formal_decode_sv_72_161 at formal_decode.sv:72.5-72.43
-SBY 22:22:24 [formal/decode_cover] summary: cover trace: formal/decode_cover/engine_0/trace4.vcd
-SBY 22:22:24 [formal/decode_cover] summary:   reached cover statement formal_decode._witness_.check_cover_formal_decode_sv_70_157 at formal_decode.sv:70.5-70.37
-SBY 22:22:24 [formal/decode_cover] summary: and 2 further traces
-SBY 22:22:24 [formal/decode_cover] summary: see formal/decode_cover/PASS for a complete summary
-SBY 22:22:24 [formal/decode_cover] DONE (PASS, rc=0)
+<system-out>SBY 23:30:30 [formal/decode_bmc] Removing directory '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/decode_bmc'.
+SBY 23:30:30 [formal/decode_prove] Removing directory '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/decode_prove'.
+SBY 23:30:30 [formal/decode_cover] Removing directory '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/decode_cover'.
+SBY 23:30:30 [formal/decode_cover] Copy '/home/jotshawlinux/Downloads/project2_cxl_validation/rtl/core/hdm_decoder.sv' to '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/decode_cover/src/hdm_decoder.sv'.
+SBY 23:30:30 [formal/decode_cover] Copy '/home/jotshawlinux/Downloads/project2_cxl_validation/rtl/core/dpa_translator.sv' to '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/decode_cover/src/dpa_translator.sv'.
+SBY 23:30:30 [formal/decode_cover] Copy '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/formal_decode.sv' to '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/decode_cover/src/formal_decode.sv'.
+SBY 23:30:30 [formal/decode_cover] engine_0: smtbmc yices
+SBY 23:30:30 [formal/decode_cover] base: starting process &quot;cd formal/decode_cover/src; yosys -ql ../model/design.log ../model/design.ys&quot;
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_en [1] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_en [0] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [31] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [30] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [29] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [28] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [27] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [26] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [25] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [24] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [23] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [22] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [21] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [20] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [19] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [18] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [17] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [16] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [15] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [14] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [13] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [12] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [11] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [10] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [9] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [8] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [7] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [6] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [5] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [4] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [3] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [2] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [1] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_base [0] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [31] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [30] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [29] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [28] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [27] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [26] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [25] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [24] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [23] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [22] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [21] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [20] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [19] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [18] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [17] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [16] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [15] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [14] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [13] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [12] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [11] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [10] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [9] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [8] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [7] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [6] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [5] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [4] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [3] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [2] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [1] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_size [0] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [23] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [22] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [21] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [20] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [19] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [18] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [17] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [16] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [15] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [14] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [13] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [12] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [11] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [10] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [9] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [8] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [7] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [6] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [5] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [4] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [3] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [2] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [1] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\win_dpa_base [0] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\dev_capacity [12] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\dev_capacity [11] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\dev_capacity [10] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\dev_capacity [9] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\dev_capacity [8] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\dev_capacity [7] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\dev_capacity [6] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\dev_capacity [5] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\dev_capacity [4] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\dev_capacity [3] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\dev_capacity [2] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\dev_capacity [1] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\dev_capacity [0] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [15] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [14] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [13] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [12] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [11] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [10] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [9] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [8] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [7] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [6] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [5] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [4] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [3] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [2] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [1] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: Warning: Wire formal_decode.\hpa [0] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] base: finished (returncode=0)
+SBY 23:30:30 [formal/decode_cover] prep: starting process &quot;cd formal/decode_cover/model; yosys -ql design_prep.log design_prep.ys&quot;
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\dev_capacity [12] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\dev_capacity [11] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\dev_capacity [10] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\dev_capacity [9] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\dev_capacity [8] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\dev_capacity [7] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\dev_capacity [6] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\dev_capacity [5] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\dev_capacity [4] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\dev_capacity [3] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\dev_capacity [2] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\dev_capacity [1] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\dev_capacity [0] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [31] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [30] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [29] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [28] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [27] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [26] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [25] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [24] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [23] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [22] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [21] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [20] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [19] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [18] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [17] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [16] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [15] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [14] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [13] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [12] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [11] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [10] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [9] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [8] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [7] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [6] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [5] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [4] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [3] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [2] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [1] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_size [0] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_en [1] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_en [0] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [23] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [22] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [21] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [20] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [19] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [18] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [17] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [16] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [15] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [14] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [13] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [12] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [11] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [10] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [9] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [8] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [7] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [6] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [5] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [4] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [3] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [2] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [1] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_dpa_base [0] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [31] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [30] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [29] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [28] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [27] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [26] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [25] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [24] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [23] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [22] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [21] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [20] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [19] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [18] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [17] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [16] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [15] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [14] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [13] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [12] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [11] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [10] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [9] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [8] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [7] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [6] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [5] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [4] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [3] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [2] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [1] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\win_base [0] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [15] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [14] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [13] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [12] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [11] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [10] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [9] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [8] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [7] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [6] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [5] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [4] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [3] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [2] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [1] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: Warning: Wire formal_decode.\hpa [0] is used but has no driver.
+SBY 23:30:30 [formal/decode_cover] prep: finished (returncode=0)
+SBY 23:30:30 [formal/decode_cover] smt2: starting process &quot;cd formal/decode_cover/model; yosys -ql design_smt2.log design_smt2.ys&quot;
+SBY 23:30:30 [formal/decode_cover] smt2: finished (returncode=0)
+SBY 23:30:30 [formal/decode_cover] engine_0: starting process &quot;cd formal/decode_cover; yosys-smtbmc -s yices --presat --unroll -c --noprogress -t 4  --append 0 --dump-vcd engine_0/trace%.vcd --dump-yw engine_0/trace%.yw --dump-vlogtb engine_0/trace%_tb.v --dump-smtc engine_0/trace%.smtc model/design_smt2.smt2&quot;
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Solver: yices
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Checking cover reachability in step 0..
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Reached cover statement in step 0 at formal_decode: formal_decode.sv:67.5-67.17 (_witness_.check_cover_formal_decode_sv_67_153)
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace0.vcd
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace0_tb.v
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace0.smtc
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace0.yw
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Checking cover reachability in step 0..
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Reached cover statement in step 0 at formal_decode: formal_decode.sv:69.5-69.38 (_witness_.check_cover_formal_decode_sv_69_155)
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace1.vcd
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace1_tb.v
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace1.smtc
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace1.yw
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Checking cover reachability in step 0..
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Reached cover statement in step 0 at formal_decode: formal_decode.sv:71.5-71.36 (_witness_.check_cover_formal_decode_sv_71_159)
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace2.vcd
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace2_tb.v
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace2.smtc
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace2.yw
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Checking cover reachability in step 0..
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Reached cover statement in step 0 at formal_decode: formal_decode.sv:72.5-72.43 (_witness_.check_cover_formal_decode_sv_72_161)
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace3.vcd
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace3_tb.v
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace3.smtc
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace3.yw
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Checking cover reachability in step 0..
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Reached cover statement in step 0 at formal_decode: formal_decode.sv:70.5-70.37 (_witness_.check_cover_formal_decode_sv_70_157)
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace4.vcd
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace4_tb.v
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace4.smtc
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace4.yw
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Checking cover reachability in step 0..
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Reached cover statement in step 0 at formal_decode: formal_decode.sv:66.5-66.35 (_witness_.check_cover_formal_decode_sv_66_151)
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace5.vcd
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace5_tb.v
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace5.smtc
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace5.yw
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Checking cover reachability in step 0..
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Reached cover statement in step 0 at formal_decode: formal_decode.sv:68.5-68.27 (_witness_.check_cover_formal_decode_sv_68_154)
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace6.vcd
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace6_tb.v
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace6.smtc
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace6.yw
+SBY 23:30:30 [formal/decode_cover] engine_0: ##   0:00:00  Status: passed
+SBY 23:30:30 [formal/decode_cover] engine_0: finished (returncode=0)
+SBY 23:30:30 [formal/decode_cover] engine_0: Status returned by engine: pass
+SBY 23:30:30 [formal/decode_cover] summary: Elapsed clock time [H:MM:SS (secs)]: 0:00:00 (0)
+SBY 23:30:30 [formal/decode_cover] summary: Elapsed process time [H:MM:SS (secs)]: 0:00:00 (0)
+SBY 23:30:30 [formal/decode_cover] summary: engine_0 (smtbmc yices) returned pass
+SBY 23:30:30 [formal/decode_cover] summary: cover trace: formal/decode_cover/engine_0/trace0.vcd
+SBY 23:30:30 [formal/decode_cover] summary:   reached cover statement formal_decode._witness_.check_cover_formal_decode_sv_67_153 at formal_decode.sv:67.5-67.17
+SBY 23:30:30 [formal/decode_cover] summary: cover trace: formal/decode_cover/engine_0/trace1.vcd
+SBY 23:30:30 [formal/decode_cover] summary:   reached cover statement formal_decode._witness_.check_cover_formal_decode_sv_69_155 at formal_decode.sv:69.5-69.38
+SBY 23:30:30 [formal/decode_cover] summary: cover trace: formal/decode_cover/engine_0/trace2.vcd
+SBY 23:30:30 [formal/decode_cover] summary:   reached cover statement formal_decode._witness_.check_cover_formal_decode_sv_71_159 at formal_decode.sv:71.5-71.36
+SBY 23:30:30 [formal/decode_cover] summary: cover trace: formal/decode_cover/engine_0/trace3.vcd
+SBY 23:30:30 [formal/decode_cover] summary:   reached cover statement formal_decode._witness_.check_cover_formal_decode_sv_72_161 at formal_decode.sv:72.5-72.43
+SBY 23:30:30 [formal/decode_cover] summary: cover trace: formal/decode_cover/engine_0/trace4.vcd
+SBY 23:30:30 [formal/decode_cover] summary:   reached cover statement formal_decode._witness_.check_cover_formal_decode_sv_70_157 at formal_decode.sv:70.5-70.37
+SBY 23:30:30 [formal/decode_cover] summary: and 2 further traces
+SBY 23:30:30 [formal/decode_cover] summary: see formal/decode_cover/PASS for a complete summary
+SBY 23:30:30 [formal/decode_cover] DONE (PASS, rc=0)
 </system-out>
 <system-err>
 </system-err>

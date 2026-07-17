@@ -31,11 +31,11 @@ json.dump({**meta,"tools":tools}, open(f"{REP}/tool_versions.json","w"), indent=
 
 # regression: one row per (tb,config,engine)
 rows=[]; rlogs=[]
-for f in sorted(glob.glob(f"{RAW}/icarus_tb_hdm_*_run.log")+glob.glob(f"{RAW}/verilator_tb_hdm_*_run.log")):
+for f in sorted(glob.glob(f"{RAW}/icarus_tb_hdm_*_run.log")+glob.glob(f"{RAW}/verilator_tb_hdm_*_run.log")+glob.glob(f"{RAW}/icarus_ot_*_run.log")+glob.glob(f"{RAW}/verilator_ot_*_run.log")):
     txt=open(f).read()
     m=re.search(r"checks=(\d+) errors=(\d+)",txt); res="PASS" if "TB_RESULT: PASS" in txt else "FAIL"
     eng="icarus" if "icarus_" in f else "verilator"
-    tag=re.sub(r".*(icarus|verilator)_(tb_hdm_\w+)_run.log",r"\2",f)
+    tag=re.sub(r".*(icarus|verilator)_((tb_hdm|ot)_\w+)_run.log",r"\2",f)
     rows.append(dict(engine=eng,tb=tag,result=res,checks=int(m.group(1)) if m else None,errors=int(m.group(2)) if m else None))
     rlogs.append(dict(path=f, sha256=sha(f)))
 reg=dict(**meta, kind="regression", engines=["icarus","verilator"],
@@ -57,7 +57,7 @@ mt=open(f"{RAW}/formal_mutation.log").read() if os.path.exists(f"{RAW}/formal_mu
 mk=re.search(r"killed=(\d+) survived=(\d+)",mt)
 formal=dict(**meta, kind="formal", engine="smtbmc/yices", modes=["bmc","prove(induction)","cover"],
             assumptions="initial reset then rst_n free; sh_*/cfg_update_req/outstanding_cnt free; safety-only (see docs/limitations.md)",
-            jobs=[formal_job("decode"),formal_job("config")],
+            jobs=[formal_job("decode"),formal_job("config"),formal_job("tracker")],
             non_vacuity=dict(cover="all reachable",
                              formal_mutation=dict(killed=int(mk.group(1)) if mk else None,
                                                   survived=int(mk.group(2)) if mk else None,

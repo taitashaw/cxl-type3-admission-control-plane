@@ -15,7 +15,7 @@ source "$ENV"
 echo "using $(yosys --version 2>/dev/null | head -1); $(sby --help 2>&1 | head -1 | sed 's/usage:.*//')sby present"
 
 fail=0
-for job in decode config; do
+for job in decode config tracker; do
   rm -rf "formal/${job}_bmc" "formal/${job}_prove" "formal/${job}_cover"
   sby -f "formal/${job}.sby" > "$RAW/formal_${job}.log" 2>&1
   bmc=$(grep -c "\[formal/${job}_bmc\] DONE (PASS" "$RAW/formal_${job}.log")

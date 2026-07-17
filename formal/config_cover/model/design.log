@@ -817,6 +817,6 @@ Module formal_config directly or indirectly contains formal properties -> settin
 Output filename: ../model/design.il
 
 Warnings: 79 unique messages, 158 total
-End of script. Logfile hash: c56f99631d, time: 0.06s, user: 0.05s, system: 0.00s, MEM: 22.05 MB peak
+End of script. Logfile hash: c56f99631d, time: 0.05s, user: 0.05s, system: 0.01s, MEM: 22.10 MB peak
 Yosys 0.67+40 (git sha1 45ea2b8d6-dirty, Release, Clang /usr/bin/clang++ 18.1.8)
-Time spent: 30% 3x read_verilog (0 sec), 15% 6x opt_clean (0 sec), ...
+Time spent: 28% 3x read_verilog (0 sec), 16% 6x opt_clean (0 sec), ...

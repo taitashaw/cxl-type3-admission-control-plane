@@ -127,6 +127,6 @@ Module formal_config directly or indirectly contains formal properties -> settin
 Creating SMT-LIBv2 representation of module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.
 Creating SMT-LIBv2 representation of module formal_config.
 
-End of script. Logfile hash: 50765aa15e, time: 0.01s, user: 0.01s, system: 0.00s, MEM: 18.48 MB peak
+End of script. Logfile hash: 50765aa15e, time: 0.01s, user: 0.01s, system: 0.00s, MEM: 18.53 MB peak
 Yosys 0.67+40 (git sha1 45ea2b8d6-dirty, Release, Clang /usr/bin/clang++ 18.1.8)
-Time spent: 76% 2x write_smt2 (0 sec), 13% 2x read_rtlil (0 sec), ...
+Time spent: 77% 2x write_smt2 (0 sec), 13% 2x read_rtlil (0 sec), ...

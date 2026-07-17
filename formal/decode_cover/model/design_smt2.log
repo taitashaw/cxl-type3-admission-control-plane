@@ -138,6 +138,6 @@ Creating SMT-LIBv2 representation of module $paramod$6a5d65dcfe15caf1872a9937ba0
 Creating SMT-LIBv2 representation of module $paramod$1df129b991ec90965eb48f55730e146f8c97df7e\dpa_translator.
 Creating SMT-LIBv2 representation of module formal_decode.
 
-End of script. Logfile hash: af10b5a1a5, time: 0.00s, user: 0.01s, system: 0.00s, MEM: 17.54 MB peak
+End of script. Logfile hash: af10b5a1a5, time: 0.00s, user: 0.00s, system: 0.01s, MEM: 17.58 MB peak
 Yosys 0.67+40 (git sha1 45ea2b8d6-dirty, Release, Clang /usr/bin/clang++ 18.1.8)
-Time spent: 65% 2x write_smt2 (0 sec), 17% 2x read_rtlil (0 sec), ...
+Time spent: 64% 2x write_smt2 (0 sec), 18% 2x read_rtlil (0 sec), ...

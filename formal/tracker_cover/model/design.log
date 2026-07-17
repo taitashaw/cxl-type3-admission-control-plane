@@ -1,0 +1,894 @@
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.67+40 (git sha1 45ea2b8d6-dirty, Release, Clang /usr/bin/clang++ 18.1.8)
+
+-- Executing script file `../model/design.ys' --
+
+1. Executing Verilog-2005 frontend: outstanding_tracker.sv
+Parsing formal SystemVerilog input from `outstanding_tracker.sv' to AST representation.
+Generating RTLIL representation for module `\outstanding_tracker'.
+Warning: Replacing memory \timed_out with list of registers. See outstanding_tracker.sv:170
+Warning: Replacing memory \issue_ts with list of registers. See outstanding_tracker.sv:170
+Warning: Replacing memory \meta with list of registers. See outstanding_tracker.sv:170
+Warning: Replacing memory \op with list of registers. See outstanding_tracker.sv:170
+Warning: Replacing memory \epoch with list of registers. See outstanding_tracker.sv:170
+Warning: Replacing memory \gen with list of registers. See outstanding_tracker.sv:170
+Warning: Replacing memory \live with list of registers. See outstanding_tracker.sv:170
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: formal_tracker.sv
+Parsing formal SystemVerilog input from `formal_tracker.sv' to AST representation.
+Generating RTLIL representation for module `\formal_tracker'.
+Successfully finished Verilog frontend.
+
+3. Executing PREP pass.
+
+3.1. Executing HIERARCHY pass (managing design hierarchy).
+
+3.1.1. Analyzing design hierarchy..
+Top module:  \formal_tracker
+Used module:     \outstanding_tracker
+Parameter \DEPTH = 3
+Parameter \GEN_W = 2
+Parameter \EPOCH_W = 4
+Parameter \OP_W = 1
+Parameter \META_W = 4
+Parameter \TS_W = 4
+
+3.1.2. Executing AST frontend in derive mode using pre-parsed AST for module `\outstanding_tracker'.
+Parameter \DEPTH = 3
+Parameter \GEN_W = 2
+Parameter \EPOCH_W = 4
+Parameter \OP_W = 1
+Parameter \META_W = 4
+Parameter \TS_W = 4
+Generating RTLIL representation for module `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker'.
+Warning: Replacing memory \timed_out with list of registers. See outstanding_tracker.sv:170
+Warning: Replacing memory \issue_ts with list of registers. See outstanding_tracker.sv:170
+Warning: Replacing memory \meta with list of registers. See outstanding_tracker.sv:170
+Warning: Replacing memory \op with list of registers. See outstanding_tracker.sv:170
+Warning: Replacing memory \epoch with list of registers. See outstanding_tracker.sv:170
+Warning: Replacing memory \gen with list of registers. See outstanding_tracker.sv:170
+Warning: Replacing memory \live with list of registers. See outstanding_tracker.sv:170
+
+3.1.3. Analyzing design hierarchy..
+Top module:  \formal_tracker
+Used module:     $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker
+
+3.1.4. Analyzing design hierarchy..
+Top module:  \formal_tracker
+Used module:     $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker
+Removing unused module `\outstanding_tracker'.
+Removed 1 unused modules.
+Module formal_tracker directly or indirectly contains formal properties -> setting "keep" attribute.
+Module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker directly or indirectly contains formal properties -> setting "keep" attribute.
+
+3.2. Executing PROC pass (convert processes to netlists).
+
+3.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+3.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$outstanding_tracker.sv:132$625 in module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.
+Marked 1 switch rules as full_case in process $proc$outstanding_tracker.sv:129$622 in module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.
+Marked 1 switch rules as full_case in process $proc$outstanding_tracker.sv:128$619 in module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.
+Marked 1 switch rules as full_case in process $proc$outstanding_tracker.sv:127$616 in module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.
+Marked 1 switch rules as full_case in process $proc$outstanding_tracker.sv:103$613 in module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.
+Marked 4 switch rules as full_case in process $proc$outstanding_tracker.sv:258$558 in module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.
+Marked 3 switch rules as full_case in process $proc$outstanding_tracker.sv:229$546 in module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.
+Marked 6 switch rules as full_case in process $proc$outstanding_tracker.sv:167$446 in module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.
+Marked 3 switch rules as full_case in process $proc$outstanding_tracker.sv:152$431 in module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.
+Marked 3 switch rules as full_case in process $proc$outstanding_tracker.sv:144$426 in module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.
+Marked 6 switch rules as full_case in process $proc$outstanding_tracker.sv:115$395 in module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.
+Marked 3 switch rules as full_case in process $proc$outstanding_tracker.sv:93$384 in module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.
+Removed a total of 0 dead cases.
+
+3.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 12 redundant assignments.
+Promoted 69 assignments to connections.
+
+3.2.4. Executing PROC_INIT pass (extract init attributes).
+Found init rule in `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:244$628'.
+  Set init value: \f_init = 1'0
+
+3.2.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst_n in `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+
+3.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~54 debug messages>
+
+3.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\formal_tracker.$proc$formal_tracker.sv:46$360'.
+Creating decoders for process `\formal_tracker.$proc$formal_tracker.sv:50$333'.
+Creating decoders for process `\formal_tracker.$proc$formal_tracker.sv:48$332'.
+Creating decoders for process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:244$628'.
+Creating decoders for process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:132$625'.
+     1/1: $1$mem2reg_rd$\live$outstanding_tracker.sv:132$369_DATA[0:0]$627
+Creating decoders for process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:129$622'.
+     1/1: $1$mem2reg_rd$\meta$outstanding_tracker.sv:129$368_DATA[3:0]$624
+Creating decoders for process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:128$619'.
+     1/1: $1$mem2reg_rd$\op$outstanding_tracker.sv:128$367_DATA[0:0]$621
+Creating decoders for process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:127$616'.
+     1/1: $1$mem2reg_rd$\epoch$outstanding_tracker.sv:127$366_DATA[3:0]$618
+Creating decoders for process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:103$613'.
+     1/1: $1$mem2reg_rd$\gen$outstanding_tracker.sv:103$363_DATA[1:0]$615
+Creating decoders for process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:258$558'.
+     1/21: $3$mem2reg_rd$\gen$outstanding_tracker.sv:267$383_DATA[1:0]$585
+     2/21: $3$mem2reg_rd$\live$outstanding_tracker.sv:267$382_DATA[0:0]$584
+     3/21: $2$mem2reg_rd$\gen$outstanding_tracker.sv:267$383_DATA[1:0]$583
+     4/21: $2$mem2reg_rd$\gen$outstanding_tracker.sv:267$383_ADDR[1:0]$582
+     5/21: $2$mem2reg_rd$\live$outstanding_tracker.sv:267$382_DATA[0:0]$581
+     6/21: $2$mem2reg_rd$\live$outstanding_tracker.sv:267$382_ADDR[1:0]$580
+     7/21: $1$mem2reg_rd$\gen$outstanding_tracker.sv:267$383_DATA[1:0]$567
+     8/21: $1$mem2reg_rd$\gen$outstanding_tracker.sv:267$383_ADDR[1:0]$566
+     9/21: $1$mem2reg_rd$\live$outstanding_tracker.sv:267$382_DATA[0:0]$565
+    10/21: $1$mem2reg_rd$\live$outstanding_tracker.sv:267$382_ADDR[1:0]$564
+    11/21: $assert$outstanding_tracker.sv:279$601_EN
+    12/21: $assert$outstanding_tracker.sv:276$599_EN
+    13/21: $assert$outstanding_tracker.sv:273$595_EN
+    14/21: $assert$outstanding_tracker.sv:271$592_EN
+    15/21: $assert$outstanding_tracker.sv:269$589_EN
+    16/21: $assert$outstanding_tracker.sv:267$586_EN
+    17/21: $assert$outstanding_tracker.sv:265$577_EN
+    18/21: $assert$outstanding_tracker.sv:264$574_EN
+    19/21: $assert$outstanding_tracker.sv:262$572_EN
+    20/21: $assert$outstanding_tracker.sv:261$570_EN
+    21/21: $assert$outstanding_tracker.sv:260$568_EN
+Creating decoders for process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:248$555'.
+Creating decoders for process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:247$550'.
+Creating decoders for process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:229$546'.
+     1/3: $3\occ_next[2:0]
+     2/3: $2\occ_next[2:0]
+     3/3: $1\occ_next[2:0]
+Creating decoders for process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+     1/86: $3$mem2reg_rd$\gen$outstanding_tracker.sv:212$376_DATA[1:0]$538
+     2/86: $2$mem2reg_wr$\timed_out$outstanding_tracker.sv:217$381_ADDR[1:0]$536
+     3/86: $2$mem2reg_wr$\timed_out$outstanding_tracker.sv:217$381_DATA[0:0]$537
+     4/86: $2$mem2reg_wr$\issue_ts$outstanding_tracker.sv:216$380_ADDR[1:0]$534
+     5/86: $2$mem2reg_wr$\issue_ts$outstanding_tracker.sv:216$380_DATA[3:0]$535
+     6/86: $2$mem2reg_wr$\meta$outstanding_tracker.sv:215$379_ADDR[1:0]$532
+     7/86: $2$mem2reg_wr$\meta$outstanding_tracker.sv:215$379_DATA[3:0]$533
+     8/86: $2$mem2reg_wr$\op$outstanding_tracker.sv:214$378_ADDR[1:0]$530
+     9/86: $2$mem2reg_wr$\op$outstanding_tracker.sv:214$378_DATA[0:0]$531
+    10/86: $2$mem2reg_wr$\epoch$outstanding_tracker.sv:213$377_ADDR[1:0]$528
+    11/86: $2$mem2reg_wr$\epoch$outstanding_tracker.sv:213$377_DATA[3:0]$529
+    12/86: $2$mem2reg_wr$\gen$outstanding_tracker.sv:212$375_ADDR[1:0]$524
+    13/86: $2$mem2reg_wr$\gen$outstanding_tracker.sv:212$375_DATA[1:0]$525
+    14/86: $2$mem2reg_rd$\gen$outstanding_tracker.sv:212$376_DATA[1:0]$527
+    15/86: $2$mem2reg_rd$\gen$outstanding_tracker.sv:212$376_ADDR[1:0]$526
+    16/86: $2$mem2reg_wr$\live$outstanding_tracker.sv:211$374_ADDR[1:0]$522
+    17/86: $2$mem2reg_wr$\live$outstanding_tracker.sv:211$374_DATA[0:0]$523
+    18/86: $2$mem2reg_wr$\timed_out$outstanding_tracker.sv:205$373_ADDR[1:0]$520
+    19/86: $2$mem2reg_wr$\timed_out$outstanding_tracker.sv:205$373_DATA[0:0]$521
+    20/86: $2$mem2reg_wr$\live$outstanding_tracker.sv:204$372_ADDR[1:0]$518
+    21/86: $2$mem2reg_wr$\live$outstanding_tracker.sv:204$372_DATA[0:0]$519
+    22/86: $3$mem2reg_wr$\timed_out$outstanding_tracker.sv:189$371_ADDR[1:0]$509
+    23/86: $3$mem2reg_wr$\timed_out$outstanding_tracker.sv:189$371_DATA[0:0]$510
+    24/86: $3$mem2reg_wr$\live$outstanding_tracker.sv:188$370_ADDR[1:0]$507
+    25/86: $3$mem2reg_wr$\live$outstanding_tracker.sv:188$370_DATA[0:0]$508
+    26/86: $2$mem2reg_wr$\timed_out$outstanding_tracker.sv:189$371_DATA[0:0]$506
+    27/86: $2$mem2reg_wr$\timed_out$outstanding_tracker.sv:189$371_ADDR[1:0]$505
+    28/86: $2$mem2reg_wr$\live$outstanding_tracker.sv:188$370_DATA[0:0]$504
+    29/86: $2$mem2reg_wr$\live$outstanding_tracker.sv:188$370_ADDR[1:0]$503
+    30/86: $0\occupancy[2:0]
+    31/86: $1$mem2reg_wr$\timed_out$outstanding_tracker.sv:217$381_DATA[0:0]$495
+    32/86: $1$mem2reg_wr$\timed_out$outstanding_tracker.sv:217$381_ADDR[1:0]$494
+    33/86: $1$mem2reg_wr$\issue_ts$outstanding_tracker.sv:216$380_DATA[3:0]$493
+    34/86: $1$mem2reg_wr$\issue_ts$outstanding_tracker.sv:216$380_ADDR[1:0]$492
+    35/86: $1$mem2reg_wr$\meta$outstanding_tracker.sv:215$379_DATA[3:0]$491
+    36/86: $1$mem2reg_wr$\meta$outstanding_tracker.sv:215$379_ADDR[1:0]$490
+    37/86: $1$mem2reg_wr$\op$outstanding_tracker.sv:214$378_DATA[0:0]$489
+    38/86: $1$mem2reg_wr$\op$outstanding_tracker.sv:214$378_ADDR[1:0]$488
+    39/86: $1$mem2reg_wr$\epoch$outstanding_tracker.sv:213$377_DATA[3:0]$487
+    40/86: $1$mem2reg_wr$\epoch$outstanding_tracker.sv:213$377_ADDR[1:0]$486
+    41/86: $1$mem2reg_rd$\gen$outstanding_tracker.sv:212$376_DATA[1:0]$485
+    42/86: $1$mem2reg_rd$\gen$outstanding_tracker.sv:212$376_ADDR[1:0]$484
+    43/86: $1$mem2reg_wr$\gen$outstanding_tracker.sv:212$375_DATA[1:0]$483
+    44/86: $1$mem2reg_wr$\gen$outstanding_tracker.sv:212$375_ADDR[1:0]$482
+    45/86: $1$mem2reg_wr$\live$outstanding_tracker.sv:211$374_DATA[0:0]$481
+    46/86: $1$mem2reg_wr$\live$outstanding_tracker.sv:211$374_ADDR[1:0]$480
+    47/86: $1$mem2reg_wr$\timed_out$outstanding_tracker.sv:205$373_DATA[0:0]$479
+    48/86: $1$mem2reg_wr$\timed_out$outstanding_tracker.sv:205$373_ADDR[1:0]$478
+    49/86: $1$mem2reg_wr$\live$outstanding_tracker.sv:204$372_DATA[0:0]$477
+    50/86: $1$mem2reg_wr$\live$outstanding_tracker.sv:204$372_ADDR[1:0]$476
+    51/86: $1$mem2reg_wr$\timed_out$outstanding_tracker.sv:189$371_DATA[0:0]$475
+    52/86: $1$mem2reg_wr$\timed_out$outstanding_tracker.sv:189$371_ADDR[1:0]$474
+    53/86: $1$mem2reg_wr$\live$outstanding_tracker.sv:188$370_DATA[0:0]$473
+    54/86: $1$mem2reg_wr$\live$outstanding_tracker.sv:188$370_ADDR[1:0]$472
+    55/86: $0\timeout_count[31:0]
+    56/86: $1\i[31:0]
+    57/86: $0\timed_out[2][0:0]
+    58/86: $0\timed_out[1][0:0]
+    59/86: $0\timed_out[0][0:0]
+    60/86: $0\issue_ts[2][3:0]
+    61/86: $0\issue_ts[1][3:0]
+    62/86: $0\issue_ts[0][3:0]
+    63/86: $0\meta[2][3:0]
+    64/86: $0\meta[1][3:0]
+    65/86: $0\meta[0][3:0]
+    66/86: $0\op[2][0:0]
+    67/86: $0\op[1][0:0]
+    68/86: $0\op[0][0:0]
+    69/86: $0\epoch[2][3:0]
+    70/86: $0\epoch[1][3:0]
+    71/86: $0\epoch[0][3:0]
+    72/86: $0\gen[2][1:0]
+    73/86: $0\gen[1][1:0]
+    74/86: $0\gen[0][1:0]
+    75/86: $0\live[2][0:0]
+    76/86: $0\live[1][0:0]
+    77/86: $0\live[0][0:0]
+    78/86: $0\err_first_class[2:0]
+    79/86: $0\err_sticky[0:0]
+    80/86: $0\stale_gen_count[31:0]
+    81/86: $0\non_live_count[31:0]
+    82/86: $0\invalid_slot_count[31:0]
+    83/86: $0\full_count[31:0]
+    84/86: $0\retire_count[31:0]
+    85/86: $0\alloc_count[31:0]
+    86/86: $0\high_watermark[2:0]
+Creating decoders for process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:152$431'.
+     1/3: $3\n_new_timeout[2:0]
+     2/3: $2\n_new_timeout[2:0]
+     3/3: $1\n_new_timeout[2:0]
+Creating decoders for process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:144$426'.
+     1/3: $3\timeout_any[0:0]
+     2/3: $2\timeout_any[0:0]
+     3/3: $1\timeout_any[0:0]
+Creating decoders for process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:115$395'.
+     1/16: $4\resp_class[2:0]
+     2/16: $4$mem2reg_rd$\gen$outstanding_tracker.sv:120$365_DATA[1:0]$413
+     3/16: $3\resp_class[2:0]
+     4/16: $3$mem2reg_rd$\gen$outstanding_tracker.sv:120$365_DATA[1:0]$412
+     5/16: $3$mem2reg_rd$\gen$outstanding_tracker.sv:120$365_ADDR[1:0]$411
+     6/16: $3$mem2reg_rd$\live$outstanding_tracker.sv:119$364_DATA[0:0]$409
+     7/16: $2\resp_class[2:0]
+     8/16: $2$mem2reg_rd$\gen$outstanding_tracker.sv:120$365_DATA[1:0]$408
+     9/16: $2$mem2reg_rd$\gen$outstanding_tracker.sv:120$365_ADDR[1:0]$407
+    10/16: $2$mem2reg_rd$\live$outstanding_tracker.sv:119$364_DATA[0:0]$406
+    11/16: $2$mem2reg_rd$\live$outstanding_tracker.sv:119$364_ADDR[1:0]$405
+    12/16: $1$mem2reg_rd$\gen$outstanding_tracker.sv:120$365_DATA[1:0]$403
+    13/16: $1$mem2reg_rd$\gen$outstanding_tracker.sv:120$365_ADDR[1:0]$402
+    14/16: $1$mem2reg_rd$\live$outstanding_tracker.sv:119$364_DATA[0:0]$401
+    15/16: $1$mem2reg_rd$\live$outstanding_tracker.sv:119$364_ADDR[1:0]$400
+    16/16: $1\resp_class[2:0]
+Creating decoders for process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:93$384'.
+     1/6: $3\free_slot[1:0]
+     2/6: $3\have_free[0:0]
+     3/6: $2\free_slot[1:0]
+     4/6: $2\have_free[0:0]
+     5/6: $1\free_slot[1:0]
+     6/6: $1\have_free[0:0]
+
+3.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_rd$\live$outstanding_tracker.sv:132$369_DATA' from process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:132$625'.
+No latch inferred for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_rd$\meta$outstanding_tracker.sv:129$368_DATA' from process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:129$622'.
+No latch inferred for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_rd$\op$outstanding_tracker.sv:128$367_DATA' from process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:128$619'.
+No latch inferred for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_rd$\epoch$outstanding_tracker.sv:127$366_DATA' from process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:127$616'.
+No latch inferred for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_rd$\gen$outstanding_tracker.sv:103$363_DATA' from process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:103$613'.
+No latch inferred for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\live_pop' from process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:247$550'.
+No latch inferred for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\occ_next' from process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:229$546'.
+No latch inferred for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\n_new_timeout' from process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:152$431'.
+No latch inferred for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\timeout_any' from process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:144$426'.
+No latch inferred for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\resp_class' from process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:115$395'.
+No latch inferred for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\free_slot' from process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:93$384'.
+No latch inferred for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\have_free' from process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:93$384'.
+
+3.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\formal_tracker.\p_occ' using process `\formal_tracker.$proc$formal_tracker.sv:48$332'.
+  created $dff cell `$procdff$1329' with positive edge clock.
+Creating register for signal `\formal_tracker.\p_rst' using process `\formal_tracker.$proc$formal_tracker.sv:48$332'.
+  created $dff cell `$procdff$1330' with positive edge clock.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_rd$\live$outstanding_tracker.sv:267$382_ADDR' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:258$558'.
+  created $dff cell `$procdff$1331' with positive edge clock.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_rd$\live$outstanding_tracker.sv:267$382_DATA' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:258$558'.
+  created $dff cell `$procdff$1332' with positive edge clock.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_rd$\gen$outstanding_tracker.sv:267$383_ADDR' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:258$558'.
+  created $dff cell `$procdff$1333' with positive edge clock.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_rd$\gen$outstanding_tracker.sv:267$383_DATA' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:258$558'.
+  created $dff cell `$procdff$1334' with positive edge clock.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\f_init' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:248$555'.
+  created $dff cell `$procdff$1335' with positive edge clock.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\f_pocc' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:248$555'.
+  created $dff cell `$procdff$1336' with positive edge clock.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\f_plive0' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:248$555'.
+  created $dff cell `$procdff$1337' with positive edge clock.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\f_alloc0' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:248$555'.
+  created $dff cell `$procdff$1338' with positive edge clock.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\f_pep0' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:248$555'.
+  created $dff cell `$procdff$1339' with positive edge clock.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\f_ptmo' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:248$555'.
+  created $dff cell `$procdff$1340' with positive edge clock.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\f_pn_new' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:248$555'.
+  created $dff cell `$procdff$1341' with positive edge clock.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\i' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1346' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\occupancy' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1351' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\high_watermark' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1356' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\alloc_count' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1361' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\retire_count' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1366' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\full_count' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1371' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\timeout_count' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1376' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\invalid_slot_count' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1381' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\non_live_count' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1386' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\stale_gen_count' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1391' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\err_sticky' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1396' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\err_first_class' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1401' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\live[0]' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1406' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\live[1]' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1411' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\live[2]' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1416' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\gen[0]' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1421' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\gen[1]' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1426' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\gen[2]' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1431' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\epoch[0]' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1436' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\epoch[1]' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1441' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\epoch[2]' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1446' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\op[0]' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1451' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\op[1]' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1456' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\op[2]' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1461' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\meta[0]' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1466' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\meta[1]' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1471' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\meta[2]' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1476' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\issue_ts[0]' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1481' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\issue_ts[1]' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1486' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\issue_ts[2]' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1491' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\timed_out[0]' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1496' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\timed_out[1]' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1501' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.\timed_out[2]' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1506' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_wr$\live$outstanding_tracker.sv:188$370_ADDR' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1511' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_wr$\live$outstanding_tracker.sv:188$370_DATA' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1516' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_wr$\timed_out$outstanding_tracker.sv:189$371_ADDR' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1521' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_wr$\timed_out$outstanding_tracker.sv:189$371_DATA' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1526' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_wr$\live$outstanding_tracker.sv:204$372_ADDR' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1531' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_wr$\live$outstanding_tracker.sv:204$372_DATA' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1536' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_wr$\timed_out$outstanding_tracker.sv:205$373_ADDR' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1541' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_wr$\timed_out$outstanding_tracker.sv:205$373_DATA' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1546' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_wr$\live$outstanding_tracker.sv:211$374_ADDR' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1551' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_wr$\live$outstanding_tracker.sv:211$374_DATA' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1556' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_wr$\gen$outstanding_tracker.sv:212$375_ADDR' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1561' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_wr$\gen$outstanding_tracker.sv:212$375_DATA' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1566' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_rd$\gen$outstanding_tracker.sv:212$376_ADDR' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1571' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_rd$\gen$outstanding_tracker.sv:212$376_DATA' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1576' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_wr$\epoch$outstanding_tracker.sv:213$377_ADDR' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1581' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_wr$\epoch$outstanding_tracker.sv:213$377_DATA' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1586' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_wr$\op$outstanding_tracker.sv:214$378_ADDR' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1591' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_wr$\op$outstanding_tracker.sv:214$378_DATA' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1596' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_wr$\meta$outstanding_tracker.sv:215$379_ADDR' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1601' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_wr$\meta$outstanding_tracker.sv:215$379_DATA' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1606' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_wr$\issue_ts$outstanding_tracker.sv:216$380_ADDR' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1611' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_wr$\issue_ts$outstanding_tracker.sv:216$380_DATA' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1616' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_wr$\timed_out$outstanding_tracker.sv:217$381_ADDR' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1621' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$mem2reg_wr$\timed_out$outstanding_tracker.sv:217$381_DATA' using process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+  created $adff cell `$procdff$1626' with positive edge clock and positive level reset.
+
+3.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+3.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Removing empty process `formal_tracker.$proc$formal_tracker.sv:46$360'.
+Removing empty process `formal_tracker.$proc$formal_tracker.sv:50$333'.
+Removing empty process `formal_tracker.$proc$formal_tracker.sv:48$332'.
+Removing empty process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:244$628'.
+Found and cleaned up 1 empty switch in `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:132$625'.
+Removing empty process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:132$625'.
+Found and cleaned up 1 empty switch in `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:129$622'.
+Removing empty process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:129$622'.
+Found and cleaned up 1 empty switch in `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:128$619'.
+Removing empty process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:128$619'.
+Found and cleaned up 1 empty switch in `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:127$616'.
+Removing empty process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:127$616'.
+Found and cleaned up 1 empty switch in `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:103$613'.
+Removing empty process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:103$613'.
+Found and cleaned up 7 empty switches in `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:258$558'.
+Removing empty process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:258$558'.
+Removing empty process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:248$555'.
+Removing empty process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:247$550'.
+Found and cleaned up 3 empty switches in `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:229$546'.
+Removing empty process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:229$546'.
+Found and cleaned up 24 empty switches in `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+Removing empty process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:167$446'.
+Found and cleaned up 3 empty switches in `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:152$431'.
+Removing empty process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:152$431'.
+Found and cleaned up 3 empty switches in `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:144$426'.
+Removing empty process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:144$426'.
+Found and cleaned up 6 empty switches in `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:115$395'.
+Removing empty process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:115$395'.
+Found and cleaned up 3 empty switches in `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:93$384'.
+Removing empty process `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$proc$outstanding_tracker.sv:93$384'.
+Cleaned up 54 empty switches.
+
+3.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module formal_tracker.
+<suppressed ~3 debug messages>
+Optimizing module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.
+<suppressed ~179 debug messages>
+
+3.3. Executing FUTURE pass.
+
+3.4. Executing OPT_EXPR pass (perform const folding).
+Optimizing module formal_tracker.
+Optimizing module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.
+
+3.5. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \formal_tracker..
+Finding unused cells or wires in module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker..
+Removed 163 unused cells and 634 unused wires.
+<suppressed ~167 debug messages>
+
+3.6. Executing CHECK pass (checking for obvious problems).
+Checking module formal_tracker...
+Warning: Wire formal_tracker.\reclaim_slot [1] is used but has no driver.
+Warning: Wire formal_tracker.\reclaim_slot [0] is used but has no driver.
+Warning: Wire formal_tracker.\reclaim_req is used but has no driver.
+Warning: Wire formal_tracker.\resp_tag [3] is used but has no driver.
+Warning: Wire formal_tracker.\resp_tag [2] is used but has no driver.
+Warning: Wire formal_tracker.\resp_tag [1] is used but has no driver.
+Warning: Wire formal_tracker.\resp_tag [0] is used but has no driver.
+Warning: Wire formal_tracker.\alloc_meta [3] is used but has no driver.
+Warning: Wire formal_tracker.\alloc_meta [2] is used but has no driver.
+Warning: Wire formal_tracker.\alloc_meta [1] is used but has no driver.
+Warning: Wire formal_tracker.\alloc_meta [0] is used but has no driver.
+Warning: Wire formal_tracker.\alloc_op is used but has no driver.
+Warning: Wire formal_tracker.\alloc_epoch [3] is used but has no driver.
+Warning: Wire formal_tracker.\alloc_epoch [2] is used but has no driver.
+Warning: Wire formal_tracker.\alloc_epoch [1] is used but has no driver.
+Warning: Wire formal_tracker.\alloc_epoch [0] is used but has no driver.
+Warning: Wire formal_tracker.\alloc_req is used but has no driver.
+Warning: Wire formal_tracker.\timeout_thresh [3] is used but has no driver.
+Warning: Wire formal_tracker.\timeout_thresh [2] is used but has no driver.
+Warning: Wire formal_tracker.\timeout_thresh [1] is used but has no driver.
+Warning: Wire formal_tracker.\timeout_thresh [0] is used but has no driver.
+Warning: Wire formal_tracker.\current_ts [3] is used but has no driver.
+Warning: Wire formal_tracker.\current_ts [2] is used but has no driver.
+Warning: Wire formal_tracker.\current_ts [1] is used but has no driver.
+Warning: Wire formal_tracker.\current_ts [0] is used but has no driver.
+Warning: Wire formal_tracker.\resp_valid is used but has no driver.
+Warning: Wire formal_tracker.\rst_n is used but has no driver.
+Checking module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker...
+Found and reported 27 problems.
+
+3.7. Executing OPT pass (performing simple optimizations).
+
+3.7.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module formal_tracker.
+Optimizing module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.
+
+3.7.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\formal_tracker'.
+Computing hashes of 30 cells of `\formal_tracker'.
+Finding duplicate cells in `\formal_tracker'.
+Computing hashes of 28 cells of `\formal_tracker'.
+Finding duplicate cells in `\formal_tracker'.
+<suppressed ~6 debug messages>
+Finding identical cells in module `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker'.
+Computing hashes of 371 cells of `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker'.
+Finding duplicate cells in `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker'.
+Computing hashes of 295 cells of `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker'.
+Finding duplicate cells in `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker'.
+Computing hashes of 291 cells of `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker'.
+Finding duplicate cells in `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker'.
+<suppressed ~240 debug messages>
+Removed a total of 82 cells.
+
+3.7.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \formal_tracker..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+      Replacing known input bits on port B of cell $procmux$1135: \err_sticky -> 1'1
+      Replacing known input bits on port B of cell $procmux$1139: \err_sticky -> 1'1
+      Replacing known input bits on port B of cell $procmux$1142: \err_sticky -> 1'1
+  Analyzing evaluation results.
+    dead port 2/2 on $mux $procmux$1233.
+    dead port 2/2 on $mux $procmux$1235.
+    dead port 2/2 on $mux $procmux$1212.
+    dead port 2/2 on $mux $procmux$1210.
+    dead port 2/2 on $mux $procmux$1207.
+    dead port 2/2 on $mux $procmux$1270.
+Removed 6 multiplexer ports.
+<suppressed ~430 debug messages>
+
+3.7.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \formal_tracker.
+  Optimizing cells in module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.
+    New ctrl vector for $pmux cell $procmux$1137: { $procmux$1150_CMP $auto$opt_reduce.cc:137:opt_pmux$1628 }
+    New ctrl vector for $pmux cell $procmux$1137: $auto$opt_reduce.cc:137:opt_pmux$1630
+    New input vector for $reduce_or cell $auto$opt_reduce.cc:131:opt_pmux$1629: { $procmux$1165_CMP $procmux$1157_CMP $procmux$1150_CMP }
+  Optimizing cells in module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.
+Performed a total of 6 changes.
+
+3.7.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\formal_tracker'.
+Computing hashes of 28 cells of `\formal_tracker'.
+Finding duplicate cells in `\formal_tracker'.
+Finding identical cells in module `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker'.
+Computing hashes of 284 cells of `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker'.
+Finding duplicate cells in `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker'.
+Computing hashes of 274 cells of `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker'.
+Finding duplicate cells in `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker'.
+Computing hashes of 273 cells of `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker'.
+Finding duplicate cells in `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker'.
+<suppressed ~33 debug messages>
+Removed a total of 11 cells.
+
+3.7.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \formal_tracker..
+Finding unused cells or wires in module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker..
+Removed 1 unused cells and 103 unused wires.
+<suppressed ~3 debug messages>
+
+3.7.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module formal_tracker.
+Optimizing module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.
+<suppressed ~1 debug messages>
+
+3.7.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+3.7.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \formal_tracker..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~409 debug messages>
+
+3.7.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \formal_tracker.
+  Optimizing cells in module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.
+Performed a total of 0 changes.
+
+3.7.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\formal_tracker'.
+Computing hashes of 28 cells of `\formal_tracker'.
+Finding duplicate cells in `\formal_tracker'.
+Finding identical cells in module `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker'.
+Computing hashes of 271 cells of `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker'.
+Finding duplicate cells in `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker'.
+Removed a total of 0 cells.
+
+3.7.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \formal_tracker..
+Finding unused cells or wires in module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker..
+Removed 0 unused cells and 1 unused wires.
+<suppressed ~1 debug messages>
+
+3.7.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module formal_tracker.
+Optimizing module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.
+
+3.7.14. Rerunning OPT passes. (Maybe there is more to do..)
+
+3.7.15. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \formal_tracker..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~409 debug messages>
+
+3.7.16. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \formal_tracker.
+  Optimizing cells in module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.
+Performed a total of 0 changes.
+
+3.7.17. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\formal_tracker'.
+Computing hashes of 28 cells of `\formal_tracker'.
+Finding duplicate cells in `\formal_tracker'.
+Finding identical cells in module `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker'.
+Computing hashes of 271 cells of `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker'.
+Finding duplicate cells in `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker'.
+Removed a total of 0 cells.
+
+3.7.18. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \formal_tracker..
+Finding unused cells or wires in module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker..
+
+3.7.19. Executing OPT_EXPR pass (perform const folding).
+Optimizing module formal_tracker.
+Optimizing module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.
+
+3.7.20. Finished fast OPT passes. (There is nothing left to do.)
+
+3.8. Executing WREDUCE pass (reducing word size of cells).
+Removed top 1 bits (of 3) from port B of cell formal_tracker.$eq$formal_tracker.sv:55$345 ($eq).
+Removed top 1 bits (of 3) from port B of cell formal_tracker.$eq$formal_tracker.sv:57$350 ($eq).
+Removed top 1 bits (of 2) from port B of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$add$outstanding_tracker.sv:103$393 ($add).
+Removed top 30 bits (of 32) from port A of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$lt$outstanding_tracker.sv:113$394 ($lt).
+Removed top 30 bits (of 32) from port B of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$lt$outstanding_tracker.sv:113$394 ($lt).
+Removed top 30 bits (of 32) from port A of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$lt$outstanding_tracker.sv:132$423 ($lt).
+Removed top 30 bits (of 32) from port B of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$lt$outstanding_tracker.sv:132$423 ($lt).
+Removed top 2 bits (of 3) from port B of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$add$outstanding_tracker.sv:155$438 ($add).
+Removed top 2 bits (of 3) from port B of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$add$outstanding_tracker.sv:155$441 ($add).
+Removed top 29 bits (of 32) from port B of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$add$outstanding_tracker.sv:182$502 ($add).
+Removed top 1 bits (of 2) from port B of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$add$outstanding_tracker.sv:212$539 ($add).
+Removed top 2 bits (of 3) from port A of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$add$outstanding_tracker.sv:247$552 ($add).
+Removed top 2 bits (of 3) from port B of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$add$outstanding_tracker.sv:247$552 ($add).
+Removed top 1 bits (of 3) from port Y of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$add$outstanding_tracker.sv:247$552 ($add).
+Removed top 1 bits (of 3) from port A of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$add$outstanding_tracker.sv:247$553 ($add).
+Removed top 2 bits (of 3) from port B of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$add$outstanding_tracker.sv:247$553 ($add).
+Removed top 2 bits (of 3) from port B of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$add$outstanding_tracker.sv:247$554 ($add).
+Removed top 1 bits (of 3) from port B of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$le$outstanding_tracker.sv:261$571 ($le).
+Removed top 28 bits (of 32) from port A of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$sub$outstanding_tracker.sv:264$575 ($sub).
+Removed top 28 bits (of 32) from port B of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$sub$outstanding_tracker.sv:264$575 ($sub).
+Converting cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$sub$outstanding_tracker.sv:264$575 ($sub) from signed to unsigned.
+Removed top 27 bits (of 32) from port Y of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$sub$outstanding_tracker.sv:264$575 ($sub).
+Removed top 1 bits (of 4) from port A of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$sub$outstanding_tracker.sv:264$575 ($sub).
+Removed top 1 bits (of 4) from port B of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$sub$outstanding_tracker.sv:264$575 ($sub).
+Removed top 1 bits (of 5) from port Y of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$sub$outstanding_tracker.sv:264$575 ($sub).
+Removed top 28 bits (of 32) from port A of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$le$outstanding_tracker.sv:264$576 ($le).
+Removed top 30 bits (of 32) from port B of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$le$outstanding_tracker.sv:264$576 ($le).
+Removed top 28 bits (of 32) from port A of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$sub$outstanding_tracker.sv:265$578 ($sub).
+Removed top 28 bits (of 32) from port B of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$sub$outstanding_tracker.sv:265$578 ($sub).
+Converting cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$sub$outstanding_tracker.sv:265$578 ($sub) from signed to unsigned.
+Removed top 27 bits (of 32) from port Y of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$sub$outstanding_tracker.sv:265$578 ($sub).
+Removed top 1 bits (of 4) from port A of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$sub$outstanding_tracker.sv:265$578 ($sub).
+Removed top 1 bits (of 4) from port B of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$sub$outstanding_tracker.sv:265$578 ($sub).
+Removed top 1 bits (of 5) from port Y of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$sub$outstanding_tracker.sv:265$578 ($sub).
+Removed top 28 bits (of 32) from port A of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$le$outstanding_tracker.sv:265$579 ($le).
+Removed top 29 bits (of 32) from port B of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$le$outstanding_tracker.sv:265$579 ($le).
+Removed top 1 bits (of 3) from port B of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$eq$outstanding_tracker.sv:273$596 ($eq).
+Removed top 29 bits (of 32) from port B of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$add$outstanding_tracker.sv:279$602 ($add).
+Removed top 1 bits (of 2) from port B of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procmux$1083_CMP0 ($eq).
+Removed top 1 bits (of 2) from port B of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procmux$1089_CMP0 ($eq).
+Removed top 1 bits (of 3) from port B of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procmux$1150_CMP0 ($eq).
+Removed top 1 bits (of 3) from port B of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procmux$1157_CMP0 ($eq).
+Removed top 2 bits (of 3) from port B of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procmux$1165_CMP0 ($eq).
+Removed top 2 bits (of 3) from mux cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procmux$1191 ($mux).
+Removed top 1 bits (of 3) from mux cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procmux$1204 ($mux).
+Removed top 1 bits (of 2) from port B of cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procmux$1218_CMP0 ($eq).
+Removed top 1 bits (of 3) from mux cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procmux$1230 ($mux).
+Removed top 1 bits (of 3) from mux cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procmux$1268 ($mux).
+Removed top 1 bits (of 3) from mux cell $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$procmux$1309 ($mux).
+Removed top 2 bits (of 3) from wire $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$1\n_new_timeout[2:0].
+Removed top 1 bits (of 3) from wire $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$4\resp_class[2:0].
+Removed top 1 bits (of 3) from wire $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$3\resp_class[2:0].
+Removed top 1 bits (of 3) from wire $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$2\resp_class[2:0].
+Removed top 1 bits (of 3) from wire $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.$add$outstanding_tracker.sv:247$552_Y.
+
+3.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \formal_tracker..
+Finding unused cells or wires in module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker..
+Removed 0 unused cells and 5 unused wires.
+<suppressed ~1 debug messages>
+
+3.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+3.11. Executing OPT pass (performing simple optimizations).
+
+3.11.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module formal_tracker.
+Optimizing module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker.
+
+3.11.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\formal_tracker'.
+Computing hashes of 28 cells of `\formal_tracker'.
+Finding duplicate cells in `\formal_tracker'.
+Finding identical cells in module `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker'.
+Computing hashes of 271 cells of `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker'.
+Finding duplicate cells in `$paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker'.
+Removed a total of 0 cells.
+
+3.11.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \formal_tracker..
+Finding unused cells or wires in module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker..
+
+3.11.4. Finished fast OPT passes.
+
+3.12. Executing SORT pass.
+
+3.13. Printing statistics.
+
+=== $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      275 wires
+     1345 wire bits
+       76 public wires
+      415 public wire bits
+       34 ports
+      285 port bits
+      271 cells
+       16   $add
+       32   $adff
+       11   $check
+        6   $dff
+       15   $eq
+        4   $ge
+        1   $gt
+        3   $le
+       22   $logic_and
+       10   $logic_not
+        1   $logic_or
+        2   $lt
+      131   $mux
+        1   $ne
+        8   $pmux
+        1   $reduce_or
+        7   $sub
+
+=== formal_tracker ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       51 wires
+      304 wire bits
+       36 public wires
+      289 public wire bits
+        1 ports
+        1 port bits
+       27 cells
+       10   $check
+        2   $dff
+        2   $eq
+       10   $logic_and
+        1   $logic_not
+        1   $not
+        1   $reduce_bool
+        1 submodules
+        1   $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker
+
+=== design hierarchy ===
+
+        +----------Count including submodules.
+        | 
+      298 formal_tracker
+      271 $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker
+
+        +----------Count including submodules.
+        | 
+      326 wires
+     1649 wire bits
+      112 public wires
+      704 public wire bits
+       35 ports
+      286 port bits
+        - memories
+        - memory bits
+        - processes
+      298 cells
+       16   $add
+       32   $adff
+       21   $check
+        8   $dff
+       17   $eq
+        4   $ge
+        1   $gt
+        3   $le
+       32   $logic_and
+       11   $logic_not
+        1   $logic_or
+        2   $lt
+      131   $mux
+        1   $ne
+        1   $not
+        8   $pmux
+        1   $reduce_bool
+        1   $reduce_or
+        7   $sub
+        1 submodules
+        1   $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker
+
+3.14. Executing CHECK pass (checking for obvious problems).
+Checking module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker...
+Checking module formal_tracker...
+Warning: Wire formal_tracker.\timeout_thresh [3] is used but has no driver.
+Warning: Wire formal_tracker.\timeout_thresh [2] is used but has no driver.
+Warning: Wire formal_tracker.\timeout_thresh [1] is used but has no driver.
+Warning: Wire formal_tracker.\timeout_thresh [0] is used but has no driver.
+Warning: Wire formal_tracker.\resp_tag [3] is used but has no driver.
+Warning: Wire formal_tracker.\resp_tag [2] is used but has no driver.
+Warning: Wire formal_tracker.\resp_tag [1] is used but has no driver.
+Warning: Wire formal_tracker.\resp_tag [0] is used but has no driver.
+Warning: Wire formal_tracker.\reclaim_slot [1] is used but has no driver.
+Warning: Wire formal_tracker.\reclaim_slot [0] is used but has no driver.
+Warning: Wire formal_tracker.\reclaim_req is used but has no driver.
+Warning: Wire formal_tracker.\current_ts [3] is used but has no driver.
+Warning: Wire formal_tracker.\current_ts [2] is used but has no driver.
+Warning: Wire formal_tracker.\current_ts [1] is used but has no driver.
+Warning: Wire formal_tracker.\current_ts [0] is used but has no driver.
+Warning: Wire formal_tracker.\alloc_req is used but has no driver.
+Warning: Wire formal_tracker.\alloc_op is used but has no driver.
+Warning: Wire formal_tracker.\alloc_meta [3] is used but has no driver.
+Warning: Wire formal_tracker.\alloc_meta [2] is used but has no driver.
+Warning: Wire formal_tracker.\alloc_meta [1] is used but has no driver.
+Warning: Wire formal_tracker.\alloc_meta [0] is used but has no driver.
+Warning: Wire formal_tracker.\alloc_epoch [3] is used but has no driver.
+Warning: Wire formal_tracker.\alloc_epoch [2] is used but has no driver.
+Warning: Wire formal_tracker.\alloc_epoch [1] is used but has no driver.
+Warning: Wire formal_tracker.\alloc_epoch [0] is used but has no driver.
+Warning: Wire formal_tracker.\resp_valid is used but has no driver.
+Warning: Wire formal_tracker.\rst_n is used but has no driver.
+Found and reported 27 problems.
+
+4. Executing HIERARCHY pass (managing design hierarchy).
+Attribute `top' found on module `formal_tracker'. Setting top module to formal_tracker.
+
+4.1. Analyzing design hierarchy..
+Top module:  \formal_tracker
+Used module:     $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker
+
+4.2. Analyzing design hierarchy..
+Top module:  \formal_tracker
+Used module:     $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker
+Removed 0 unused modules.
+Module $paramod$f1aaffd5bee138d36e2c2369e2655d0810a8b8a2\outstanding_tracker directly or indirectly contains formal properties -> setting "keep" attribute.
+Module formal_tracker directly or indirectly contains formal properties -> setting "keep" attribute.
+
+5. Executing jny backend.
+
+6. Executing RTLIL backend.
+Output filename: ../model/design.il
+
+Warnings: 34 unique messages, 68 total
+End of script. Logfile hash: 5fc404d324, time: 0.06s, user: 0.06s, system: 0.01s, MEM: 22.58 MB peak
+Yosys 0.67+40 (git sha1 45ea2b8d6-dirty, Release, Clang /usr/bin/clang++ 18.1.8)
+Time spent: 33% 3x read_verilog (0 sec), 17% 2x hierarchy (0 sec), ...

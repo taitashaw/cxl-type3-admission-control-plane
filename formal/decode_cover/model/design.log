@@ -760,6 +760,6 @@ Module formal_decode directly or indirectly contains formal properties -> settin
 Output filename: ../model/design.il
 
 Warnings: 119 unique messages, 238 total
-End of script. Logfile hash: 470d86ae4a, time: 0.02s, user: 0.02s, system: 0.00s, MEM: 20.18 MB peak
+End of script. Logfile hash: 470d86ae4a, time: 0.02s, user: 0.02s, system: 0.00s, MEM: 20.20 MB peak
 Yosys 0.67+40 (git sha1 45ea2b8d6-dirty, Release, Clang /usr/bin/clang++ 18.1.8)
-Time spent: 19% 5x opt_clean (0 sec), 18% 4x read_verilog (0 sec), ...
+Time spent: 20% 5x opt_clean (0 sec), 19% 4x read_verilog (0 sec), ...

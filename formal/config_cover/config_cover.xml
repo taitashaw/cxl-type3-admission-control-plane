@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-<testsuite timestamp="2026-07-16T22:22:24" hostname="jotshawlinux-Legion" package="config" id="0" name="cover" tests="26" errors="0" failures="0" time="1" skipped="15">
+<testsuite timestamp="2026-07-16T23:30:31" hostname="jotshawlinux-Legion" package="config" id="0" name="cover" tests="26" errors="0" failures="0" time="0" skipped="15">
 <properties>
 <property name="os" value="Linux"/>
 <property name="expect" value="PASS"/>
@@ -75,250 +75,250 @@
 <testcase classname="cover" name="Property ASSERT in formal_config/dut at hdm_config.sv:316.5-316.52" time="0" type="ASSERT" location="hdm_config.sv:316.5-316.52" id="_witness_.check_assert_hdm_config_sv_316_356">
 <skipped />
 </testcase>
-<system-out>SBY 22:22:24 [formal/config_bmc] Removing directory '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/config_bmc'.
-SBY 22:22:24 [formal/config_prove] Removing directory '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/config_prove'.
-SBY 22:22:24 [formal/config_cover] Removing directory '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/config_cover'.
-SBY 22:22:24 [formal/config_cover] Copy '/home/jotshawlinux/Downloads/project2_cxl_validation/rtl/csr/hdm_config.sv' to '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/config_cover/src/hdm_config.sv'.
-SBY 22:22:24 [formal/config_cover] Copy '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/formal_config.sv' to '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/config_cover/src/formal_config.sv'.
-SBY 22:22:24 [formal/config_cover] engine_0: smtbmc yices
-SBY 22:22:24 [formal/config_cover] base: starting process &quot;cd formal/config_cover/src; yosys -ql ../model/design.log ../model/design.ys&quot;
-SBY 22:22:24 [formal/config_cover] base: Warning: Replacing memory \win_reason with list of registers. See hdm_config.sv:120
-SBY 22:22:24 [formal/config_cover] base: Warning: Replacing memory \pend_dpa with list of registers. See hdm_config.sv:192
-SBY 22:22:24 [formal/config_cover] base: Warning: Replacing memory \pend_size with list of registers. See hdm_config.sv:192
-SBY 22:22:24 [formal/config_cover] base: Warning: Replacing memory \pend_base with list of registers. See hdm_config.sv:192
-SBY 22:22:24 [formal/config_cover] base: Warning: Replacing memory \pend_en with list of registers. See hdm_config.sv:192
-SBY 22:22:24 [formal/config_cover] base: Warning: Replacing memory \act_dpa with list of registers. See hdm_config.sv:191
-SBY 22:22:24 [formal/config_cover] base: Warning: Replacing memory \act_size with list of registers. See hdm_config.sv:191
-SBY 22:22:24 [formal/config_cover] base: Warning: Replacing memory \act_base with list of registers. See hdm_config.sv:191
-SBY 22:22:24 [formal/config_cover] base: Warning: Replacing memory \act_en with list of registers. See hdm_config.sv:191
-SBY 22:22:24 [formal/config_cover] base: Warning: Replacing memory \sh_dpa with list of registers. See hdm_config.sv:190
-SBY 22:22:24 [formal/config_cover] base: Warning: Replacing memory \sh_size with list of registers. See hdm_config.sv:190
-SBY 22:22:24 [formal/config_cover] base: Warning: Replacing memory \sh_base with list of registers. See hdm_config.sv:190
-SBY 22:22:24 [formal/config_cover] base: Warning: Replacing memory \sh_en with list of registers. See hdm_config.sv:190
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_cap_i [12] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_cap_i [11] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_cap_i [10] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_cap_i [9] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_cap_i [8] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_cap_i [7] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_cap_i [6] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_cap_i [5] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_cap_i [4] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_cap_i [3] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_cap_i [2] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_cap_i [1] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_cap_i [0] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_cap_we is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_dpa_i [11] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_dpa_i [10] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_dpa_i [9] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_dpa_i [8] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_dpa_i [7] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_dpa_i [6] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_dpa_i [5] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_dpa_i [4] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_dpa_i [3] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_dpa_i [2] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_dpa_i [1] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_dpa_i [0] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [15] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [14] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [13] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [12] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [11] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [10] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [9] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [8] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [7] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [6] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [5] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [4] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [3] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [2] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [1] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [0] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [15] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [14] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [13] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [12] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [11] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [10] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [9] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [8] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [7] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [6] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [5] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [4] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [3] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [2] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [1] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [0] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_en_i is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_idx is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\sh_we is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\outstanding_cnt [2] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\outstanding_cnt [1] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\outstanding_cnt [0] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\cfg_update_req is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: Warning: Wire formal_config.\rst_n is used but has no driver.
-SBY 22:22:24 [formal/config_cover] base: finished (returncode=0)
-SBY 22:22:24 [formal/config_cover] prep: starting process &quot;cd formal/config_cover/model; yosys -ql design_prep.log design_prep.ys&quot;
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_we is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [15] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [14] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [13] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [12] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [11] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [10] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [9] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [8] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [7] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [6] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [5] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [4] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [3] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [2] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [1] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [0] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_idx is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_en_i is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_dpa_i [11] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_dpa_i [10] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_dpa_i [9] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_dpa_i [8] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_dpa_i [7] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_dpa_i [6] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_dpa_i [5] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_dpa_i [4] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_dpa_i [3] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_dpa_i [2] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_dpa_i [1] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_dpa_i [0] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_cap_we is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_cap_i [12] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_cap_i [11] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_cap_i [10] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_cap_i [9] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_cap_i [8] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_cap_i [7] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_cap_i [6] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_cap_i [5] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_cap_i [4] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_cap_i [3] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_cap_i [2] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_cap_i [1] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_cap_i [0] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [15] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [14] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [13] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [12] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [11] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [10] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [9] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [8] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [7] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [6] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [5] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [4] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [3] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [2] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [1] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [0] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\outstanding_cnt [2] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\outstanding_cnt [1] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\outstanding_cnt [0] is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\cfg_update_req is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: Warning: Wire formal_config.\rst_n is used but has no driver.
-SBY 22:22:24 [formal/config_cover] prep: finished (returncode=0)
-SBY 22:22:24 [formal/config_cover] smt2: starting process &quot;cd formal/config_cover/model; yosys -ql design_smt2.log design_smt2.ys&quot;
-SBY 22:22:24 [formal/config_cover] smt2: finished (returncode=0)
-SBY 22:22:24 [formal/config_cover] engine_0: starting process &quot;cd formal/config_cover; yosys-smtbmc -s yices --presat --unroll -c --noprogress -t 12  --append 0 --dump-vcd engine_0/trace%.vcd --dump-yw engine_0/trace%.yw --dump-vlogtb engine_0/trace%_tb.v --dump-smtc engine_0/trace%.smtc model/design_smt2.smt2&quot;
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Solver: yices
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 0..
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 1..
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Reached cover statement in step 1 at formal_config: formal_config.sv:56.5-56.42 (_witness_.check_cover_formal_config_sv_56_246)
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace0.vcd
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace0_tb.v
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace0.smtc
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace0.yw
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 1..
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Reached cover statement in step 1 at formal_config: formal_config.sv:57.5-57.42 (_witness_.check_cover_formal_config_sv_57_250)
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace1.vcd
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace1_tb.v
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace1.smtc
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace1.yw
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 1..
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Reached cover statement in step 1 at formal_config: formal_config.sv:58.5-58.42 (_witness_.check_cover_formal_config_sv_58_254)
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace2.vcd
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace2_tb.v
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace2.smtc
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace2.yw
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 1..
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 2..
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Reached cover statement in step 2 at formal_config: formal_config.sv:59.5-59.45 (_witness_.check_cover_formal_config_sv_59_258)
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace3.vcd
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace3_tb.v
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace3.smtc
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace3.yw
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 2..
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Reached cover statement in step 2 at formal_config: formal_config.sv:55.5-55.57 (_witness_.check_cover_formal_config_sv_55_243)
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace4.vcd
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace4_tb.v
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace4.smtc
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace4.yw
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 2..
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 3..
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Reached cover statement in step 3 at formal_config: formal_config.sv:49.5-49.43 (_witness_.check_cover_formal_config_sv_49_223)
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace5.vcd
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace5_tb.v
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace5.smtc
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace5.yw
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 3..
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Reached cover statement in step 3 at formal_config: formal_config.sv:50.5-50.68 (_witness_.check_cover_formal_config_sv_50_226)
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace6.vcd
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace6_tb.v
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace6.smtc
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace6.yw
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 3..
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 4..
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Reached cover statement in step 4 at formal_config: formal_config.sv:53.5-53.32 (_witness_.check_cover_formal_config_sv_53_236)
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace7.vcd
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace7_tb.v
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace7.smtc
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace7.yw
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 4..
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Reached cover statement in step 4 at formal_config: formal_config.sv:51.5-51.43 (_witness_.check_cover_formal_config_sv_51_231)
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace8.vcd
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace8_tb.v
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace8.smtc
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace8.yw
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 4..
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 5..
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Reached cover statement in step 5 at formal_config: formal_config.sv:52.5-52.28 (_witness_.check_cover_formal_config_sv_52_234)
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Reached cover statement in step 5 at formal_config: formal_config.sv:54.5-54.66 (_witness_.check_cover_formal_config_sv_54_238)
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace9.vcd
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace9_tb.v
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace9.smtc
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace9.yw
-SBY 22:22:24 [formal/config_cover] engine_0: ##   0:00:00  Status: passed
-SBY 22:22:24 [formal/config_cover] engine_0: finished (returncode=0)
-SBY 22:22:24 [formal/config_cover] engine_0: Status returned by engine: pass
-SBY 22:22:24 [formal/config_cover] summary: Elapsed clock time [H:MM:SS (secs)]: 0:00:00 (0)
-SBY 22:22:24 [formal/config_cover] summary: Elapsed process time [H:MM:SS (secs)]: 0:00:01 (1)
-SBY 22:22:24 [formal/config_cover] summary: engine_0 (smtbmc yices) returned pass
-SBY 22:22:24 [formal/config_cover] summary: cover trace: formal/config_cover/engine_0/trace0.vcd
-SBY 22:22:24 [formal/config_cover] summary:   reached cover statement formal_config._witness_.check_cover_formal_config_sv_56_246 at formal_config.sv:56.5-56.42 step 1
-SBY 22:22:24 [formal/config_cover] summary: cover trace: formal/config_cover/engine_0/trace1.vcd
-SBY 22:22:24 [formal/config_cover] summary:   reached cover statement formal_config._witness_.check_cover_formal_config_sv_57_250 at formal_config.sv:57.5-57.42 step 1
-SBY 22:22:24 [formal/config_cover] summary: cover trace: formal/config_cover/engine_0/trace2.vcd
-SBY 22:22:24 [formal/config_cover] summary:   reached cover statement formal_config._witness_.check_cover_formal_config_sv_58_254 at formal_config.sv:58.5-58.42 step 1
-SBY 22:22:24 [formal/config_cover] summary: cover trace: formal/config_cover/engine_0/trace3.vcd
-SBY 22:22:24 [formal/config_cover] summary:   reached cover statement formal_config._witness_.check_cover_formal_config_sv_59_258 at formal_config.sv:59.5-59.45 step 2
-SBY 22:22:24 [formal/config_cover] summary: cover trace: formal/config_cover/engine_0/trace4.vcd
-SBY 22:22:24 [formal/config_cover] summary:   reached cover statement formal_config._witness_.check_cover_formal_config_sv_55_243 at formal_config.sv:55.5-55.57 step 2
-SBY 22:22:24 [formal/config_cover] summary: and 5 further traces
-SBY 22:22:24 [formal/config_cover] summary: see formal/config_cover/PASS for a complete summary
-SBY 22:22:24 [formal/config_cover] DONE (PASS, rc=0)
+<system-out>SBY 23:30:30 [formal/config_bmc] Removing directory '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/config_bmc'.
+SBY 23:30:30 [formal/config_prove] Removing directory '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/config_prove'.
+SBY 23:30:30 [formal/config_cover] Removing directory '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/config_cover'.
+SBY 23:30:30 [formal/config_cover] Copy '/home/jotshawlinux/Downloads/project2_cxl_validation/rtl/csr/hdm_config.sv' to '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/config_cover/src/hdm_config.sv'.
+SBY 23:30:30 [formal/config_cover] Copy '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/formal_config.sv' to '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/config_cover/src/formal_config.sv'.
+SBY 23:30:30 [formal/config_cover] engine_0: smtbmc yices
+SBY 23:30:30 [formal/config_cover] base: starting process &quot;cd formal/config_cover/src; yosys -ql ../model/design.log ../model/design.ys&quot;
+SBY 23:30:30 [formal/config_cover] base: Warning: Replacing memory \win_reason with list of registers. See hdm_config.sv:120
+SBY 23:30:30 [formal/config_cover] base: Warning: Replacing memory \pend_dpa with list of registers. See hdm_config.sv:192
+SBY 23:30:30 [formal/config_cover] base: Warning: Replacing memory \pend_size with list of registers. See hdm_config.sv:192
+SBY 23:30:30 [formal/config_cover] base: Warning: Replacing memory \pend_base with list of registers. See hdm_config.sv:192
+SBY 23:30:30 [formal/config_cover] base: Warning: Replacing memory \pend_en with list of registers. See hdm_config.sv:192
+SBY 23:30:30 [formal/config_cover] base: Warning: Replacing memory \act_dpa with list of registers. See hdm_config.sv:191
+SBY 23:30:30 [formal/config_cover] base: Warning: Replacing memory \act_size with list of registers. See hdm_config.sv:191
+SBY 23:30:30 [formal/config_cover] base: Warning: Replacing memory \act_base with list of registers. See hdm_config.sv:191
+SBY 23:30:30 [formal/config_cover] base: Warning: Replacing memory \act_en with list of registers. See hdm_config.sv:191
+SBY 23:30:30 [formal/config_cover] base: Warning: Replacing memory \sh_dpa with list of registers. See hdm_config.sv:190
+SBY 23:30:30 [formal/config_cover] base: Warning: Replacing memory \sh_size with list of registers. See hdm_config.sv:190
+SBY 23:30:30 [formal/config_cover] base: Warning: Replacing memory \sh_base with list of registers. See hdm_config.sv:190
+SBY 23:30:30 [formal/config_cover] base: Warning: Replacing memory \sh_en with list of registers. See hdm_config.sv:190
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_cap_i [12] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_cap_i [11] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_cap_i [10] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_cap_i [9] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_cap_i [8] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_cap_i [7] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_cap_i [6] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_cap_i [5] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_cap_i [4] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_cap_i [3] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_cap_i [2] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_cap_i [1] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_cap_i [0] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_cap_we is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_dpa_i [11] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_dpa_i [10] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_dpa_i [9] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_dpa_i [8] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_dpa_i [7] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_dpa_i [6] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_dpa_i [5] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_dpa_i [4] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_dpa_i [3] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_dpa_i [2] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_dpa_i [1] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_dpa_i [0] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [15] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [14] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [13] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [12] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [11] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [10] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [9] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [8] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [7] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [6] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [5] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [4] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [3] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [2] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [1] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_size_i [0] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [15] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [14] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [13] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [12] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [11] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [10] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [9] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [8] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [7] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [6] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [5] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [4] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [3] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [2] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [1] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_base_i [0] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_en_i is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_idx is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\sh_we is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\outstanding_cnt [2] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\outstanding_cnt [1] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\outstanding_cnt [0] is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\cfg_update_req is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: Warning: Wire formal_config.\rst_n is used but has no driver.
+SBY 23:30:30 [formal/config_cover] base: finished (returncode=0)
+SBY 23:30:30 [formal/config_cover] prep: starting process &quot;cd formal/config_cover/model; yosys -ql design_prep.log design_prep.ys&quot;
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_we is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [15] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [14] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [13] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [12] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [11] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [10] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [9] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [8] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [7] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [6] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [5] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [4] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [3] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [2] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [1] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_size_i [0] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_idx is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_en_i is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_dpa_i [11] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_dpa_i [10] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_dpa_i [9] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_dpa_i [8] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_dpa_i [7] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_dpa_i [6] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_dpa_i [5] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_dpa_i [4] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_dpa_i [3] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_dpa_i [2] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_dpa_i [1] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_dpa_i [0] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_cap_we is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_cap_i [12] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_cap_i [11] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_cap_i [10] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_cap_i [9] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_cap_i [8] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_cap_i [7] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_cap_i [6] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_cap_i [5] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_cap_i [4] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_cap_i [3] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_cap_i [2] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_cap_i [1] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_cap_i [0] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [15] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [14] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [13] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [12] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [11] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [10] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [9] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [8] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [7] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [6] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [5] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [4] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [3] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [2] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [1] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\sh_base_i [0] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\outstanding_cnt [2] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\outstanding_cnt [1] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\outstanding_cnt [0] is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\cfg_update_req is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: Warning: Wire formal_config.\rst_n is used but has no driver.
+SBY 23:30:31 [formal/config_cover] prep: finished (returncode=0)
+SBY 23:30:31 [formal/config_cover] smt2: starting process &quot;cd formal/config_cover/model; yosys -ql design_smt2.log design_smt2.ys&quot;
+SBY 23:30:31 [formal/config_cover] smt2: finished (returncode=0)
+SBY 23:30:31 [formal/config_cover] engine_0: starting process &quot;cd formal/config_cover; yosys-smtbmc -s yices --presat --unroll -c --noprogress -t 12  --append 0 --dump-vcd engine_0/trace%.vcd --dump-yw engine_0/trace%.yw --dump-vlogtb engine_0/trace%_tb.v --dump-smtc engine_0/trace%.smtc model/design_smt2.smt2&quot;
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Solver: yices
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 0..
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 1..
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Reached cover statement in step 1 at formal_config: formal_config.sv:56.5-56.42 (_witness_.check_cover_formal_config_sv_56_246)
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace0.vcd
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace0_tb.v
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace0.smtc
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace0.yw
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 1..
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Reached cover statement in step 1 at formal_config: formal_config.sv:57.5-57.42 (_witness_.check_cover_formal_config_sv_57_250)
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace1.vcd
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace1_tb.v
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace1.smtc
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace1.yw
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 1..
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Reached cover statement in step 1 at formal_config: formal_config.sv:58.5-58.42 (_witness_.check_cover_formal_config_sv_58_254)
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace2.vcd
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace2_tb.v
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace2.smtc
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace2.yw
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 1..
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 2..
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Reached cover statement in step 2 at formal_config: formal_config.sv:59.5-59.45 (_witness_.check_cover_formal_config_sv_59_258)
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace3.vcd
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace3_tb.v
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace3.smtc
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace3.yw
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 2..
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Reached cover statement in step 2 at formal_config: formal_config.sv:55.5-55.57 (_witness_.check_cover_formal_config_sv_55_243)
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace4.vcd
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace4_tb.v
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace4.smtc
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace4.yw
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 2..
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 3..
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Reached cover statement in step 3 at formal_config: formal_config.sv:49.5-49.43 (_witness_.check_cover_formal_config_sv_49_223)
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace5.vcd
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace5_tb.v
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace5.smtc
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace5.yw
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 3..
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Reached cover statement in step 3 at formal_config: formal_config.sv:50.5-50.68 (_witness_.check_cover_formal_config_sv_50_226)
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace6.vcd
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace6_tb.v
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace6.smtc
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace6.yw
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 3..
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 4..
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Reached cover statement in step 4 at formal_config: formal_config.sv:53.5-53.32 (_witness_.check_cover_formal_config_sv_53_236)
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace7.vcd
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace7_tb.v
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace7.smtc
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace7.yw
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 4..
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Reached cover statement in step 4 at formal_config: formal_config.sv:51.5-51.43 (_witness_.check_cover_formal_config_sv_51_231)
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace8.vcd
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace8_tb.v
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace8.smtc
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace8.yw
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 4..
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Checking cover reachability in step 5..
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Reached cover statement in step 5 at formal_config: formal_config.sv:52.5-52.28 (_witness_.check_cover_formal_config_sv_52_234)
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Reached cover statement in step 5 at formal_config: formal_config.sv:54.5-54.66 (_witness_.check_cover_formal_config_sv_54_238)
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace9.vcd
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace9_tb.v
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace9.smtc
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace9.yw
+SBY 23:30:31 [formal/config_cover] engine_0: ##   0:00:00  Status: passed
+SBY 23:30:31 [formal/config_cover] engine_0: finished (returncode=0)
+SBY 23:30:31 [formal/config_cover] engine_0: Status returned by engine: pass
+SBY 23:30:31 [formal/config_cover] summary: Elapsed clock time [H:MM:SS (secs)]: 0:00:00 (0)
+SBY 23:30:31 [formal/config_cover] summary: Elapsed process time [H:MM:SS (secs)]: 0:00:00 (0)
+SBY 23:30:31 [formal/config_cover] summary: engine_0 (smtbmc yices) returned pass
+SBY 23:30:31 [formal/config_cover] summary: cover trace: formal/config_cover/engine_0/trace0.vcd
+SBY 23:30:31 [formal/config_cover] summary:   reached cover statement formal_config._witness_.check_cover_formal_config_sv_56_246 at formal_config.sv:56.5-56.42 step 1
+SBY 23:30:31 [formal/config_cover] summary: cover trace: formal/config_cover/engine_0/trace1.vcd
+SBY 23:30:31 [formal/config_cover] summary:   reached cover statement formal_config._witness_.check_cover_formal_config_sv_57_250 at formal_config.sv:57.5-57.42 step 1
+SBY 23:30:31 [formal/config_cover] summary: cover trace: formal/config_cover/engine_0/trace2.vcd
+SBY 23:30:31 [formal/config_cover] summary:   reached cover statement formal_config._witness_.check_cover_formal_config_sv_58_254 at formal_config.sv:58.5-58.42 step 1
+SBY 23:30:31 [formal/config_cover] summary: cover trace: formal/config_cover/engine_0/trace3.vcd
+SBY 23:30:31 [formal/config_cover] summary:   reached cover statement formal_config._witness_.check_cover_formal_config_sv_59_258 at formal_config.sv:59.5-59.45 step 2
+SBY 23:30:31 [formal/config_cover] summary: cover trace: formal/config_cover/engine_0/trace4.vcd
+SBY 23:30:31 [formal/config_cover] summary:   reached cover statement formal_config._witness_.check_cover_formal_config_sv_55_243 at formal_config.sv:55.5-55.57 step 2
+SBY 23:30:31 [formal/config_cover] summary: and 5 further traces
+SBY 23:30:31 [formal/config_cover] summary: see formal/config_cover/PASS for a complete summary
+SBY 23:30:31 [formal/config_cover] DONE (PASS, rc=0)
 </system-out>
 <system-err>
 </system-err>

@@ -1,10 +1,10 @@
 {
-  "git_commit": "c564f7be77497d461f165429e092ca0363b5838a",
+  "git_commit": "083872d24ab8459bcf05c5c53dc8773b1b856c48",
   "git_dirty": true,
-  "utc": "2026-07-17T02:29:55Z",
+  "utc": "2026-07-17T03:35:55Z",
   "kind": "run_summary",
   "regression": {
-    "passed": 16,
+    "passed": 30,
     "failed": 0
   },
   "formal": [
@@ -19,13 +19,19 @@
       "bmc": "PASS",
       "induction": "PASS",
       "cover": "PASS"
+    },
+    {
+      "job": "tracker",
+      "bmc": "PASS",
+      "induction": "PASS",
+      "cover": "PASS"
     }
   ],
   "mutation_sim": {
-    "killed": 6,
+    "killed": 9,
     "survived": 0
   },
   "formal_mutation": {
-    "killed": "5"
+    "killed": "7"
   }
 }

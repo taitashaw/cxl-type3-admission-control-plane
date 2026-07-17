@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+<testsuite timestamp="2026-07-16T23:30:31" hostname="jotshawlinux-Legion" package="tracker" id="0" name="cover" tests="20" errors="0" failures="0" time="1" skipped="11">
+<properties>
+<property name="os" value="Linux"/>
+<property name="expect" value="PASS"/>
+<property name="status" value="PASS"/>
+</properties>
+<testcase classname="cover" name="build execution" time="0">
+</testcase>
+<testcase classname="cover" name="Property COVER in formal_tracker at formal_tracker.sv:51.5-51.31" time="0" type="COVER" location="formal_tracker.sv:51.5-51.31" id="_witness_.check_cover_formal_tracker_sv_51_334" tracefile="engine_0/trace2.vcd">
+</testcase>
+<testcase classname="cover" name="Property COVER in formal_tracker at formal_tracker.sv:52.5-52.26" time="0" type="COVER" location="formal_tracker.sv:52.5-52.26" id="_witness_.check_cover_formal_tracker_sv_52_336" tracefile="engine_0/trace7.vcd">
+</testcase>
+<testcase classname="cover" name="Property COVER in formal_tracker at formal_tracker.sv:53.5-53.33" time="0" type="COVER" location="formal_tracker.sv:53.5-53.33" id="_witness_.check_cover_formal_tracker_sv_53_338" tracefile="engine_0/trace3.vcd">
+</testcase>
+<testcase classname="cover" name="Property COVER in formal_tracker at formal_tracker.sv:54.5-54.46" time="0" type="COVER" location="formal_tracker.sv:54.5-54.46" id="_witness_.check_cover_formal_tracker_sv_54_340" tracefile="engine_0/trace4.vcd">
+</testcase>
+<testcase classname="cover" name="Property COVER in formal_tracker at formal_tracker.sv:55.5-55.62" time="0" type="COVER" location="formal_tracker.sv:55.5-55.62" id="_witness_.check_cover_formal_tracker_sv_55_343" tracefile="engine_0/trace5.vcd">
+</testcase>
+<testcase classname="cover" name="Property COVER in formal_tracker at formal_tracker.sv:56.5-56.33" time="0" type="COVER" location="formal_tracker.sv:56.5-56.33" id="_witness_.check_cover_formal_tracker_sv_56_347" tracefile="engine_0/trace6.vcd">
+</testcase>
+<testcase classname="cover" name="Property COVER in formal_tracker at formal_tracker.sv:57.5-57.48" time="0" type="COVER" location="formal_tracker.sv:57.5-57.48" id="_witness_.check_cover_formal_tracker_sv_57_349" tracefile="engine_0/trace7.vcd">
+</testcase>
+<testcase classname="cover" name="Property COVER in formal_tracker at formal_tracker.sv:58.5-58.33" time="0" type="COVER" location="formal_tracker.sv:58.5-58.33" id="_witness_.check_cover_formal_tracker_sv_58_352" tracefile="engine_0/trace0.vcd">
+</testcase>
+<testcase classname="cover" name="Property COVER in formal_tracker at formal_tracker.sv:59.5-59.43" time="0" type="COVER" location="formal_tracker.sv:59.5-59.43" id="_witness_.check_cover_formal_tracker_sv_59_356" tracefile="engine_0/trace1.vcd">
+</testcase>
+<testcase classname="cover" name="Property ASSERT in formal_tracker/dut at outstanding_tracker.sv:260.7-260.37" time="0" type="ASSERT" location="outstanding_tracker.sv:260.7-260.37" id="_witness_.check_assert_outstanding_tracker_sv_260_568">
+<skipped />
+</testcase>
+<testcase classname="cover" name="Property ASSERT in formal_tracker/dut at outstanding_tracker.sv:261.7-261.42" time="0" type="ASSERT" location="outstanding_tracker.sv:261.7-261.42" id="_witness_.check_assert_outstanding_tracker_sv_261_570">
+<skipped />
+</testcase>
+<testcase classname="cover" name="Property ASSERT in formal_tracker/dut at outstanding_tracker.sv:262.7-262.43" time="0" type="ASSERT" location="outstanding_tracker.sv:262.7-262.43" id="_witness_.check_assert_outstanding_tracker_sv_262_572">
+<skipped />
+</testcase>
+<testcase classname="cover" name="Property ASSERT in formal_tracker/dut at outstanding_tracker.sv:264.7-264.71" time="0" type="ASSERT" location="outstanding_tracker.sv:264.7-264.71" id="_witness_.check_assert_outstanding_tracker_sv_264_574">
+<skipped />
+</testcase>
+<testcase classname="cover" name="Property ASSERT in formal_tracker/dut at outstanding_tracker.sv:265.7-265.71" time="0" type="ASSERT" location="outstanding_tracker.sv:265.7-265.71" id="_witness_.check_assert_outstanding_tracker_sv_265_577">
+<skipped />
+</testcase>
+<testcase classname="cover" name="Property ASSERT in formal_tracker/dut at outstanding_tracker.sv:267.24-267.71" time="0" type="ASSERT" location="outstanding_tracker.sv:267.24-267.71" id="_witness_.check_assert_outstanding_tracker_sv_267_586">
+<skipped />
+</testcase>
+<testcase classname="cover" name="Property ASSERT in formal_tracker/dut at outstanding_tracker.sv:269.24-269.71" time="0" type="ASSERT" location="outstanding_tracker.sv:269.24-269.71" id="_witness_.check_assert_outstanding_tracker_sv_269_589">
+<skipped />
+</testcase>
+<testcase classname="cover" name="Property ASSERT in formal_tracker/dut at outstanding_tracker.sv:271.22-271.49" time="0" type="ASSERT" location="outstanding_tracker.sv:271.22-271.49" id="_witness_.check_assert_outstanding_tracker_sv_271_592">
+<skipped />
+</testcase>
+<testcase classname="cover" name="Property ASSERT in formal_tracker/dut at outstanding_tracker.sv:273.7-273.52" time="0" type="ASSERT" location="outstanding_tracker.sv:273.7-273.52" id="_witness_.check_assert_outstanding_tracker_sv_273_595">
+<skipped />
+</testcase>
+<testcase classname="cover" name="Property ASSERT in formal_tracker/dut at outstanding_tracker.sv:276.22-276.49" time="0" type="ASSERT" location="outstanding_tracker.sv:276.22-276.49" id="_witness_.check_assert_outstanding_tracker_sv_276_599">
+<skipped />
+</testcase>
+<testcase classname="cover" name="Property ASSERT in formal_tracker/dut at outstanding_tracker.sv:279.7-279.77" time="0" type="ASSERT" location="outstanding_tracker.sv:279.7-279.77" id="_witness_.check_assert_outstanding_tracker_sv_279_601">
+<skipped />
+</testcase>
+<system-out>SBY 23:30:31 [formal/tracker_bmc] Removing directory '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/tracker_bmc'.
+SBY 23:30:31 [formal/tracker_prove] Removing directory '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/tracker_prove'.
+SBY 23:30:31 [formal/tracker_cover] Removing directory '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/tracker_cover'.
+SBY 23:30:31 [formal/tracker_cover] Copy '/home/jotshawlinux/Downloads/project2_cxl_validation/rtl/core/outstanding_tracker.sv' to '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/tracker_cover/src/outstanding_tracker.sv'.
+SBY 23:30:31 [formal/tracker_cover] Copy '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/formal_tracker.sv' to '/home/jotshawlinux/Downloads/project2_cxl_validation/formal/tracker_cover/src/formal_tracker.sv'.
+SBY 23:30:31 [formal/tracker_cover] engine_0: smtbmc yices
+SBY 23:30:31 [formal/tracker_cover] base: starting process &quot;cd formal/tracker_cover/src; yosys -ql ../model/design.log ../model/design.ys&quot;
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Replacing memory \timed_out with list of registers. See outstanding_tracker.sv:170
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Replacing memory \issue_ts with list of registers. See outstanding_tracker.sv:170
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Replacing memory \meta with list of registers. See outstanding_tracker.sv:170
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Replacing memory \op with list of registers. See outstanding_tracker.sv:170
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Replacing memory \epoch with list of registers. See outstanding_tracker.sv:170
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Replacing memory \gen with list of registers. See outstanding_tracker.sv:170
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Replacing memory \live with list of registers. See outstanding_tracker.sv:170
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Wire formal_tracker.\reclaim_slot [1] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Wire formal_tracker.\reclaim_slot [0] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Wire formal_tracker.\reclaim_req is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Wire formal_tracker.\resp_tag [3] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Wire formal_tracker.\resp_tag [2] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Wire formal_tracker.\resp_tag [1] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Wire formal_tracker.\resp_tag [0] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Wire formal_tracker.\alloc_meta [3] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Wire formal_tracker.\alloc_meta [2] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Wire formal_tracker.\alloc_meta [1] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Wire formal_tracker.\alloc_meta [0] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Wire formal_tracker.\alloc_op is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Wire formal_tracker.\alloc_epoch [3] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Wire formal_tracker.\alloc_epoch [2] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Wire formal_tracker.\alloc_epoch [1] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Wire formal_tracker.\alloc_epoch [0] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Wire formal_tracker.\alloc_req is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Wire formal_tracker.\timeout_thresh [3] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Wire formal_tracker.\timeout_thresh [2] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Wire formal_tracker.\timeout_thresh [1] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Wire formal_tracker.\timeout_thresh [0] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Wire formal_tracker.\current_ts [3] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Wire formal_tracker.\current_ts [2] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Wire formal_tracker.\current_ts [1] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Wire formal_tracker.\current_ts [0] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Wire formal_tracker.\resp_valid is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] base: Warning: Wire formal_tracker.\rst_n is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] base: finished (returncode=0)
+SBY 23:30:31 [formal/tracker_cover] prep: starting process &quot;cd formal/tracker_cover/model; yosys -ql design_prep.log design_prep.ys&quot;
+SBY 23:30:31 [formal/tracker_cover] prep: Warning: Wire formal_tracker.\timeout_thresh [3] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] prep: Warning: Wire formal_tracker.\timeout_thresh [2] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] prep: Warning: Wire formal_tracker.\timeout_thresh [1] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] prep: Warning: Wire formal_tracker.\timeout_thresh [0] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] prep: Warning: Wire formal_tracker.\resp_tag [3] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] prep: Warning: Wire formal_tracker.\resp_tag [2] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] prep: Warning: Wire formal_tracker.\resp_tag [1] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] prep: Warning: Wire formal_tracker.\resp_tag [0] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] prep: Warning: Wire formal_tracker.\reclaim_slot [1] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] prep: Warning: Wire formal_tracker.\reclaim_slot [0] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] prep: Warning: Wire formal_tracker.\reclaim_req is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] prep: Warning: Wire formal_tracker.\current_ts [3] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] prep: Warning: Wire formal_tracker.\current_ts [2] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] prep: Warning: Wire formal_tracker.\current_ts [1] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] prep: Warning: Wire formal_tracker.\current_ts [0] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] prep: Warning: Wire formal_tracker.\alloc_req is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] prep: Warning: Wire formal_tracker.\alloc_op is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] prep: Warning: Wire formal_tracker.\alloc_meta [3] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] prep: Warning: Wire formal_tracker.\alloc_meta [2] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] prep: Warning: Wire formal_tracker.\alloc_meta [1] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] prep: Warning: Wire formal_tracker.\alloc_meta [0] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] prep: Warning: Wire formal_tracker.\alloc_epoch [3] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] prep: Warning: Wire formal_tracker.\alloc_epoch [2] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] prep: Warning: Wire formal_tracker.\alloc_epoch [1] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] prep: Warning: Wire formal_tracker.\alloc_epoch [0] is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] prep: Warning: Wire formal_tracker.\resp_valid is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] prep: Warning: Wire formal_tracker.\rst_n is used but has no driver.
+SBY 23:30:31 [formal/tracker_cover] prep: finished (returncode=0)
+SBY 23:30:31 [formal/tracker_cover] smt2: starting process &quot;cd formal/tracker_cover/model; yosys -ql design_smt2.log design_smt2.ys&quot;
+SBY 23:30:31 [formal/tracker_cover] smt2: finished (returncode=0)
+SBY 23:30:31 [formal/tracker_cover] engine_0: starting process &quot;cd formal/tracker_cover; yosys-smtbmc -s yices --presat --unroll -c --noprogress -t 16  --append 0 --dump-vcd engine_0/trace%.vcd --dump-yw engine_0/trace%.yw --dump-vlogtb engine_0/trace%_tb.v --dump-smtc engine_0/trace%.smtc model/design_smt2.smt2&quot;
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Solver: yices
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Checking cover reachability in step 0..
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Checking cover reachability in step 1..
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Reached cover statement in step 1 at formal_tracker: formal_tracker.sv:58.5-58.33 (_witness_.check_cover_formal_tracker_sv_58_352)
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace0.vcd
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace0_tb.v
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace0.smtc
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace0.yw
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Checking cover reachability in step 1..
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Checking cover reachability in step 2..
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Reached cover statement in step 2 at formal_tracker: formal_tracker.sv:59.5-59.43 (_witness_.check_cover_formal_tracker_sv_59_356)
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace1.vcd
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace1_tb.v
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace1.smtc
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace1.yw
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Checking cover reachability in step 2..
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Reached cover statement in step 2 at formal_tracker: formal_tracker.sv:51.5-51.31 (_witness_.check_cover_formal_tracker_sv_51_334)
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace2.vcd
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace2_tb.v
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace2.smtc
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace2.yw
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Checking cover reachability in step 2..
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Checking cover reachability in step 3..
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Reached cover statement in step 3 at formal_tracker: formal_tracker.sv:53.5-53.33 (_witness_.check_cover_formal_tracker_sv_53_338)
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace3.vcd
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace3_tb.v
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace3.smtc
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace3.yw
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Checking cover reachability in step 3..
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Reached cover statement in step 3 at formal_tracker: formal_tracker.sv:54.5-54.46 (_witness_.check_cover_formal_tracker_sv_54_340)
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace4.vcd
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace4_tb.v
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace4.smtc
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace4.yw
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Checking cover reachability in step 3..
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Reached cover statement in step 3 at formal_tracker: formal_tracker.sv:55.5-55.62 (_witness_.check_cover_formal_tracker_sv_55_343)
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace5.vcd
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace5_tb.v
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace5.smtc
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace5.yw
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Checking cover reachability in step 3..
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Checking cover reachability in step 4..
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Reached cover statement in step 4 at formal_tracker: formal_tracker.sv:56.5-56.33 (_witness_.check_cover_formal_tracker_sv_56_347)
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace6.vcd
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace6_tb.v
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace6.smtc
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace6.yw
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Checking cover reachability in step 4..
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Checking cover reachability in step 5..
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Reached cover statement in step 5 at formal_tracker: formal_tracker.sv:52.5-52.26 (_witness_.check_cover_formal_tracker_sv_52_336)
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Reached cover statement in step 5 at formal_tracker: formal_tracker.sv:57.5-57.48 (_witness_.check_cover_formal_tracker_sv_57_349)
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to VCD file: engine_0/trace7.vcd
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to Verilog testbench: engine_0/trace7_tb.v
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to constraints file: engine_0/trace7.smtc
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Writing trace to Yosys witness file: engine_0/trace7.yw
+SBY 23:30:31 [formal/tracker_cover] engine_0: ##   0:00:00  Status: passed
+SBY 23:30:31 [formal/tracker_cover] engine_0: finished (returncode=0)
+SBY 23:30:31 [formal/tracker_cover] engine_0: Status returned by engine: pass
+SBY 23:30:31 [formal/tracker_cover] summary: Elapsed clock time [H:MM:SS (secs)]: 0:00:00 (0)
+SBY 23:30:31 [formal/tracker_cover] summary: Elapsed process time [H:MM:SS (secs)]: 0:00:01 (1)
+SBY 23:30:31 [formal/tracker_cover] summary: engine_0 (smtbmc yices) returned pass
+SBY 23:30:31 [formal/tracker_cover] summary: cover trace: formal/tracker_cover/engine_0/trace0.vcd
+SBY 23:30:31 [formal/tracker_cover] summary:   reached cover statement formal_tracker._witness_.check_cover_formal_tracker_sv_58_352 at formal_tracker.sv:58.5-58.33 step 1
+SBY 23:30:31 [formal/tracker_cover] summary: cover trace: formal/tracker_cover/engine_0/trace1.vcd
+SBY 23:30:31 [formal/tracker_cover] summary:   reached cover statement formal_tracker._witness_.check_cover_formal_tracker_sv_59_356 at formal_tracker.sv:59.5-59.43 step 2
+SBY 23:30:31 [formal/tracker_cover] summary: cover trace: formal/tracker_cover/engine_0/trace2.vcd
+SBY 23:30:31 [formal/tracker_cover] summary:   reached cover statement formal_tracker._witness_.check_cover_formal_tracker_sv_51_334 at formal_tracker.sv:51.5-51.31 step 2
+SBY 23:30:31 [formal/tracker_cover] summary: cover trace: formal/tracker_cover/engine_0/trace3.vcd
+SBY 23:30:31 [formal/tracker_cover] summary:   reached cover statement formal_tracker._witness_.check_cover_formal_tracker_sv_53_338 at formal_tracker.sv:53.5-53.33 step 3
+SBY 23:30:31 [formal/tracker_cover] summary: cover trace: formal/tracker_cover/engine_0/trace4.vcd
+SBY 23:30:31 [formal/tracker_cover] summary:   reached cover statement formal_tracker._witness_.check_cover_formal_tracker_sv_54_340 at formal_tracker.sv:54.5-54.46 step 3
+SBY 23:30:31 [formal/tracker_cover] summary: and 3 further traces
+SBY 23:30:31 [formal/tracker_cover] summary: see formal/tracker_cover/PASS for a complete summary
+SBY 23:30:31 [formal/tracker_cover] DONE (PASS, rc=0)
+</system-out>
+<system-err>
+</system-err>
+</testsuite>
+</testsuites>

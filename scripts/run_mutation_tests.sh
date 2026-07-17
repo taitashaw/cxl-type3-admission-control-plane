@@ -12,13 +12,12 @@ kills=0; survivors=0
 # mutate: name file 'sed-expr' tb srcs vec
 mutate() {
   local name=$1 file=$2 sed=$3 tb=$4 srcs=$5 vec=$6
+  local defs=${7:-"-DNWIN=4 -DHPAW=40 -DDPAW=32"}   # per-DUT compile defines
   cp -r rtl tb "$WORK"/ 2>/dev/null
   # apply mutation to the copy
   sed -i "$sed" "$WORK/$file"
   # build/run under Icarus against the mutated copy
-  local ss=""
-  for s in $srcs; do ss="$ss $WORK/$s"; done
-  ( cd "$WORK" && iverilog -g2012 -grelative-include -Irtl/interfaces -DNWIN=4 -DHPAW=40 -DDPAW=32 \
+  ( cd "$WORK" && iverilog -g2012 -grelative-include -Irtl/interfaces $defs \
        -o mut.vvp $srcs > mut_c.log 2>&1 && vvp mut.vvp +VEC="$ROOT/$vec" > mut_run.log 2>&1 )
   if grep -q "TB_RESULT: PASS" "$WORK/mut_run.log"; then
     echo "   [SURVIVED] $name  <-- protection NOT observable (BAD)"; survivors=$((survivors+1))
@@ -60,6 +59,23 @@ mutate "config validation" rtl/csr/hdm_config.sv \
 mutate "freeze/drain protocol" rtl/csr/hdm_config.sv \
   "s/if (outstanding_cnt == '0) state <= S_COMMIT;/if (1'b1) state <= S_COMMIT;/" \
   tb_hdm_config "$CFG" "$CVEC"
+
+# ---- M2 outstanding_tracker mutations ----
+OT="rtl/core/outstanding_tracker.sv tb/sv/tb_outstanding_tracker.sv"
+OVEC="tb/vectors/tracker_8d_4g.vec"
+OTDEF="-DDEPTH=8 -DGENW=4 -DEPOCHW=16 -DOPW=2 -DMETAW=16 -DTSW=8"
+# M7 generation check removed: a stale response would wrongly retire
+mutate "tracker generation check" rtl/core/outstanding_tracker.sv \
+  "s/else if (r_gen != gen\[r_slot\])      resp_class = RC_STALE_GEN;/else if (1'b0)                       resp_class = RC_STALE_GEN;/" \
+  tb_outstanding_tracker "$OT" "$OVEC" "$OTDEF"
+# M8 timeout aggregate broken: undercounts simultaneous timeouts
+mutate "tracker timeout aggregate" rtl/core/outstanding_tracker.sv \
+  "s/timeout_count <= timeout_count + {{(CNT_W-OCC_W){1'b0}}, n_new_timeout};/timeout_count <= timeout_count + 1'b1;/" \
+  tb_outstanding_tracker "$OT" "$OVEC" "$OTDEF"
+# M9 no-generation-bump on realloc: stale detection after reuse breaks
+mutate "tracker generation bump" rtl/core/outstanding_tracker.sv \
+  "s/gen\[free_slot\]      <= gen\[free_slot\] + {{(GEN_W-1){1'b0}},1'b1};/gen[free_slot]      <= gen[free_slot];/" \
+  tb_outstanding_tracker "$OT" "$OVEC" "$OTDEF"
 
 echo "=================================================="
 echo "mutations killed=$kills survived=$survivors"
