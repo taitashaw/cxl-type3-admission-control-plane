@@ -12,3 +12,12 @@ sim/xsim/*.vec
 sim/xsim/.Xil/
 sim/xsim/*.jou
 sim/xsim/*.pb
+tools/oss-cad-suite/
+tools/oss-cad-suite.tgz
+tools/oss-cad-suite.tgz.sha256
+tools/.ossurl
+formal/*_bmc/
+formal/*_prove/
+formal/decode/
+formal/config/
+tb/vectors/*.vec

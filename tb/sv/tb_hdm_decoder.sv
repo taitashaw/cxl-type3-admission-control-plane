@@ -10,7 +10,6 @@
 //   stimulus discipline and it also sidesteps the Verilator-5.020 packed-array
 //   element-write scheduling quirk entirely.
 `timescale 1ns/1ps
-`include "cxl_types_pkg.sv"
 
 `ifndef NWIN
  `define NWIN 4
@@ -40,7 +39,7 @@ module tb_hdm_decoder;
 
   // ---- DUT ---------------------------------------------------------------
   logic [N_WIN-1:0]             m_onehot;
-  logic                         single_match, miss, overlap_reject, unaligned;
+  logic                         single_match, miss, overlap_reject, unaligned, line_oob;
   logic [IDX_W-1:0]             win_id;
   logic [HPA_W-1:0]             m_base;
   logic [DPA_W-1:0]             m_dpa_base;
@@ -51,13 +50,13 @@ module tb_hdm_decoder;
     .win_en(win_en_r), .win_base(win_base_r), .win_size(win_size_r),
     .win_dpa_base(win_dpa_r), .hpa(hpa_r),
     .match_onehot(m_onehot), .single_match(single_match), .miss(miss),
-    .overlap_reject(overlap_reject), .unaligned(unaligned), .win_id(win_id),
-    .matched_base(m_base), .matched_dpa_base(m_dpa_base)
+    .overlap_reject(overlap_reject), .unaligned(unaligned), .line_oob(line_oob),
+    .win_id(win_id), .matched_base(m_base), .matched_dpa_base(m_dpa_base)
   );
   dpa_translator #(.HPA_W(HPA_W), .DPA_W(DPA_W)) u_xl (
-    .single_match(single_match), .unaligned(unaligned), .hpa(hpa_r),
-    .matched_base(m_base), .matched_dpa_base(m_dpa_base), .dev_capacity(cap_r),
-    .accept(accept), .dpa(dpa), .underflow(underflow),
+    .single_match(single_match), .unaligned(unaligned), .line_oob(line_oob),
+    .hpa(hpa_r), .matched_base(m_base), .matched_dpa_base(m_dpa_base),
+    .dev_capacity(cap_r), .accept(accept), .dpa(dpa), .underflow(underflow),
     .xlate_overflow(xlate_overflow), .dpa_oob(dpa_oob)
   );
 
@@ -69,7 +68,7 @@ module tb_hdm_decoder;
   logic [DPA_W-1:0] t_dpa  [N_WIN];
   logic             t_en   [N_WIN];
   logic [63:0] u_hpa,u_cap,u_en,u_base,u_size,u_dpa;
-  logic [63:0] e_acc,e_miss,e_ovl,e_unal,e_ovf,e_oob,e_dpa;
+  logic [63:0] e_acc,e_miss,e_ovl,e_unal,e_line,e_ovf,e_oob,e_dpa;
 
   initial begin
     if (!$value$plusargs("VEC=%s", vecfile)) begin
@@ -92,7 +91,7 @@ module tb_hdm_decoder;
         rc = $fscanf(fd, "%h %h %h %h", u_en, u_base, u_size, u_dpa);
         t_en[k]=u_en[0]; t_base[k]=u_base[HPA_W-1:0]; t_size[k]=u_size[HPA_W-1:0]; t_dpa[k]=u_dpa[DPA_W-1:0];
       end
-      rc = $fscanf(fd, "%h %h %h %h %h %h %h", e_acc,e_miss,e_ovl,e_unal,e_ovf,e_oob,e_dpa);
+      rc = $fscanf(fd, "%h %h %h %h %h %h %h %h", e_acc,e_miss,e_ovl,e_unal,e_line,e_ovf,e_oob,e_dpa);
 
       // synchronous drive: clocked nonblocking element writes into the
       // registered packed config (standard synchronous RTL — register-file style).
@@ -119,15 +118,16 @@ module tb_hdm_decoder;
                                  i, miss, single_match, overlap_reject, $countones(m_onehot));
       end
       if (accept!==e_acc[0] || miss!==e_miss[0] || overlap_reject!==e_ovl[0] ||
-          unaligned!==e_unal[0] || xlate_overflow!==e_ovf[0] || dpa_oob!==e_oob[0] ||
+          unaligned!==e_unal[0] || line_oob!==e_line[0] ||
+          xlate_overflow!==e_ovf[0] || dpa_oob!==e_oob[0] ||
           (e_acc[0] && dpa!==e_dpa[DPA_W-1:0]) || underflow!==1'b0) begin
         errors++;
         if (errors<=20) begin
           $display("[FAIL] vec %0d hpa=%h", i, hpa_r);
-          $display("   got acc=%b miss=%b ovl=%b unal=%b ovf=%b oob=%b uflow=%b dpa=%h",
-                   accept,miss,overlap_reject,unaligned,xlate_overflow,dpa_oob,underflow,dpa);
-          $display("   exp acc=%b miss=%b ovl=%b unal=%b ovf=%b oob=%b        dpa=%h",
-                   e_acc[0],e_miss[0],e_ovl[0],e_unal[0],e_ovf[0],e_oob[0],e_dpa[DPA_W-1:0]);
+          $display("   got acc=%b miss=%b ovl=%b unal=%b line=%b ovf=%b oob=%b uflow=%b dpa=%h",
+                   accept,miss,overlap_reject,unaligned,line_oob,xlate_overflow,dpa_oob,underflow,dpa);
+          $display("   exp acc=%b miss=%b ovl=%b unal=%b line=%b ovf=%b oob=%b         dpa=%h",
+                   e_acc[0],e_miss[0],e_ovl[0],e_unal[0],e_line[0],e_ovf[0],e_oob[0],e_dpa[DPA_W-1:0]);
         end
       end
     end

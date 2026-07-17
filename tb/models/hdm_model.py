@@ -84,6 +84,11 @@ def validate(cfg: Config) -> Tuple[bool, int]:
 
 # ---- decode + translate -------------------------------------------------
 def decode(cfg: Config, hpa: int) -> dict:
+    # Bounds cover the COMPLETE 64-byte cache line [hpa, hpa+63], not just the
+    # starting address, using line-end arithmetic:
+    #   line_oob : hpa+63 >= window_limit  (line spills past the window)
+    #   ovf      : dpa+63 >= 2**DPA_W       (line-end wraps the DPA space)
+    #   oob      : dpa+63 >= dev_capacity   (line-end past installed device)
     matches = [k for k, w in enumerate(cfg.windows)
                if w.en and w.base <= hpa < w.base + w.size]
     n = len(matches)
@@ -93,13 +98,17 @@ def decode(cfg: Config, hpa: int) -> dict:
                single=1 if n == 1 else 0,
                unaligned=unaligned,
                win_id=matches[0] if n >= 1 else 0,
-               ovf=0, oob=0, dpa=0, accept=0)
+               line_oob=0, ovf=0, oob=0, dpa=0, accept=0)
     if n == 1:
         w = cfg.windows[matches[0]]
         offset = hpa - w.base
         dpa = w.dpa_base + offset
-        out["ovf"] = 1 if dpa >= (1 << cfg.dpa_w) else 0
-        out["oob"] = 1 if dpa >= cfg.dev_capacity else 0
+        hpa_end = hpa + LINE - 1
+        dpa_end = dpa + LINE - 1
+        out["line_oob"] = 1 if hpa_end >= (w.base + w.size) else 0
+        out["ovf"] = 1 if dpa_end >= (1 << cfg.dpa_w) else 0
+        out["oob"] = 1 if dpa_end >= cfg.dev_capacity else 0
         out["dpa"] = dpa & ((1 << cfg.dpa_w) - 1)
-        out["accept"] = 1 if (not unaligned and not out["ovf"] and not out["oob"]) else 0
+        out["accept"] = 1 if (not unaligned and not out["line_oob"]
+                              and not out["ovf"] and not out["oob"]) else 0
     return out

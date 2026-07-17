@@ -42,8 +42,7 @@ xsim:
 	@bash scripts/run_xsim_crosscheck.sh
 
 formal:
-	@if command -v sby >/dev/null; then bash scripts/run_formal.sh; \
-	 else echo "FORMAL: BLOCKED — SymbiYosys (sby) not installed. Properties are in RTL under \`ifdef FORMAL."; fi
+	@bash scripts/run_formal.sh
 
 reports evidence:
 	@bash scripts/make_manifest.sh

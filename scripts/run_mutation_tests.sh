@@ -35,25 +35,30 @@ DVEC="tb/vectors/dec_4w_40x32.vec"
 CVEC="tb/vectors/cfg_4w_40x32.vec"
 
 echo "## Mutation tests (each must be KILLED)"
+A='assign accept         = live && !unaligned && !line_oob && !ovf_raw && !oob_raw;'
 # M1 fail-closed classification: single_match also true on multi-match
 mutate "fail-closed multi-match" rtl/core/hdm_decoder.sv \
   's/assign single_match   = (n_match == 1);/assign single_match   = (n_match >= 1);/' \
   tb_hdm_decoder "$DEC" "$DVEC"
 # M2 alignment enforcement dropped from accept
 mutate "alignment rejection" rtl/core/dpa_translator.sv \
-  's/assign accept         = live \&\& !unaligned \&\& !ovf_raw \&\& !oob_raw;/assign accept         = live \&\& !ovf_raw \&\& !oob_raw;/' \
+  "s/!unaligned && !line_oob/!line_oob/" \
   tb_hdm_decoder "$DEC" "$DVEC"
 # M3 device-capacity (oob) check dropped from accept
 mutate "device-capacity bound" rtl/core/dpa_translator.sv \
-  's/assign accept         = live \&\& !unaligned \&\& !ovf_raw \&\& !oob_raw;/assign accept         = live \&\& !unaligned \&\& !ovf_raw;/' \
+  "s/&& !ovf_raw && !oob_raw;/\&\& !ovf_raw;/" \
   tb_hdm_decoder "$DEC" "$DVEC"
-# M4 config validation disabled (everything "valid")
+# M4 full-64B-line HPA containment dropped from accept
+mutate "line-containment (HPA+63)" rtl/core/dpa_translator.sv \
+  "s/!line_oob && !ovf_raw/!ovf_raw/" \
+  tb_hdm_decoder "$DEC" "$DVEC"
+# M5 config validation disabled (everything "valid")
 mutate "config validation" rtl/csr/hdm_config.sv \
   's/shadow_valid = (shadow_reason == CFG_OK);/shadow_valid = 1'"'"'b1;/' \
   tb_hdm_config "$CFG" "$CVEC"
-# M5 drain gate disabled (commit allowed while outstanding)
-mutate "drain gate" rtl/csr/hdm_config.sv \
-  's/if (outstanding_cnt != '"'"'0) begin/if (1'"'"'b0) begin/' \
+# M6 drain removed: commit without waiting for outstanding to reach 0
+mutate "freeze/drain protocol" rtl/csr/hdm_config.sv \
+  "s/if (outstanding_cnt == '0) state <= S_COMMIT;/if (1'b1) state <= S_COMMIT;/" \
   tb_hdm_config "$CFG" "$CVEC"
 
 echo "=================================================="

@@ -1,9 +1,9 @@
 // tb_hdm_config.sv
-// Verifies hdm_config: shadow->validate->atomic-commit protocol, per-reason
-// validation (differential vs the Python model's cfg_*.vec), config epoch,
-// the outstanding/drain gate, and atomicity of rejected commits.
+// Verifies hdm_config: freeze->drain->atomic-commit->reopen protocol, per-reason
+// validation (differential vs the Python model's cfg_*.vec), config epoch, and
+// the same-cycle-race guarantees (no new request accepted while frozen; active
+// config stable while traffic outstanding; every accepted request one epoch).
 `timescale 1ns/1ps
-`include "cxl_types_pkg.sv"
 
 `ifndef NWIN
  `define NWIN 4
@@ -25,15 +25,16 @@ module tb_hdm_config;
   logic clk = 0; always #5 clk = ~clk;
   logic rst_n;
 
-  logic                    sh_we, sh_en_i, sh_cap_we, commit;
+  logic                    sh_we, sh_en_i, sh_cap_we, cfg_update_req;
   logic [IDX_W-1:0]        sh_idx;
   logic [HPA_W-1:0]        sh_base_i, sh_size_i;
   logic [DPA_W-1:0]        sh_dpa_i;
   logic [DPA_W:0]          sh_cap_i;
   logic [OCNT_W-1:0]       outstanding_cnt;
-  logic                    cfg_committed, cfg_reject;
+  logic                    traffic_freeze, req_accept_enable, cfg_update_done, cfg_ok, cfg_reject;
   logic [3:0]              cfg_reason;
   logic [15:0]             cfg_epoch;
+  logic [1:0]              cfg_state;
   logic [N_WIN-1:0]              win_en;
   logic [N_WIN-1:0][HPA_W-1:0]  win_base, win_size;
   logic [N_WIN-1:0][DPA_W-1:0]  win_dpa_base;
@@ -41,18 +42,15 @@ module tb_hdm_config;
 
   hdm_config #(.HPA_W(HPA_W), .DPA_W(DPA_W), .N_WIN(N_WIN), .OCNT_W(OCNT_W)) dut (.*);
 
-  localparam logic [3:0] CFG_OK=0, CFG_BUSY=9;
+  localparam logic [3:0] CFG_OK=0;
 
   integer errors=0, checks=0;
   logic [15:0] exp_epoch=0;
 
-  // module-level shadow temps (Icarus rejects unpacked-array task ports, so the
-  // load task reads these directly rather than taking array arguments)
   logic             t_en[N_WIN];
   logic [HPA_W-1:0] t_base[N_WIN], t_size[N_WIN];
   logic [DPA_W-1:0] t_dpa[N_WIN];
 
-  // Load the current t_* temps into shadow (one window per cycle), then cap.
   task load_shadow(input logic [DPA_W:0] cap);
     int k;
     begin
@@ -65,21 +63,18 @@ module tb_hdm_config;
     end
   endtask
 
-  // Latched verdict (cfg_committed/cfg_reject/cfg_reason are 1-cycle pulses).
-  logic       s_committed, s_reject;
-  logic [3:0] s_reason;
-  logic [15:0] s_epoch;
+  // Latched verdict (cfg_ok/cfg_reject/cfg_update_done are 1-cycle pulses).
+  logic       s_ok, s_reject; logic [3:0] s_reason; logic [15:0] s_epoch;
 
-  // Pulse commit for one cycle and SAMPLE the verdict at the capturing edge.
-  task do_commit;
+  // Pulse cfg_update_req and wait (bounded) for cfg_update_done, sampling verdict.
+  task do_update;
+    int guard;
     begin
-      commit=1;
-      @(negedge clk);                 // the posedge just before this captured commit
-      s_committed = cfg_committed;     // pulses are valid right now
-      s_reject    = cfg_reject;
-      s_reason    = cfg_reason;
-      s_epoch     = cfg_epoch;
-      commit=0;
+      @(negedge clk); cfg_update_req=1;
+      @(negedge clk); cfg_update_req=0;
+      guard=0;
+      while (!cfg_update_done && guard<2000) begin @(negedge clk); guard++; end
+      s_ok=cfg_ok; s_reject=cfg_reject; s_reason=cfg_reason; s_epoch=cfg_epoch;
       @(negedge clk);
     end
   endtask
@@ -101,6 +96,7 @@ module tb_hdm_config;
       if (f_n!=N_WIN||f_h!=HPA_W||f_d!=DPA_W) begin
         $display("TB_RESULT: FAIL (param mismatch)"); $finish; end
       $display("=== tb_hdm_config file=%s vectors=%0d ===", vecfile, count);
+      outstanding_cnt=0;   // file phase always drained -> valid configs commit
       for (i=0;i<count;i++) begin
         rc=$fscanf(fd,"%h",u_cap);
         for (k=0;k<N_WIN;k++) begin
@@ -108,17 +104,16 @@ module tb_hdm_config;
           t_en[k]=u_en[0]; t_base[k]=u_base[HPA_W-1:0]; t_size[k]=u_size[HPA_W-1:0]; t_dpa[k]=u_dpa[DPA_W-1:0];
         end
         rc=$fscanf(fd,"%h %h", e_valid, e_reason);
-        outstanding_cnt=0;
         load_shadow(u_cap[DPA_W:0]);
-        do_commit();
+        do_update();
         checks++;
         if (e_valid[0]) begin
-          if (s_committed!==1'b1 || s_reject!==1'b0) begin
-            errors++; if(errors<=20) $display("[FAIL] cfg vec %0d expected COMMIT got committed=%b reject=%b reason=%0d",i,s_committed,s_reject,s_reason);
+          if (s_ok!==1'b1 || s_reject!==1'b0) begin
+            errors++; if(errors<=20) $display("[FAIL] cfg vec %0d expected OK got ok=%b reject=%b reason=%0d",i,s_ok,s_reject,s_reason);
           end else exp_epoch++;
         end else begin
           if (s_reject!==1'b1 || s_reason!==e_reason[3:0]) begin
-            errors++; if(errors<=20) $display("[FAIL] cfg vec %0d expected REJECT reason=%0d got reject=%b reason=%0d committed=%b",i,e_reason[3:0],s_reject,s_reason,s_committed);
+            errors++; if(errors<=20) $display("[FAIL] cfg vec %0d expected REJECT reason=%0d got reject=%b reason=%0d ok=%b",i,e_reason[3:0],s_reject,s_reason,s_ok);
           end
         end
         if (cfg_epoch!==exp_epoch) begin
@@ -130,55 +125,87 @@ module tb_hdm_config;
     end
   endtask
 
-  // ---- directed protocol tests --------------------------------------------
+  // ---- directed protocol / race tests -------------------------------------
   logic [N_WIN-1:0] active_en_snapshot;
+  logic [15:0]      epoch_snapshot;
 
   task directed;
-    int k;
+    int k, guard;
     begin
-      // a clean valid window-0-only config using small, width-safe constants
-      // (fits every sweep config incl. N_WIN=1, HPA_W=32, DPA_W=24).
       for (k=0;k<N_WIN;k++) begin t_en[k]=0; t_base[k]=0; t_size[k]=0; t_dpa[k]=0; end
       t_en[0]=1; t_base[0]='h0000_1000; t_size[0]='h0001_0000; t_dpa[0]=0;
 
-      // D1: drain gate — commit while outstanding!=0 must reject with BUSY, no epoch bump, active untouched
-      active_en_snapshot = win_en;
+      // D1: FREEZE->DRAIN->COMMIT. Start reconfig with outstanding traffic.
+      active_en_snapshot = win_en; epoch_snapshot = cfg_epoch;
       outstanding_cnt=16'd5;
-      load_shadow('h40_0000);  // 4 MiB capacity, comfortably > window
-      do_commit();
-      checks++;
-      if (s_reject!==1'b1 || s_reason!==CFG_BUSY || s_committed!==1'b0 ||
-          s_epoch!==exp_epoch || win_en!==active_en_snapshot) begin
-        errors++; $display("[FAIL] D1 drain-gate: reject=%b reason=%0d committed=%b epoch=%0d(exp %0d)",
-                           s_reject,s_reason,s_committed,s_epoch,exp_epoch);
-      end else $display("[pass] D1 drain-gate rejects commit while outstanding");
-
-      // D2: now drained — same config commits, epoch++, active reflects window 0 enabled
-      outstanding_cnt=0;
-      do_commit();     // shadow still holds the config
-      checks++; exp_epoch++;
-      if (s_committed!==1'b1 || s_epoch!==exp_epoch || win_en[0]!==1'b1) begin
-        errors++; $display("[FAIL] D2 commit-when-drained: committed=%b epoch=%0d win_en=%b",s_committed,s_epoch,win_en);
-      end else $display("[pass] D2 commit when drained (epoch=%0d, active updated)",s_epoch);
-
-      // D3: atomicity — load an INVALID window-0 (unaligned base), commit ->
-      // reject, active config must stay as the D2-committed one.
-      active_en_snapshot = win_en;
-      t_en[0]=1; t_base[0]='h0000_1020; t_size[0]='h0001_0000; t_dpa[0]=0; // base not 64B aligned
       load_shadow('h40_0000);
-      do_commit();
+      @(negedge clk); cfg_update_req=1; @(negedge clk); cfg_update_req=0;
+      // FSM should now be FREEZE: hold here for several cycles with traffic present
+      repeat (6) begin
+        @(negedge clk); checks++;
+        if (traffic_freeze!==1'b1 || req_accept_enable!==1'b0) begin
+          errors++; $display("[FAIL] D1 not frozen: freeze=%b accept_en=%b",traffic_freeze,req_accept_enable);
+        end
+        // P4: active config + epoch stable while draining
+        if (win_en!==active_en_snapshot || cfg_epoch!==epoch_snapshot) begin
+          errors++; $display("[FAIL] D1 config changed during drain");
+        end
+        if (cfg_update_done!==1'b0) begin errors++; $display("[FAIL] D1 committed before drain"); end
+      end
+      // now drain: outstanding -> 0; FSM should commit
+      outstanding_cnt=0;
+      guard=0; while (!cfg_update_done && guard<50) begin @(negedge clk); guard++; end
+      checks++; exp_epoch=epoch_snapshot+16'd1;
+      if (cfg_ok!==1'b1 || cfg_epoch!==exp_epoch || win_en[0]!==1'b1) begin
+        errors++; $display("[FAIL] D1 commit after drain: ok=%b epoch=%0d win_en=%b",cfg_ok,cfg_epoch,win_en);
+      end else $display("[pass] D1 freeze->drain->commit (epoch %0d)",cfg_epoch);
+      @(negedge clk);
+      // req_accept_enable reopens
       checks++;
-      if (s_reject!==1'b1 || s_committed!==1'b0 || s_epoch!==exp_epoch || win_en!==active_en_snapshot) begin
-        errors++; $display("[FAIL] D3 atomicity: reject=%b committed=%b epoch=%0d active=%b(snap %b)",
-                           s_reject,s_committed,s_epoch,win_en,active_en_snapshot);
-      end else $display("[pass] D3 rejected commit leaves active config unchanged (atomic)");
+      if (req_accept_enable!==1'b1 || traffic_freeze!==1'b0) begin
+        errors++; $display("[FAIL] D1 did not reopen: accept_en=%b freeze=%b",req_accept_enable,traffic_freeze);
+      end else $display("[pass] D1 reopens after commit");
+
+      // D2: invalid config is rejected immediately (no freeze, no epoch bump)
+      active_en_snapshot = win_en; epoch_snapshot = cfg_epoch;
+      outstanding_cnt=0;
+      t_en[0]=1; t_base[0]='h0000_1020; t_size[0]='h0001_0000; t_dpa[0]=0; // unaligned base
+      load_shadow('h40_0000);
+      do_update();
+      checks++;
+      if (s_reject!==1'b1 || s_ok!==1'b0 || cfg_epoch!==epoch_snapshot || win_en!==active_en_snapshot) begin
+        errors++; $display("[FAIL] D2 invalid reject: reject=%b ok=%b epoch=%0d active=%b(snap %b)",
+                           s_reject,s_ok,cfg_epoch,win_en,active_en_snapshot);
+      end else $display("[pass] D2 invalid config rejected immediately, active unchanged");
+
+      // D3: same-cycle race — request accepted the cycle cfg_update_req fires must
+      // see the OLD config and drain before commit. Model an in-flight request by
+      // asserting outstanding_cnt=1 on the same negedge as the update request; the
+      // FSM must freeze and hold commit until it drains.
+      for (k=0;k<N_WIN;k++) begin t_en[k]=0; t_base[k]=0; t_size[k]=0; t_dpa[k]=0; end
+      t_en[0]=1; t_base[0]='h0002_0000; t_size[0]='h0001_0000; t_dpa[0]=0;
+      load_shadow('h40_0000);
+      epoch_snapshot = cfg_epoch;
+      @(negedge clk); cfg_update_req=1; outstanding_cnt=16'd1; // request enters same cycle
+      @(negedge clk); cfg_update_req=0;
+      // must NOT have committed while the in-flight request is outstanding
+      repeat (4) begin
+        @(negedge clk); checks++;
+        if (cfg_epoch!==epoch_snapshot) begin errors++; $display("[FAIL] D3 committed while request in flight (race)"); end
+        if (req_accept_enable!==1'b0) begin errors++; $display("[FAIL] D3 accepting new requests while frozen"); end
+      end
+      outstanding_cnt=0;   // in-flight request retires
+      guard=0; while (!cfg_update_done && guard<50) begin @(negedge clk); guard++; end
+      checks++;
+      if (cfg_ok!==1'b1 || cfg_epoch!==epoch_snapshot+16'd1) begin
+        errors++; $display("[FAIL] D3 did not commit after drain");
+      end else $display("[pass] D3 no commit-vs-request race; commit only after drain (epoch %0d)",cfg_epoch);
     end
   endtask
 
   initial begin
     sh_we=0; sh_en_i=0; sh_base_i=0; sh_size_i=0; sh_dpa_i=0; sh_cap_we=0; sh_cap_i=0;
-    commit=0; sh_idx=0; outstanding_cnt=0;
-    // reset
+    cfg_update_req=0; sh_idx=0; outstanding_cnt=0;
     dut_reset;
     run_file();
     directed();

@@ -6,8 +6,8 @@
       |        ^~~~~~~~~~~~~
                        ... For warning description see https://verilator.org/warn/TIMESCALEMOD?v=5.020
                        ... Use "/* verilator lint_off TIMESCALEMOD */" and lint_on around source to disable this message.
-%Warning-TIMESCALEMOD: rtl/csr/hdm_config.sv:16:8: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
-   16 | module hdm_config #(
+%Warning-TIMESCALEMOD: rtl/csr/hdm_config.sv:21:8: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+   21 | module hdm_config #(
       |        ^~~~~~~~~~
                        tb/sv/tb_hdm_config.sv:18:8: ... Location of module with timescale
    18 | module tb_hdm_config;

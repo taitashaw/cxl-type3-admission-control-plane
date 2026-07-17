@@ -1,50 +1,50 @@
 %Warning-TIMESCALEMOD: rtl/interfaces/cxl_types_pkg.sv:13:9: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
    13 | package cxl_types_pkg;
       |         ^~~~~~~~~~~~~
-                       tb/sv/tb_hdm_decoder.sv:25:8: ... Location of module with timescale
-   25 | module tb_hdm_decoder;
+                       tb/sv/tb_hdm_decoder.sv:24:8: ... Location of module with timescale
+   24 | module tb_hdm_decoder;
       |        ^~~~~~~~~~~~~~
                        ... For warning description see https://verilator.org/warn/TIMESCALEMOD?v=5.020
                        ... Use "/* verilator lint_off TIMESCALEMOD */" and lint_on around source to disable this message.
-%Warning-TIMESCALEMOD: rtl/core/hdm_decoder.sv:22:8: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
-   22 | module hdm_decoder #(
+%Warning-TIMESCALEMOD: rtl/core/hdm_decoder.sv:21:8: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+   21 | module hdm_decoder #(
       |        ^~~~~~~~~~~
-                       tb/sv/tb_hdm_decoder.sv:25:8: ... Location of module with timescale
-   25 | module tb_hdm_decoder;
+                       tb/sv/tb_hdm_decoder.sv:24:8: ... Location of module with timescale
+   24 | module tb_hdm_decoder;
       |        ^~~~~~~~~~~~~~
-%Warning-TIMESCALEMOD: rtl/core/dpa_translator.sv:17:8: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
-   17 | module dpa_translator #(
+%Warning-TIMESCALEMOD: rtl/core/dpa_translator.sv:18:8: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+   18 | module dpa_translator #(
       |        ^~~~~~~~~~~~~~
-                       tb/sv/tb_hdm_decoder.sv:25:8: ... Location of module with timescale
-   25 | module tb_hdm_decoder;
+                       tb/sv/tb_hdm_decoder.sv:24:8: ... Location of module with timescale
+   24 | module tb_hdm_decoder;
       |        ^~~~~~~~~~~~~~
-%Warning-WIDTHEXPAND: rtl/core/hdm_decoder.sv:66:36: Operator GTE expects 32 or 2 bits on the LHS, but LHS's VARREF 'n_match' generates 1 bits.
+%Warning-WIDTHEXPAND: rtl/core/hdm_decoder.sv:67:36: Operator GTE expects 32 or 2 bits on the LHS, but LHS's VARREF 'n_match' generates 1 bits.
                                                    : ... note: In instance 'tb_hdm_decoder.u_dec'
-   66 |   assign overlap_reject = (n_match >= 2);
+   67 |   assign overlap_reject = (n_match >= 2);
       |                                    ^~
-%Warning-INITIALDLY: tb/sv/tb_hdm_decoder.sv:101:17: Non-blocking assignment '<=' in initial/final block
+%Warning-INITIALDLY: tb/sv/tb_hdm_decoder.sv:100:17: Non-blocking assignment '<=' in initial/final block
                                                    : ... This will be executed as a blocking assignment '='!
-  101 |         win_en_r[k]   <= t_en[k];
+  100 |         win_en_r[k]   <= t_en[k];
       |                 ^
+%Warning-INITIALDLY: tb/sv/tb_hdm_decoder.sv:101:23: Non-blocking assignment '<=' in initial/final block
+                                                   : ... This will be executed as a blocking assignment '='!
+  101 |         win_base_r[k] <= t_base[k];
+      |                       ^~
 %Warning-INITIALDLY: tb/sv/tb_hdm_decoder.sv:102:23: Non-blocking assignment '<=' in initial/final block
                                                    : ... This will be executed as a blocking assignment '='!
-  102 |         win_base_r[k] <= t_base[k];
+  102 |         win_size_r[k] <= t_size[k];
       |                       ^~
-%Warning-INITIALDLY: tb/sv/tb_hdm_decoder.sv:103:23: Non-blocking assignment '<=' in initial/final block
+%Warning-INITIALDLY: tb/sv/tb_hdm_decoder.sv:103:18: Non-blocking assignment '<=' in initial/final block
                                                    : ... This will be executed as a blocking assignment '='!
-  103 |         win_size_r[k] <= t_size[k];
-      |                       ^~
-%Warning-INITIALDLY: tb/sv/tb_hdm_decoder.sv:104:18: Non-blocking assignment '<=' in initial/final block
-                                                   : ... This will be executed as a blocking assignment '='!
-  104 |         win_dpa_r[k]  <= t_dpa[k];
+  103 |         win_dpa_r[k]  <= t_dpa[k];
       |                  ^
+%Warning-INITIALDLY: tb/sv/tb_hdm_decoder.sv:105:13: Non-blocking assignment '<=' in initial/final block
+                                                   : ... This will be executed as a blocking assignment '='!
+  105 |       cap_r <= u_cap[DPA_W:0];
+      |             ^~
 %Warning-INITIALDLY: tb/sv/tb_hdm_decoder.sv:106:13: Non-blocking assignment '<=' in initial/final block
                                                    : ... This will be executed as a blocking assignment '='!
-  106 |       cap_r <= u_cap[DPA_W:0];
-      |             ^~
-%Warning-INITIALDLY: tb/sv/tb_hdm_decoder.sv:107:13: Non-blocking assignment '<=' in initial/final block
-                                                   : ... This will be executed as a blocking assignment '='!
-  107 |       hpa_r <= u_hpa[HPA_W-1:0];
+  106 |       hpa_r <= u_hpa[HPA_W-1:0];
       |             ^~
 make: Entering directory '/home/jotshawlinux/Downloads/project2_cxl_validation/sim/verilator/obj_tb_hdm_decoder_1w_32x24'
 g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -c -o verilated.o /usr/share/verilator/include/verilated.cpp

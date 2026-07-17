@@ -17,7 +17,6 @@
 // protocol behavior.)
 `ifndef HDM_DECODER_SV
 `define HDM_DECODER_SV
-`include "cxl_types_pkg.sv"
 
 module hdm_decoder #(
   parameter int unsigned HPA_W  = 40,
@@ -38,11 +37,13 @@ module hdm_decoder #(
   output logic                         miss,         // zero matches
   output logic                         overlap_reject,// >=2 matches (fail closed)
   output logic                         unaligned,    // hpa not 64B aligned
+  output logic                         line_oob,     // 64B line spills past window limit
   output logic [IDX_W-1:0]             win_id,       // DIAGNOSTIC lowest match idx
   output logic [HPA_W-1:0]             matched_base,
   output logic [DPA_W-1:0]             matched_dpa_base
 );
-  import cxl_types_pkg::*;
+  localparam int unsigned LINE = 64;   // 64-byte cache line
+  localparam int unsigned LINE_OFF_W = 6;   // log2(LINE)
 
   // ---- per-window containment (overflow-safe guard bit) -------------------
   logic [HPA_W:0] hpa_ext;
@@ -76,7 +77,14 @@ module hdm_decoder #(
   assign matched_base     = win_base[sel];
   assign matched_dpa_base = win_dpa_base[sel];
 
-  assign unaligned = !is_line_aligned({{(64-HPA_W){1'b0}}, hpa});
+  assign unaligned = (hpa[LINE_OFF_W-1:0] != '0);   // not 64B aligned
+
+  // Full 64-byte cache-line containment: the whole line [hpa, hpa+63] must lie
+  // inside the matched window, checked with a guard bit (line-end arithmetic).
+  logic [HPA_W:0] matched_limit, hpa_line_end;
+  assign matched_limit = {1'b0, win_base[sel]} + {1'b0, win_size[sel]};
+  assign hpa_line_end  = {1'b0, hpa} + {{(HPA_W+1-7){1'b0}}, 7'(LINE-1)};
+  assign line_oob      = single_match && (hpa_line_end >= matched_limit);
 
 `ifdef FORMAL
   // Fail-closed / containment properties. Guarded to FORMAL so they are proved

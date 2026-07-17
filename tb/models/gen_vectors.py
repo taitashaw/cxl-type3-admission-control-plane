@@ -81,7 +81,7 @@ def emit_dec(f, cfg, hpa):
     for w in cfg.windows:
         toks += [hx(w.en), hx(w.base), hx(w.size), hx(w.dpa_base)]
     toks += [hx(r["accept"]), hx(r["miss"]), hx(r["overlap"]), hx(r["unaligned"]),
-             hx(r["ovf"]), hx(r["oob"]), hx(r["dpa"])]
+             hx(r["line_oob"]), hx(r["ovf"]), hx(r["oob"]), hx(r["dpa"])]
     f.write(" ".join(toks) + "\n")
 
 def directed_hpas(cfg):
@@ -129,6 +129,20 @@ def main():
             cfgv = rand_config(n, h, d, force_valid=True)
             for hpa in directed_hpas(cfgv):
                 rows.append((cfgv, hpa & mask))
+        # (d) line-spill (line_oob): non-64-multiple window size, hpa at the last
+        #     aligned line so [hpa, hpa+63] straddles the window limit. Tested at
+        #     the decoder (standalone) which accepts arbitrary active configs.
+        for _ in range(300):
+            cap = 1 << d
+            base = aligned(random.randint(0, (1 << h) // 4))
+            size = aligned(random.randint(LINE, (1 << h) // 8)) + (LINE // 2)  # NOT a 64-multiple
+            if base + size >= (1 << h):
+                continue
+            cfg = Config(h, d, cap, [Window(1 if k == 0 else 0,
+                                            base if k == 0 else 0,
+                                            size if k == 0 else 0, 0) for k in range(n)])
+            last_aligned = aligned(base + size - 1)   # highest 64B-aligned addr < base+size
+            rows.append((cfg, last_aligned & mask))
         with open(path, "w") as f:
             f.write(f"{n} {h} {d} {len(rows)}\n")
             for cfg, hpa in rows:

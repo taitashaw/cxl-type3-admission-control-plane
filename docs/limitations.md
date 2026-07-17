@@ -50,18 +50,13 @@ port by combinational logic, was not re-propagated on subsequent `#delay` steps
 in the original combinational-stimulus testbench (Icarus propagated it). A
 minimal reproducer is in the scratch history.
 
-**Resolution / honest status:** this is called a *Verilator-5.020 packed-array
-stimulus incompatibility observed in the original testbench*, **not** a confirmed
-upstream Verilator defect. Verilator could not be upgraded on this host to
-re-test (apt caps at 5.020; a source build needs flex/bison/autoconf, which are
-absent and require sudo). Instead the reviewer-recommended discriminating test
-was run: the hardened testbenches now drive configuration **synchronously**
-(clocked register writes, sampled after the settling edge). Under synchronous
-drive **all engines — Icarus 12.0, Verilator 5.020, and AMD XSim 2025.2 — agree
-across the full 1/2/4/8-window sweep**, which indicates the original divergence
-was tied to combinational blocking-write stimulus style, not the RTL and not a
-proven simulator bug. Confirming an upstream defect would require a current
-Verilator (≥5.036) and, if it persists, an upstream issue filing.
+**Resolution / honest status (precise):** *The discrepancy was isolated to
+asynchronous packed-array testbench stimulus under Verilator 5.020. Synchronous
+registered stimulus eliminated it across three simulators (Icarus 12.0,
+Verilator 5.020, AMD XSim 2025.2); no simulator defect is claimed.* Synchronous
+driving demonstrated a portable workaround — it did not prove Verilator 5.020 is
+defect-free. Confirming or excluding an upstream defect would require a current
+Verilator (≥5.036) and, if it persisted, an upstream issue filing.
 
 - **Verilator `-j 0` threadpool abort**: `--binary -j 0` can abort at process
   exit with "attempted to destroy locked Thread Pool" after a successful build.
@@ -69,14 +64,27 @@ Verilator (≥5.036) and, if it persists, an upstream issue filing.
 - **Verilator 5.020 < 5.036** recommended for *current* cocotb. The regression
   uses native SV testbenches (no cocotb dependency) and runs today.
 
-## Formal verification status
+## Formal verification status — AVAILABLE and PASSING
 
-`` `ifdef FORMAL `` properties are written into the RTL (containment, one-hot
-classification, no-underflow). **Unbounded formal proof is BLOCKED** on this
-host: SymbiYosys/yosys are not installed (yosys is apt-installable but requires
-sudo, not run without approval). The same invariants are checked every vector in
-simulation at the settled sample point, and are mutation-tested
-(`scripts/run_mutation_tests.sh`). Do not read bounded simulation as formal proof.
+Formal is **not** blocked. A pinned **OSS CAD Suite** (Yosys 0.67 + SymbiYosys +
+solvers) is installed rootlessly under `tools/` via
+`scripts/bootstrap_formal.sh` (download → SHA-256 verify → extract, no sudo).
+`make formal` runs two SymbiYosys suites, each with a bounded model check (`bmc`)
+and an **unbounded** safety proof (`prove`/induction):
+
+- `formal/decode.sby` — decoder + translator: accept ⇒ exactly one match,
+  overlap ⇒ ¬accept, accept ⇒ aligned, accept ⇒ full 64B line in window,
+  accept ⇒ ¬underflow ∧ ¬overflow ∧ ¬oob, accept ⇒ DPA = dpa_base+(hpa−base),
+  and one-hot classification. **PASS** (bmc + induction).
+- `formal/config.sby` — config FSM: epoch increments exactly once per commit,
+  active config changes only on commit (atomic), commit only from COMMIT state,
+  FREEZE→COMMIT only when `outstanding_cnt==0` (drain-before-commit),
+  `traffic_freeze ⇒ ¬req_accept_enable`. **PASS** (bmc + induction).
+
+Evidence: `evidence/raw/formal_{decode,config}.log`. The free-Yosys frontend has
+a limited SV subset, so the harnesses use manual state/counter registers rather
+than SVA `$past`/`property`; the proofs are genuine bounded+induction safety
+proofs, not claims of exhaustive liveness/Tabby-grade coverage.
 
 ## Not-yet-claimed (deliberately)
 

@@ -6,13 +6,28 @@ Python reference model (`tb/models/hdm_model.py`) both implement. Differential
 testing checks RTL == model across a 1/2/4/8-window, reduced/production-width
 sweep (`scripts/run_hdm_regression.sh`).
 
-## Configuration (registered, atomic commit)
+## Configuration (registered, freeze→drain→atomic-commit FSM)
 
-Windows are configured through **shadow** registers, then `commit` atomically
-promotes shadow→active iff the config is valid **and** the datapath is drained.
+Windows are configured through **shadow** registers. `cfg_update_req` starts a
+reconfiguration that runs a 3-state FSM:
 
-A commit is **rejected** (active config unchanged, no epoch bump) if, for any
-enabled window, in this priority order:
+```
+ACTIVE  req_accept_enable=1. On cfg_update_req:
+          shadow invalid -> reject now (no freeze), stay ACTIVE
+          shadow valid    -> FREEZE
+FREEZE  traffic_freeze=1, req_accept_enable=0 (no NEW request accepted);
+          wait until outstanding_cnt==0 (in-flight old-epoch traffic drains)
+COMMIT  copy shadow->active atomically, cfg_epoch++, cfg_ok; -> ACTIVE
+```
+
+Shadow writes are ignored while an update is in flight. Because active config
+changes **only** in COMMIT — entered only after freeze + full drain — no accepted
+request can span a config change: **every accepted request captures exactly one
+epoch** (formally proved, `formal/config.sby`). The request path must gate its
+acceptance on `req_accept_enable`.
+
+A reconfiguration is **rejected** immediately (active config unchanged, no epoch
+bump, no freeze) if, for any enabled window, in this priority order:
 
 | reason code | condition |
 |---|---|
@@ -24,10 +39,10 @@ enabled window, in this priority order:
 | 6 `DPA_OVF`    | `dpa_base + size > 2^DPA_W` |
 | 7 `CAP_EXCEED` | `dpa_base + size > dev_capacity` |
 | 8 `OVERLAP`    | two enabled windows overlap in HPA |
-| 9 `BUSY`       | `outstanding_cnt != 0` (drain required) — checked before validation |
 
-On success: active ← shadow atomically, `cfg_epoch` increments, `cfg_committed`
-pulses. All address arithmetic uses guard bits (no wrapped native-width compare).
+On success: active ← shadow atomically, `cfg_epoch` increments, `cfg_ok` +
+`cfg_update_done` pulse. All address arithmetic uses guard bits (no wrapped
+native-width compare).
 
 ## Decode (combinational, fail-closed)
 
@@ -40,25 +55,32 @@ Against the **active** config, for an incoming HPA:
 `win_id` is a **diagnostic** (lowest matching index) and never authorizes a
 transaction on its own. `unaligned = (hpa % 64 != 0)`.
 
-## Translate (widened arithmetic, explicit taxonomy)
+## Translate (widened arithmetic, full-64B-line taxonomy)
 
-On `single_match`:
+Bounds cover the COMPLETE 64-byte line, not just the start address. On
+`single_match` (with `line_oob = hpa+63 ≥ window_limit` from the decoder):
 ```
 offset          = hpa - matched_base           (underflow flagged if hpa < base; must not occur)
 dpa             = matched_dpa_base + offset
-xlate_overflow  = dpa >= 2^DPA_W                (DPA-space wrap)
-dpa_oob         = dpa >= dev_capacity           (past installed device)
-accept          = single_match & ~unaligned & ~xlate_overflow & ~dpa_oob
+xlate_overflow  = dpa+63 >= 2^DPA_W             (line-end wraps DPA space)
+dpa_oob         = dpa+63 >= dev_capacity        (line-end past installed device)
+accept          = single_match & ~unaligned & ~line_oob & ~xlate_overflow & ~dpa_oob
 ```
 With no single match: `dpa = 0`, no error flags, `accept = 0`.
 
-## Formal properties (written; proof BLOCKED here)
+## Formal properties (PROVED — `make formal`)
 
-Under `` `ifdef FORMAL `` in the RTL, ready for SymbiYosys:
-- classification is one-hot/total (`miss + single_match + overlap_reject == 1`)
-- `single_match ⇔ popcount(match_onehot) == 1`
-- `single_match ⇒ hpa ≥ matched_base` (no underflow)
+SymbiYosys (local OSS CAD Suite) proves, with bounded model checking AND
+unbounded induction:
 
-Unbounded formal proof is BLOCKED on this host (sby not installed; see
-`docs/limitations.md`). The same invariants are checked every vector at the
-settled sample point in simulation, and the properties are mutation-tested.
+Decoder/translator (`formal/decode.sby`): accept ⇒ exactly one match; overlap ⇒
+¬accept; accept ⇒ aligned; accept ⇒ ¬line_oob (whole line in window); accept ⇒
+¬underflow∧¬overflow∧¬oob; accept ⇒ dpa = dpa_base+(hpa−base); one-hot
+classification.
+
+Config FSM (`formal/config.sby`): epoch increments exactly once per commit;
+active config changes only on commit (atomic); commit only from COMMIT; FREEZE→
+COMMIT only when `outstanding_cnt==0`; `traffic_freeze ⇒ ¬req_accept_enable`.
+
+These are genuine bounded+induction safety proofs; see `docs/limitations.md` for
+the free-Yosys subset caveat (no liveness/Tabby-grade claims).

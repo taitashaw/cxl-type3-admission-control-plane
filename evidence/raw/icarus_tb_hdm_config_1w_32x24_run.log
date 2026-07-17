@@ -1,7 +1,8 @@
 === tb_hdm_config file=tb/vectors/cfg_1w_32x24.vec vectors=2000 ===
-[pass] D1 drain-gate rejects commit while outstanding
-[pass] D2 commit when drained (epoch=289, active updated)
-[pass] D3 rejected commit leaves active config unchanged (atomic)
-=== checks=2003 errors=0 ===
+[pass] D1 freeze->drain->commit (epoch 290)
+[pass] D1 reopens after commit
+[pass] D2 invalid config rejected immediately, active unchanged
+[pass] D3 no commit-vs-request race; commit only after drain (epoch 291)
+=== checks=2014 errors=0 ===
 TB_RESULT: PASS
-tb/sv/tb_hdm_config.sv:187: $finish called at 100160000 (1ps)
+tb/sv/tb_hdm_config.sv:214: $finish called at 126130000 (1ps)

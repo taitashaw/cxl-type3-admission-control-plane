@@ -1,17 +1,22 @@
 // hdm_config.sv
-// Registered HDM window configuration with atomic, validated commit.
+// Registered HDM window configuration with a real FREEZE -> DRAIN -> atomic
+// COMMIT -> REOPEN protocol (not a bare busy-reject gate).
 //
-// Model: SHADOW registers (freely written) -> validate on `commit` -> if valid
-// AND the datapath is drained (outstanding_cnt == 0) -> copy shadow to ACTIVE
-// registers atomically and bump the config epoch. Otherwise the commit is
-// REJECTED with a reason code and the ACTIVE config is left untouched.
+//   ACTIVE : req_accept_enable=1. On cfg_update_req:
+//              - shadow invalid  -> reject immediately (no freeze), stay ACTIVE
+//              - shadow valid     -> go to FREEZE
+//   FREEZE : traffic_freeze=1, req_accept_enable=0 (no NEW request accepted).
+//              wait until outstanding_cnt==0 (in-flight old-epoch traffic drains)
+//   COMMIT : still frozen; copy shadow->active atomically, bump epoch, done.
+//              -> ACTIVE
 //
-// This eliminates ambiguous partial/mid-flight configuration and gives the
-// decoder a stable, validated ACTIVE config to read. Reason codes match the
-// independent Python reference model (tb/models/hdm_model.py).
+// Shadow writes are ignored while an update is in flight (shadow frozen), so the
+// config validated at request time is exactly what commits. Because active
+// config changes ONLY in COMMIT — entered only after freeze + full drain — no
+// accepted request can ever span a configuration change: every accepted request
+// captures exactly one epoch. Reason codes match tb/models/hdm_model.py.
 `ifndef HDM_CONFIG_SV
 `define HDM_CONFIG_SV
-`include "cxl_types_pkg.sv"
 
 module hdm_config #(
   parameter int unsigned HPA_W = 40,
@@ -33,13 +38,17 @@ module hdm_config #(
   input  logic                       sh_cap_we,
   input  logic [DPA_W:0]             sh_cap_i,
 
-  // Commit protocol
-  input  logic                       commit,          // 1-cycle pulse
+  // Reconfiguration protocol
+  input  logic                       cfg_update_req,  // 1-cycle pulse: begin reconfig
   input  logic [OCNT_W-1:0]          outstanding_cnt, // from tracker; 0 == drained
-  output logic                       cfg_committed,   // pulse: active updated
-  output logic                       cfg_reject,      // pulse: commit refused
-  output logic [3:0]                 cfg_reason,      // reason for last commit attempt
+  output logic                       traffic_freeze,  // level: block new requests
+  output logic                       req_accept_enable,// level: request path may accept
+  output logic                       cfg_update_done, // pulse: reconfig finished
+  output logic                       cfg_ok,          // pulse (with done): success
+  output logic                       cfg_reject,      // pulse (with done): refused
+  output logic [3:0]                 cfg_reason,      // reason for last attempt
   output logic [15:0]                cfg_epoch,       // increments per successful commit
+  output logic [1:0]                 cfg_state,       // FSM state (observability/formal)
 
   // Active (validated) configuration for the decoder
   output logic [N_WIN-1:0]           win_en,
@@ -48,12 +57,11 @@ module hdm_config #(
   output logic [N_WIN-1:0][DPA_W-1:0] win_dpa_base,
   output logic [DPA_W:0]             dev_capacity
 );
-  import cxl_types_pkg::*;
 
   // reason codes (match hdm_model.py)
   localparam logic [3:0] CFG_OK=0, CFG_ZERO_SIZE=1, CFG_BASE_ALIGN=2, CFG_SIZE_ALIGN=3,
                          CFG_DPA_ALIGN=4, CFG_HPA_OVF=5, CFG_DPA_OVF=6, CFG_CAP_EXCEED=7,
-                         CFG_OVERLAP=8, CFG_BUSY=9;
+                         CFG_OVERLAP=8;
 
   // ---- shadow + active storage (unpacked for portable element writes) -----
   logic              sh_en   [N_WIN];
@@ -145,7 +153,17 @@ module hdm_config #(
     shadow_valid = (shadow_reason == CFG_OK);
   end
 
-  // ---- sequential: shadow writes + atomic commit --------------------------
+  // ---- FSM: freeze -> drain -> atomic commit -> reopen --------------------
+  typedef enum logic [1:0] {S_ACTIVE, S_FREEZE, S_COMMIT} state_e;
+  state_e state;
+
+  // freeze/accept are pure functions of state; in ACTIVE the request path may
+  // accept (a request accepted the same cycle as cfg_update_req is old-epoch and
+  // will be drained before any commit).
+  assign traffic_freeze    = (state != S_ACTIVE);
+  assign req_accept_enable = (state == S_ACTIVE);
+  assign cfg_state         = 2'(state);
+
   integer k;
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
@@ -154,40 +172,57 @@ module hdm_config #(
         act_en[k]<=1'b0; act_base[k]<='0; act_size[k]<='0; act_dpa[k]<='0;
       end
       sh_cap<='0; act_cap<='0;
-      cfg_committed<=1'b0; cfg_reject<=1'b0; cfg_reason<=CFG_OK; cfg_epoch<='0;
+      cfg_ok<=1'b0; cfg_reject<=1'b0; cfg_update_done<=1'b0;
+      cfg_reason<=CFG_OK; cfg_epoch<='0; state<=S_ACTIVE;
     end else begin
-      cfg_committed <= 1'b0;
-      cfg_reject    <= 1'b0;
+      cfg_ok          <= 1'b0;
+      cfg_reject      <= 1'b0;
+      cfg_update_done <= 1'b0;
 
-      if (sh_we) begin
-        sh_en[sh_idx]   <= sh_en_i;
-        sh_base[sh_idx] <= sh_base_i;
-        sh_size[sh_idx] <= sh_size_i;
-        sh_dpa[sh_idx]  <= sh_dpa_i;
+      // Shadow writes accepted only while ACTIVE (shadow frozen during reconfig
+      // so the config validated at request time is exactly what commits).
+      if (state == S_ACTIVE) begin
+        if (sh_we) begin
+          sh_en[sh_idx]   <= sh_en_i;
+          sh_base[sh_idx] <= sh_base_i;
+          sh_size[sh_idx] <= sh_size_i;
+          sh_dpa[sh_idx]  <= sh_dpa_i;
+        end
+        if (sh_cap_we) sh_cap <= sh_cap_i;
       end
-      if (sh_cap_we) sh_cap <= sh_cap_i;
 
-      if (commit) begin
-        if (outstanding_cnt != '0) begin
-          // datapath not drained -> refuse (drain required)
-          cfg_reject <= 1'b1;
-          cfg_reason <= CFG_BUSY;
-        end else if (shadow_valid) begin
+      unique case (state)
+        S_ACTIVE: begin
+          if (cfg_update_req) begin
+            if (!shadow_valid) begin
+              // fast reject: no point freezing/draining for an invalid config
+              cfg_reject      <= 1'b1;
+              cfg_update_done <= 1'b1;
+              cfg_reason      <= shadow_reason;
+            end else begin
+              state <= S_FREEZE;   // valid -> freeze new traffic, then drain
+            end
+          end
+        end
+        S_FREEZE: begin
+          if (outstanding_cnt == '0) state <= S_COMMIT;  // fully drained
+        end
+        S_COMMIT: begin
           for (k = 0; k < N_WIN; k++) begin
             act_en[k]   <= sh_en[k];
             act_base[k] <= sh_base[k];
             act_size[k] <= sh_size[k];
             act_dpa[k]  <= sh_dpa[k];
           end
-          act_cap       <= sh_cap;
-          cfg_epoch     <= cfg_epoch + 16'd1;
-          cfg_committed <= 1'b1;
-          cfg_reason    <= CFG_OK;
-        end else begin
-          cfg_reject <= 1'b1;
-          cfg_reason <= shadow_reason;
+          act_cap         <= sh_cap;
+          cfg_epoch       <= cfg_epoch + 16'd1;
+          cfg_ok          <= 1'b1;
+          cfg_update_done <= 1'b1;
+          cfg_reason      <= CFG_OK;
+          state           <= S_ACTIVE;
         end
-      end
+        default: state <= S_ACTIVE;
+      endcase
     end
   end
 endmodule

@@ -25,16 +25,22 @@ make all-free    # inventory + lint + unit
 requires a commercial licence or connected FPGA.
 
 ### Current verified status (hardened M1)
-- **RTL_SIMULATED**: registered-config → fail-closed decode → HPA→DPA translate.
-  ~29k differential checks/engine against an **independent Python reference
-  model** across a **1/2/4/8-window, reduced/production-width sweep** on both
-  Icarus 12.0 and Verilator 5.020, plus a reduced **AMD XSim** tri-engine
-  cross-check, plus **5/5 mutation tests** proving each protection is observable.
-- Defensible résumé wording: *"Implemented and dual-simulator verified a
-  parameterized HDM-style address-window decoder and HPA-to-DPA translator with
-  overlap, alignment, overflow and capacity checks."* Not yet a full "CXL Type-3
-  validation platform" — see `evidence/claims_matrix.csv`.
-- Formal proof: properties written under `` `ifdef FORMAL ``; **BLOCKED** on sby install.
+- **RTL_SIMULATED**: FREEZE→DRAIN→atomic-COMMIT config → fail-closed decode →
+  HPA→DPA translate. ~30k differential checks/engine against an **independent
+  Python reference model** across `N_WIN∈{1,2,4,8}` and `(HPA_W,DPA_W)∈
+  {(32,24),(40,32),(44,36)}` on Icarus 12.0 + Verilator 5.020, a reduced **AMD
+  XSim 2025.2** tri-engine cross-check, and **6/6 mutation tests**.
+- **FORMAL (proved)**: `make formal` runs SymbiYosys (local OSS CAD Suite,
+  rootless) — bounded + **unbounded** safety proofs for the decoder/translator
+  containment + translation properties and the config FSM (atomic commit,
+  drain-before-commit, no config/request race, epoch monotonicity).
+- Bounds cover the **complete 64-byte cache line** (HPA+63 in window, DPA+63 <
+  capacity), guard-bit arithmetic throughout.
+- Defensible résumé wording: *"Implemented, dual-simulator verified, and
+  formally proved a parameterized HDM-style address-window decoder + HPA-to-DPA
+  translator (overlap, alignment, full-64B-line and capacity checks) with a
+  registered freeze/drain/atomic-commit configuration controller."* Not yet a
+  full "CXL Type-3 validation platform" — see `evidence/claims_matrix.csv`.
 
 ### Requirements (present on the reference host)
 Verilator 5.020, Icarus 12.0, GTKWave, Python 3.12, make, gcc. QEMU 8.2.2 (with
