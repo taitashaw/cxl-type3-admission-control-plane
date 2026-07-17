@@ -7,7 +7,8 @@ what a raw log in `evidence/` supports.
 
 | Class | Status | Evidence |
 |---|---|---|
-| RTL_SIMULATED | ✅ present | hardened M1: ~29k differential checks/engine (Icarus+Verilator) across 1/2/4/8 windows + XSim reduced cross-check; 5/5 mutations killed |
+| RTL_SIMULATED | ✅ present | hardened M1: ~30k differential checks/engine (Icarus+Verilator) across 1/2/4/8 windows + XSim reduced cross-check; 6/6 mutations killed |
+| FORMAL_PROVEN | ✅ present | SymbiYosys bmc+induction: decoder/translator + config FSM safety proofs (`evidence/raw/formal_*.log`) |
 | SOFTWARE_EMULATED (QEMU) | ◻ not run yet | QEMU 8.2.2 supports `cxl-type3`; lane not yet built |
 | SYNTHESIZED | ◻ not run | AMD portable synth optional; Agilex synth needs Quartus |
 | TIMING_ANALYZED | ⛔ BLOCKED | requires Quartus STA (not installed) |
