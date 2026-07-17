@@ -34,9 +34,15 @@ class Tracker:
         self.occ = 0; self.hwm = 0
         self.c = dict(alloc=0, retire=0, full=0, timeout=0, reclaim=0, invalid=0, non_live=0, stale=0)
         self.err_sticky = 0; self.err_first = RC_VALID
+        # registered reclaim-response state (handshake)
+        self.rr_valid = 0; self.rr_class = RCL_OK; self.rr_meta = 0
 
+    def _reclaim_ready(self):
+        return 0 if self.rr_valid else 1     # one in flight
+    def _reclaim_accept(self, inp):
+        return 1 if (inp['reclaim_req_valid'] and self._reclaim_ready()) else 0
     def _reclaim_class(self, inp, do_retire, r_slot):
-        if not inp['reclaim_req']:
+        if not self._reclaim_accept(inp):
             return RCL_OK
         s = inp['reclaim_tag'] & ((1 << self.SLOT_W) - 1)
         g = (inp['reclaim_tag'] >> self.SLOT_W) & self.gmask
@@ -47,7 +53,7 @@ class Tracker:
         if do_retire and r_slot == s:    return RCL_SUPERSEDED   # response wins
         return RCL_OK
     def _reclaim_done(self, inp, do_retire, r_slot):
-        return 1 if (inp['reclaim_req'] and self._reclaim_class(inp, do_retire, r_slot) == RCL_OK) else 0
+        return 1 if (self._reclaim_accept(inp) and self._reclaim_class(inp, do_retire, r_slot) == RCL_OK) else 0
     def _rc_slot(self, inp):
         return inp['reclaim_tag'] & ((1 << self.SLOT_W) - 1)
 
@@ -86,14 +92,15 @@ class Tracker:
         rr_ep = self.epoch[slot] if slot_ok else 0
         rr_op = self.op[slot] if slot_ok else 0
         rr_me = self.meta[slot] if slot_ok else 0
-        reclaim_done = self._reclaim_done(inp, resp_retire, slot)
-        reclaim_class = self._reclaim_class(inp, resp_retire, slot)
+        # registered reclaim response is STATE (rr_*); ready is derived
         timeout_any = 1 if any(self.live[i] and self.timed[i] for i in range(self.DEPTH)) else 0
         quarantined = sum(1 for i in range(self.DEPTH) if self.live[i] and self.timed[i])
         return dict(alloc_gnt=alloc_gnt, alloc_tag=alloc_tag, alloc_slot=fs, full=1 if full else 0,
                     resp_retire=resp_retire, resp_class=(rc if inp['resp_valid'] else RC_VALID),
                     retired_epoch=rr_ep, retired_op=rr_op, retired_meta=rr_me,
-                    reclaim_done=reclaim_done, reclaim_class=reclaim_class,
+                    reclaim_req_ready=self._reclaim_ready(),
+                    reclaim_rsp_valid=self.rr_valid, reclaim_rsp_class=self.rr_class,
+                    reclaim_rsp_meta=self.rr_meta,
                     occupancy=self.occ, high_watermark=self.hwm,
                     quarantined_count=quarantined, timeout_any=timeout_any,
                     alloc_count=self.c['alloc'], retire_count=self.c['retire'], full_count=self.c['full'],
@@ -107,8 +114,14 @@ class Tracker:
         do_alloc = 1 if (inp['alloc_req'] and have and not full) else 0
         rc, slot, g = self.classify(inp['resp_valid'], inp['resp_tag'])
         do_retire = 1 if (rc == RC_VALID and inp['resp_valid']) else 0
-        do_reclaim = self._reclaim_done(inp, do_retire, slot)
+        # reclaim classification is COMBINATIONAL on PRE-EDGE state (mirrors the
+        # RTL): capture accept/class/meta here, before the response side-effect
+        # below can free the reclaim's target slot this same cycle.
         rc_slot = self._rc_slot(inp)
+        reclaim_accept = self._reclaim_accept(inp)
+        reclaim_cls = self._reclaim_class(inp, do_retire, slot)
+        reclaim_meta_snap = self.meta[rc_slot] if rc_slot < self.DEPTH else 0
+        do_reclaim = 1 if (reclaim_accept and reclaim_cls == RCL_OK) else 0
         ts = inp['current_ts']; th = inp['timeout_thresh']
         # committed timeout configuration (owned by hdm_config; used directly)
         active = 1 if (inp['timeout_enable'] and th != 0) else 0
@@ -134,7 +147,16 @@ class Tracker:
             elif rc == RC_STALE_GEN:
                 self.c['stale'] = sat1(self.c['stale'])
                 if not self.err_sticky: self.err_sticky = 1; self.err_first = RC_STALE_GEN
-        # reclaim (recovery)
+        # reclaim response registration + consumption (mutually exclusive with
+        # accept, since accept requires not-pending). Response held until ready.
+        # Uses the PRE-EDGE class/meta captured at the top of step().
+        if self.rr_valid and inp['reclaim_rsp_ready']:
+            self.rr_valid = 0
+        if reclaim_accept:
+            self.rr_valid = 1; self.rr_class = reclaim_cls
+            if reclaim_cls == RCL_OK:
+                self.rr_meta = reclaim_meta_snap
+        # reclaim (recovery): free the quarantined slot
         if do_reclaim:
             self.live[rc_slot] = 0; self.timed[rc_slot] = 0
             self.c['reclaim'] = sat1(self.c['reclaim'])

@@ -77,33 +77,48 @@ This is formalized (asserted), not left to statement ordering. Occupancy delta �
 
 ## Recovery ownership (reclaim)
 `reclaim` is the recovery authority for quarantined entries:
-- `reclaim_done` requires `live && timed_out` (already quarantined **before**
-  this cycle) and no same-cycle valid response to that slot.
+- A successful reclaim (internal `reclaim_done`) requires `live && timed_out`
+  (already quarantined **before** this cycle) and no same-cycle valid response to
+  that slot.
 - Reclaim carries the **full composite tag** `reclaim_tag = {generation, slot}` —
   a slot-only reclaim could free a *newer* occupant if the requester acted on
   stale state. Reclaim succeeds only when
   `slot < DEPTH && live[slot] && timed_out[slot] && generation[slot] == reclaim_generation`.
-- Observable result `reclaim_class`:
+- Observable result `reclaim_rsp_class`:
 
   | class | meaning |
   |---|---|
-  | `RCL_OK` | slot freed (`reclaim_done`) |
+  | `RCL_OK` | slot freed |
   | `RCL_INVALID_SLOT` | slot ≥ DEPTH |
   | `RCL_NOT_LIVE` | slot not live |
   | `RCL_STALE_GEN` | generation mismatch (requester used stale state) |
   | `RCL_NOT_QUARANTINED` | live+matching but not timed out — reclaim refused |
   | `RCL_SUPERSEDED` | a valid response retired the slot this cycle (response wins) |
 
-  Reclaim is single-cycle and always accepted (implicit `ready=1`), so no
-  backpressure channel is needed; the result is combinational.
+  **Registered request/response handshake (M4 Phase 1).** Reclaim is a decoupled
+  channel, not a combinational pulse:
+  - `reclaim_req_valid` / `reclaim_req_ready` accept a request; `reclaim_req_ready
+    = rst_n && !reclaim_rsp_valid` (one classification in flight at a time).
+  - `reclaim_accept = reclaim_req_valid && reclaim_req_ready`. On accept the class
+    is computed **combinationally from pre-edge state** (so a same-cycle valid
+    response's freeing of the slot does **not** change the classification) and is
+    **registered** into `reclaim_rsp_class`, with the freed slot's stored meta into
+    `reclaim_rsp_meta` on `RCL_OK`.
+  - `reclaim_rsp_valid` / `reclaim_rsp_ready` return the result; the response is
+    **held stable under backpressure** (`!reclaim_rsp_ready`) until consumed —
+    verified formally (`reclaim_rsp_valid`/`class`/`meta` invariant while waiting)
+    and by cover. Recovery therefore never depends on sampling a transient value.
+  - The classification priority is `INVALID_SLOT > NOT_LIVE > STALE_GEN >
+    NOT_QUARANTINED > SUPERSEDED > OK` — identical between RTL and the independent
+    model, and to the response-path classifier.
 - A reclaimed slot is freed; the **next allocation bumps its generation**, so a
   later response to the old transaction is `NON_LIVE` (before realloc) or
   `STALE_GEN` (after). **Qualification:** a late response after reclaim cannot
   retire a new transaction **unless that slot's generation field has wrapped**;
   production safety therefore requires a generation width and a bounded response
   lifetime that prevent such aliasing (see *Generation-wrap bound* below).
-- Authority is whoever drives `reclaim_req` (software / recovery FSM). Reset is
-  the bulk alternative: it invalidates every live entry.
+- Authority is whoever drives `reclaim_req_valid` (software / recovery FSM). Reset
+  is the bulk alternative: it invalidates every live entry.
 - `quarantined_count` (current live+timed_out) and `reclaim_count` are exposed so
   a system can detect and bound quarantine accumulation.
 

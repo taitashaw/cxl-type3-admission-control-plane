@@ -32,7 +32,7 @@ THRESH = 24     # < 2^(TS_W-1)=128
 def hx(v): return format(int(v) & ((1<<256)-1), "x")
 
 OUTFIELDS = ["alloc_gnt","alloc_tag","alloc_slot","full","resp_retire","resp_class",
-             "retired_epoch","retired_op","retired_meta","reclaim_done","reclaim_class","occupancy",
+             "retired_epoch","retired_op","retired_meta","reclaim_req_ready","reclaim_rsp_valid","reclaim_rsp_class","reclaim_rsp_meta","occupancy",
              "high_watermark","quarantined_count","timeout_any",
              "alloc_count","retire_count","full_count","timeout_count","reclaim_count",
              "invalid_slot_count","non_live_count","stale_gen_count",
@@ -85,7 +85,8 @@ def gen_one(DEPTH, GEN_W):
                 resp_valid = 1
                 resp_tag = (m.gen[sl] << m.SLOT_W) | sl       # valid tag -> VALID retire
 
-        reclaim_req = 1 if random.random() < 0.15 else 0
+        reclaim_req_valid = 1 if random.random() < 0.15 else 0
+        reclaim_rsp_ready = 0 if random.random() < 0.25 else 1   # backpressure the response 25%
         # composite reclaim tag: often a real granted tag (hits OK / NOT_QUARANTINED),
         # sometimes gen-corrupted (STALE_GEN) or random (NOT_LIVE / INVALID_SLOT)
         rr = random.random()
@@ -97,16 +98,29 @@ def gen_one(DEPTH, GEN_W):
         else:
             reclaim_tag = random.randint(0, (1<<m.TAG_W)-1)
 
+        # TARGETED: reclaim a live, matching-gen, NON-quarantined slot on a cycle
+        # the channel can accept (model not already holding a response). This is
+        # the only stimulus that exercises the RCL_NOT_QUARANTINED refusal -- the
+        # recovery contract that a reclaim must NOT free a slot that never timed
+        # out. (Without it the "reclaim needs quarantine" mutation is unobservable.)
+        if m.rr_valid == 0 and random.random() < 0.12:
+            nq = [x for x in range(DEPTH) if m.live[x] and not m.timed[x]]
+            if nq:
+                sl = random.choice(nq)
+                reclaim_req_valid = 1
+                reclaim_tag = (m.gen[sl] << m.SLOT_W) | sl
+
         inp = dict(current_ts=ts, timeout_enable=to_en, timeout_thresh=thr, alloc_req=alloc_req,
                    alloc_epoch=alloc_epoch, alloc_op=alloc_op, alloc_meta=alloc_meta,
                    resp_valid=resp_valid, resp_tag=resp_tag,
-                   reclaim_req=reclaim_req, reclaim_tag=reclaim_tag)
+                   reclaim_req_valid=reclaim_req_valid, reclaim_tag=reclaim_tag,
+                   reclaim_rsp_ready=reclaim_rsp_ready)
         o = m.outputs(inp)
         if o["alloc_gnt"]:
             granted.append((o["alloc_tag"], o["alloc_slot"]))
             if len(granted) > 64: granted.pop(0)
         toks = [hx(ts),hx(to_en),hx(thr),hx(alloc_req),hx(alloc_epoch),hx(alloc_op),hx(alloc_meta),
-                hx(resp_valid),hx(resp_tag),hx(reclaim_req),hx(reclaim_tag)]
+                hx(resp_valid),hx(resp_tag),hx(reclaim_req_valid),hx(reclaim_tag),hx(reclaim_rsp_ready)]
         toks += [hx(o[f]) for f in OUTFIELDS]
         lines.append(" ".join(toks))
         m.step(inp)

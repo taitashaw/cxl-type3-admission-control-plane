@@ -89,7 +89,7 @@ mutate "tracker generation bump" rtl/core/outstanding_tracker.sv \
   tb_outstanding_tracker "$OT" "$OVEC" "$OTDEF"
 # M10 recovery contract broken: reclaim frees a NON-quarantined live slot
 mutate "tracker reclaim needs quarantine" rtl/core/outstanding_tracker.sv \
-  "s/else if (!timed_out\[rc_slot\])                    reclaim_class = RCL_NOT_QUARANTINED;/else if (1'b0)                                  reclaim_class = RCL_NOT_QUARANTINED;/" \
+  "s/else if (!timed_out\[rc_slot\])                    reclaim_class_now = RCL_NOT_QUARANTINED;/else if (1'b0)                                  reclaim_class_now = RCL_NOT_QUARANTINED;/" \
   tb_outstanding_tracker "$OT" "$OVEC" "$OTDEF"
 # M11 event priority broken: a validly-retiring slot still gets timeout-marked
 mutate "tracker timeout-vs-retire priority" rtl/core/outstanding_tracker.sv \

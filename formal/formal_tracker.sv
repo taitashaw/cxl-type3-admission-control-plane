@@ -33,9 +33,11 @@ module formal_tracker #(
   logic [EPOCH_W-1:0] retired_epoch;
   logic [OP_W-1:0]    retired_op;
   logic [META_W-1:0]  retired_meta;
-  logic               reclaim_req, reclaim_done;
+  logic               reclaim_req_valid, reclaim_req_ready;
   logic [TAG_W-1:0]   reclaim_tag;
-  logic [2:0]         reclaim_class;
+  logic               reclaim_rsp_valid, reclaim_rsp_ready;
+  logic [2:0]         reclaim_rsp_class;
+  logic [META_W-1:0]  reclaim_rsp_meta;
   logic [OCC_W-1:0]   occupancy, high_watermark, quarantined_count;
   logic               timeout_any, err_sticky;
   logic [2:0]         err_first_class;
@@ -56,7 +58,9 @@ module formal_tracker #(
     cover (rst_n && resp_valid && resp_class == RC_STALE_GEN);   // stale-generation response
     cover (rst_n && timeout_any);                                // timeout reached
     cover (rst_n && occupancy == OCC_W'(DEPTH));                 // fully occupied
-    cover (rst_n && reclaim_done);                               // reclaim of a quarantined slot
+    cover (rst_n && reclaim_rsp_valid && reclaim_rsp_class == 3'd0); // successful (RCL_OK) reclaim response
+    cover (rst_n && reclaim_req_valid && reclaim_req_ready);      // reclaim request accepted
+    cover (rst_n && reclaim_rsp_valid && !reclaim_rsp_ready);     // response held under backpressure
     cover (rst_n && quarantined_count != '0);                    // a slot is quarantined
     cover (!rst_n && p_occ != 0);                                // reset with live entries
     cover (p_rst == 1'b0 && rst_n == 1'b1);                      // reset deasserts
