@@ -30,17 +30,24 @@ requires a commercial licence or connected FPGA.
   Python reference model** across `N_WIN∈{1,2,4,8}` and `(HPA_W,DPA_W)∈
   {(32,24),(40,32),(44,36)}` on Icarus 12.0 + Verilator 5.020, a reduced **AMD
   XSim 2025.2** tri-engine cross-check, and **6/6 mutation tests**.
-- **FORMAL (proved)**: `make formal` runs SymbiYosys (local OSS CAD Suite,
-  rootless) — bounded + **unbounded** safety proofs for the decoder/translator
-  containment + translation properties and the config FSM (atomic commit,
-  drain-before-commit, no config/request race, epoch monotonicity).
+- **FORMAL (verified)**: `make formal` runs SymbiYosys (local OSS CAD Suite,
+  rootless) — bounded model check + **unbounded induction** safety proofs, plus
+  **cover** tasks demonstrating non-vacuity, plus a **formal-mutation** check
+  (breaking a protection makes the proof fail). Covers decoder/translator
+  containment + translation, and the config FSM (atomic commit from an immutable
+  pending snapshot, drain-before-commit, TOCTOU-safety, epoch monotonicity,
+  reset-from-each-state).
 - Bounds cover the **complete 64-byte cache line** (HPA+63 in window, DPA+63 <
   capacity), guard-bit arithmetic throughout.
-- Defensible résumé wording: *"Implemented, dual-simulator verified, and
-  formally proved a parameterized HDM-style address-window decoder + HPA-to-DPA
-  translator (overlap, alignment, full-64B-line and capacity checks) with a
-  registered freeze/drain/atomic-commit configuration controller."* Not yet a
-  full "CXL Type-3 validation platform" — see `evidence/claims_matrix.csv`.
+- The config controller proves **the active configuration stays stable until
+  admission is frozen and all reported outstanding transactions drain**.
+  Per-request epoch capture is deferred to M2 (needs the outstanding tracker).
+- Defensible résumé wording: *"Implemented a parameterized HDM-style window
+  decoder and HPA-to-DPA translator with fail-closed overlap handling, complete
+  64-byte bounds checking and freeze/drain atomic configuration; cross-simulator
+  verified with Icarus, Verilator and XSim, with safety properties formally
+  verified using SymbiYosys."* Not yet a full "CXL Type-3 validation platform" —
+  see `evidence/claims_matrix.csv`.
 
 ### Requirements (present on the reference host)
 Verilator 5.020, Icarus 12.0, GTKWave, Python 3.12, make, gcc. QEMU 8.2.2 (with

@@ -1,0 +1,44 @@
+##   0:00:00  Solver: yices
+##   0:00:00  Checking cover reachability in step 0..
+##   0:00:00  Reached cover statement in step 0 at formal_decode: formal_decode.sv:67.5-67.17 (_witness_.check_cover_formal_decode_sv_67_153)
+##   0:00:00  Writing trace to VCD file: engine_0/trace0.vcd
+##   0:00:00  Writing trace to Verilog testbench: engine_0/trace0_tb.v
+##   0:00:00  Writing trace to constraints file: engine_0/trace0.smtc
+##   0:00:00  Writing trace to Yosys witness file: engine_0/trace0.yw
+##   0:00:00  Checking cover reachability in step 0..
+##   0:00:00  Reached cover statement in step 0 at formal_decode: formal_decode.sv:69.5-69.38 (_witness_.check_cover_formal_decode_sv_69_155)
+##   0:00:00  Writing trace to VCD file: engine_0/trace1.vcd
+##   0:00:00  Writing trace to Verilog testbench: engine_0/trace1_tb.v
+##   0:00:00  Writing trace to constraints file: engine_0/trace1.smtc
+##   0:00:00  Writing trace to Yosys witness file: engine_0/trace1.yw
+##   0:00:00  Checking cover reachability in step 0..
+##   0:00:00  Reached cover statement in step 0 at formal_decode: formal_decode.sv:71.5-71.36 (_witness_.check_cover_formal_decode_sv_71_159)
+##   0:00:00  Writing trace to VCD file: engine_0/trace2.vcd
+##   0:00:00  Writing trace to Verilog testbench: engine_0/trace2_tb.v
+##   0:00:00  Writing trace to constraints file: engine_0/trace2.smtc
+##   0:00:00  Writing trace to Yosys witness file: engine_0/trace2.yw
+##   0:00:00  Checking cover reachability in step 0..
+##   0:00:00  Reached cover statement in step 0 at formal_decode: formal_decode.sv:72.5-72.43 (_witness_.check_cover_formal_decode_sv_72_161)
+##   0:00:00  Writing trace to VCD file: engine_0/trace3.vcd
+##   0:00:00  Writing trace to Verilog testbench: engine_0/trace3_tb.v
+##   0:00:00  Writing trace to constraints file: engine_0/trace3.smtc
+##   0:00:00  Writing trace to Yosys witness file: engine_0/trace3.yw
+##   0:00:00  Checking cover reachability in step 0..
+##   0:00:00  Reached cover statement in step 0 at formal_decode: formal_decode.sv:70.5-70.37 (_witness_.check_cover_formal_decode_sv_70_157)
+##   0:00:00  Writing trace to VCD file: engine_0/trace4.vcd
+##   0:00:00  Writing trace to Verilog testbench: engine_0/trace4_tb.v
+##   0:00:00  Writing trace to constraints file: engine_0/trace4.smtc
+##   0:00:00  Writing trace to Yosys witness file: engine_0/trace4.yw
+##   0:00:00  Checking cover reachability in step 0..
+##   0:00:00  Reached cover statement in step 0 at formal_decode: formal_decode.sv:66.5-66.35 (_witness_.check_cover_formal_decode_sv_66_151)
+##   0:00:00  Writing trace to VCD file: engine_0/trace5.vcd
+##   0:00:00  Writing trace to Verilog testbench: engine_0/trace5_tb.v
+##   0:00:00  Writing trace to constraints file: engine_0/trace5.smtc
+##   0:00:00  Writing trace to Yosys witness file: engine_0/trace5.yw
+##   0:00:00  Checking cover reachability in step 0..
+##   0:00:00  Reached cover statement in step 0 at formal_decode: formal_decode.sv:68.5-68.27 (_witness_.check_cover_formal_decode_sv_68_154)
+##   0:00:00  Writing trace to VCD file: engine_0/trace6.vcd
+##   0:00:00  Writing trace to Verilog testbench: engine_0/trace6_tb.v
+##   0:00:00  Writing trace to constraints file: engine_0/trace6.smtc
+##   0:00:00  Writing trace to Yosys witness file: engine_0/trace6.yw
+##   0:00:00  Status: passed

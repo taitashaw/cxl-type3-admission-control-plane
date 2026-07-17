@@ -200,6 +200,52 @@ module tb_hdm_config;
       if (cfg_ok!==1'b1 || cfg_epoch!==epoch_snapshot+16'd1) begin
         errors++; $display("[FAIL] D3 did not commit after drain");
       end else $display("[pass] D3 no commit-vs-request race; commit only after drain (epoch %0d)",cfg_epoch);
+
+      // D4: shadow-config TOCTOU — a shadow rewrite AFTER accept, BEFORE commit,
+      // must NOT change what commits (pending snapshot is immutable).
+      for (k=0;k<N_WIN;k++) begin t_en[k]=0; t_base[k]=0; t_size[k]=0; t_dpa[k]=0; end
+      t_en[0]=1; t_base[0]='h0003_0000; t_size[0]='h0001_0000; t_dpa[0]=0;   // config A
+      load_shadow('h40_0000);
+      epoch_snapshot = cfg_epoch;
+      outstanding_cnt=16'd3;
+      @(negedge clk); cfg_update_req=1; @(negedge clk); cfg_update_req=0;     // accept A -> snapshot -> FREEZE
+      t_en[0]=1; t_base[0]='h0005_0000; t_size[0]='h0002_0000; t_dpa[0]=0;   // config B
+      load_shadow('h40_0000);                                                 // rewrite shadow while frozen
+      outstanding_cnt=0;                                                      // drain
+      guard=0; while (!cfg_update_done && guard<80) begin @(negedge clk); guard++; end
+      checks++;
+      if (cfg_ok!==1'b1 || win_base[0]!==40'h0003_0000 || win_size[0]!==40'h0001_0000) begin
+        errors++; $display("[FAIL] D4 TOCTOU: committed base=%h size=%h (expected A=30000/10000)",win_base[0],win_size[0]);
+      end else $display("[pass] D4 snapshot: shadow rewrite while pending did not corrupt commit");
+
+      // D5: second cfg_update_req while an update is pending is ignored.
+      for (k=0;k<N_WIN;k++) begin t_en[k]=0; t_base[k]=0; t_size[k]=0; t_dpa[k]=0; end
+      t_en[0]=1; t_base[0]='h0006_0000; t_size[0]='h0001_0000; t_dpa[0]=0;
+      load_shadow('h40_0000);
+      outstanding_cnt=16'd2;
+      @(negedge clk); cfg_update_req=1; @(negedge clk); cfg_update_req=0;     // pending (FREEZE)
+      epoch_snapshot = cfg_epoch;
+      @(negedge clk); cfg_update_req=1; @(negedge clk); cfg_update_req=0;     // SECOND req while pending
+      @(negedge clk); checks++;
+      if (traffic_freeze!==1'b1 || cfg_epoch!==epoch_snapshot || cfg_update_done!==1'b0) begin
+        errors++; $display("[FAIL] D5 second update-req not ignored: freeze=%b epoch=%0d done=%b",traffic_freeze,cfg_epoch,cfg_update_done);
+      end else $display("[pass] D5 second update-req while pending is ignored");
+      outstanding_cnt=0;                                                      // drain the first update
+      guard=0; while (!cfg_update_done && guard<50) begin @(negedge clk); guard++; end
+
+      // D6: reset asserted mid-FREEZE recovers to ACTIVE with a disabled active
+      // config and no partial commit.
+      for (k=0;k<N_WIN;k++) begin t_en[k]=0; t_base[k]=0; t_size[k]=0; t_dpa[k]=0; end
+      t_en[0]=1; t_base[0]='h0007_0000; t_size[0]='h0001_0000; t_dpa[0]=0;
+      load_shadow('h40_0000);
+      outstanding_cnt=16'd4;
+      @(negedge clk); cfg_update_req=1; @(negedge clk); cfg_update_req=0;     // -> FREEZE
+      @(negedge clk);                                                         // in FREEZE
+      rst_n=0; repeat(2) @(negedge clk); rst_n=1; @(negedge clk);             // reset during FREEZE
+      checks++;
+      if (cfg_state!==2'd0 || win_en!=='0 || req_accept_enable!==1'b1 || cfg_epoch!==16'd0) begin
+        errors++; $display("[FAIL] D6 reset-from-FREEZE: state=%0d win_en=%b accept=%b epoch=%0d",cfg_state,win_en,req_accept_enable,cfg_epoch);
+      end else $display("[pass] D6 reset during FREEZE recovers to ACTIVE, active disabled, no partial commit");
     end
   endtask
 

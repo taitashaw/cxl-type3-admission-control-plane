@@ -1,0 +1,186 @@
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.67+40 (git sha1 45ea2b8d6-dirty, Release, Clang /usr/bin/clang++ 18.1.8)
+
+-- Executing script file `design_prep.ys' --
+
+1. Executing RTLIL frontend.
+Input filename: design.il
+
+2. Executing SCC pass (detecting logic loops).
+Found 0 SCCs in module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.
+Found 0 SCCs in module formal_config.
+Found 0 SCCs.
+
+3. Executing SIMPLEMAP pass (map simple cells to gate primitives).
+
+4. Executing MEMORY_NORDFF pass (extracting $dff cells from memories).
+
+5. Executing ASYNC2SYNC pass.
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$675 ($adff): ARST=\rst_n, D=$0\cfg_update_done[0:0], Q=\cfg_update_done
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$680 ($adff): ARST=\rst_n, D=$0\cfg_ok[0:0], Q=\cfg_ok
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$685 ($adff): ARST=\rst_n, D=$0\cfg_reject[0:0], Q=\cfg_reject
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$690 ($adff): ARST=\rst_n, D=$0\cfg_reason[3:0], Q=\cfg_reason
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$695 ($adff): ARST=\rst_n, D=$0\cfg_epoch[15:0], Q=\cfg_epoch
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$700 ($adff): ARST=\rst_n, D=$0\sh_cap[12:0], Q=\sh_cap
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$705 ($adff): ARST=\rst_n, D=$0\act_cap[12:0], Q=\act_cap
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$710 ($adff): ARST=\rst_n, D=$0\pend_cap[12:0], Q=\pend_cap
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$715 ($adff): ARST=\rst_n, D=$0\state[1:0], Q=\state
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$725 ($adff): ARST=\rst_n, D=$0\sh_en[0][0:0], Q=\sh_en[0]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$730 ($adff): ARST=\rst_n, D=$0\sh_en[1][0:0], Q=\sh_en[1]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$735 ($adff): ARST=\rst_n, D=$0\sh_base[0][15:0], Q=\sh_base[0]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$740 ($adff): ARST=\rst_n, D=$0\sh_base[1][15:0], Q=\sh_base[1]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$745 ($adff): ARST=\rst_n, D=$0\sh_size[0][15:0], Q=\sh_size[0]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$750 ($adff): ARST=\rst_n, D=$0\sh_size[1][15:0], Q=\sh_size[1]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$755 ($adff): ARST=\rst_n, D=$0\sh_dpa[0][11:0], Q=\sh_dpa[0]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$760 ($adff): ARST=\rst_n, D=$0\sh_dpa[1][11:0], Q=\sh_dpa[1]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$765 ($adff): ARST=\rst_n, D=$0\act_en[0][0:0], Q=\act_en[0]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$770 ($adff): ARST=\rst_n, D=$0\act_en[1][0:0], Q=\act_en[1]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$775 ($adff): ARST=\rst_n, D=$0\act_base[0][15:0], Q=\act_base[0]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$780 ($adff): ARST=\rst_n, D=$0\act_base[1][15:0], Q=\act_base[1]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$785 ($adff): ARST=\rst_n, D=$0\act_size[0][15:0], Q=\act_size[0]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$790 ($adff): ARST=\rst_n, D=$0\act_size[1][15:0], Q=\act_size[1]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$795 ($adff): ARST=\rst_n, D=$0\act_dpa[0][11:0], Q=\act_dpa[0]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$800 ($adff): ARST=\rst_n, D=$0\act_dpa[1][11:0], Q=\act_dpa[1]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$805 ($adff): ARST=\rst_n, D=$0\pend_en[0][0:0], Q=\pend_en[0]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$810 ($adff): ARST=\rst_n, D=$0\pend_en[1][0:0], Q=\pend_en[1]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$815 ($adff): ARST=\rst_n, D=$0\pend_base[0][15:0], Q=\pend_base[0]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$820 ($adff): ARST=\rst_n, D=$0\pend_base[1][15:0], Q=\pend_base[1]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$825 ($adff): ARST=\rst_n, D=$0\pend_size[0][15:0], Q=\pend_size[0]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$830 ($adff): ARST=\rst_n, D=$0\pend_size[1][15:0], Q=\pend_size[1]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$835 ($adff): ARST=\rst_n, D=$0\pend_dpa[0][11:0], Q=\pend_dpa[0]
+Replacing $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procdff$840 ($adff): ARST=\rst_n, D=$0\pend_dpa[1][11:0], Q=\pend_dpa[1]
+
+6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config..
+Finding unused cells or wires in module \formal_config..
+Removed 45 unused cells and 45 unused wires.
+<suppressed ~47 debug messages>
+
+7. Executing FORMALFF pass.
+
+8. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config..
+Finding unused cells or wires in module \formal_config..
+Removed 45 unused cells and 45 unused wires.
+<suppressed ~53 debug messages>
+
+9. Executing CHECK pass (checking for obvious problems).
+Checking module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config...
+Checking module formal_config...
+Warning: Wire formal_config.\sh_we is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [15] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [14] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [13] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [12] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [11] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [10] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [9] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [8] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [7] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [6] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [5] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [4] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [3] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [2] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [1] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [0] is used but has no driver.
+Warning: Wire formal_config.\sh_idx is used but has no driver.
+Warning: Wire formal_config.\sh_en_i is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [11] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [10] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [9] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [8] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [7] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [6] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [5] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [4] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [3] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [2] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [1] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [0] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_we is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [12] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [11] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [10] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [9] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [8] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [7] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [6] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [5] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [4] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [3] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [2] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [1] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [0] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [15] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [14] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [13] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [12] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [11] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [10] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [9] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [8] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [7] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [6] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [5] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [4] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [3] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [2] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [1] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [0] is used but has no driver.
+Warning: Wire formal_config.\outstanding_cnt [2] is used but has no driver.
+Warning: Wire formal_config.\outstanding_cnt [1] is used but has no driver.
+Warning: Wire formal_config.\outstanding_cnt [0] is used but has no driver.
+Warning: Wire formal_config.\cfg_update_req is used but has no driver.
+Warning: Wire formal_config.\rst_n is used but has no driver.
+Found and reported 66 problems.
+
+10. Executing SETUNDEF pass (replace undef values with defined constants).
+
+11. Executing OPT pass (performing simple optimizations).
+
+11.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.
+Optimizing module formal_config.
+<suppressed ~1 debug messages>
+
+11.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config'.
+Computing hashes of 218 cells of `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config'.
+Finding duplicate cells in `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config'.
+Finding identical cells in module `\formal_config'.
+Computing hashes of 78 cells of `\formal_config'.
+Finding duplicate cells in `\formal_config'.
+Computing hashes of 68 cells of `\formal_config'.
+Finding duplicate cells in `\formal_config'.
+<suppressed ~30 debug messages>
+Removed a total of 10 cells.
+
+11.3. Executing OPT_DFF pass (perform DFF optimizations).
+
+11.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config..
+Finding unused cells or wires in module \formal_config..
+Removed 0 unused cells and 28 unused wires.
+<suppressed ~1 debug messages>
+
+11.5. Finished fast OPT passes.
+
+12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config..
+Finding unused cells or wires in module \formal_config..
+Removed 0 unused cells and 33 unused wires.
+<suppressed ~1 debug messages>
+
+13. Executing RTLIL backend.
+Output filename: ../model/design_prep.il
+
+Warnings: 66 unique messages, 66 total
+End of script. Logfile hash: 49233f61e6, time: 0.02s, user: 0.01s, system: 0.01s, MEM: 19.43 MB peak
+Yosys 0.67+40 (git sha1 45ea2b8d6-dirty, Release, Clang /usr/bin/clang++ 18.1.8)
+Time spent: 43% 4x opt_clean (0 sec), 13% 1x check (0 sec), ...

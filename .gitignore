@@ -21,3 +21,4 @@ formal/*_prove/
 formal/decode/
 formal/config/
 tb/vectors/*.vec
+evidence/raw/

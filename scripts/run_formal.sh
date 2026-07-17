@@ -16,16 +16,21 @@ echo "using $(yosys --version 2>/dev/null | head -1); $(sby --help 2>&1 | head -
 
 fail=0
 for job in decode config; do
-  rm -rf "formal/${job}_bmc" "formal/${job}_prove"
+  rm -rf "formal/${job}_bmc" "formal/${job}_prove" "formal/${job}_cover"
   sby -f "formal/${job}.sby" > "$RAW/formal_${job}.log" 2>&1
   bmc=$(grep -c "\[formal/${job}_bmc\] DONE (PASS" "$RAW/formal_${job}.log")
   prv=$(grep -c "\[formal/${job}_prove\] DONE (PASS" "$RAW/formal_${job}.log")
-  if [ "$bmc" -ge 1 ] && [ "$prv" -ge 1 ]; then
-    echo "   ${job}: bmc=PASS prove(induction)=PASS"
+  cov=$(grep -c "\[formal/${job}_cover\] DONE (PASS" "$RAW/formal_${job}.log")
+  if [ "$bmc" -ge 1 ] && [ "$prv" -ge 1 ] && [ "$cov" -ge 1 ]; then
+    echo "   ${job}: bmc=PASS prove(induction)=PASS cover(non-vacuity)=PASS"
   else
-    echo "   ${job}: FAIL (see $RAW/formal_${job}.log)"; fail=1
+    echo "   ${job}: FAIL (bmc=$bmc prove=$prv cover=$cov; see $RAW/formal_${job}.log)"; fail=1
   fi
 done
+echo "-- non-vacuity: proofs must fail when protections are broken --"
+bash scripts/run_formal_mutation.sh > "$RAW/formal_mutation.log" 2>&1
+grep -E "killed=|SURVIVED" "$RAW/formal_mutation.log" | sed 's/^/   /'
+grep -q "FORMAL MUTATION: PASS" "$RAW/formal_mutation.log" || { echo "   formal-mutation FAIL"; fail=1; }
 echo "=================================================="
-[ $fail -eq 0 ] && echo "FORMAL: PASS (bounded + unbounded safety proofs)" || echo "FORMAL: FAIL"
+[ $fail -eq 0 ] && echo "FORMAL: PASS (bounded + unbounded proofs + covers reached)" || echo "FORMAL: FAIL"
 exit $fail

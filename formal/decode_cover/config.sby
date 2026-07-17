@@ -1,0 +1,15 @@
+[options]
+mode cover
+depth 4
+
+[engines]
+smtbmc yices
+
+[script]
+read_verilog -sv -formal hdm_decoder.sv dpa_translator.sv formal_decode.sv
+prep -top formal_decode
+
+[files]
+rtl/core/hdm_decoder.sv
+rtl/core/dpa_translator.sv
+formal/formal_decode.sv

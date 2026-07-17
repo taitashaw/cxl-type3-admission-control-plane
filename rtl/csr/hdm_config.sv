@@ -10,11 +10,14 @@
 //   COMMIT : still frozen; copy shadow->active atomically, bump epoch, done.
 //              -> ACTIVE
 //
-// Shadow writes are ignored while an update is in flight (shadow frozen), so the
-// config validated at request time is exactly what commits. Because active
-// config changes ONLY in COMMIT — entered only after freeze + full drain — no
-// accepted request can ever span a configuration change: every accepted request
-// captures exactly one epoch. Reason codes match tb/models/hdm_model.py.
+// The validated shadow is snapshotted into an immutable PENDING copy at accept
+// time, and COMMIT writes active from PENDING (not shadow), so later shadow
+// writes cannot corrupt the in-flight update. Because active config changes ONLY
+// in COMMIT — entered only after admission is frozen and outstanding_cnt reaches
+// 0 — the ACTIVE CONFIGURATION REMAINS STABLE UNTIL ADMISSION IS FROZEN AND ALL
+// REPORTED OUTSTANDING TRANSACTIONS HAVE DRAINED. (Per-request epoch *capture*
+// is an M2 property, once the outstanding tracker stores an epoch per tag; it is
+// NOT claimed here.) Reason codes match tb/models/hdm_model.py.
 `ifndef HDM_CONFIG_SV
 `define HDM_CONFIG_SV
 
@@ -75,6 +78,17 @@ module hdm_config #(
   logic [HPA_W-1:0]  act_size [N_WIN];
   logic [DPA_W-1:0]  act_dpa  [N_WIN];
   logic [DPA_W:0]    act_cap;
+
+  // Immutable PENDING snapshot: shadow is copied here the cycle cfg_update_req is
+  // accepted, and COMMIT writes active from PENDING (not shadow). This closes the
+  // TOCTOU where a shadow write between accept and commit could commit an
+  // unvalidated config. Shadow may be freely rewritten while an update is in
+  // flight without affecting the pending update.
+  logic              pend_en   [N_WIN];
+  logic [HPA_W-1:0]  pend_base [N_WIN];
+  logic [HPA_W-1:0]  pend_size [N_WIN];
+  logic [DPA_W-1:0]  pend_dpa  [N_WIN];
+  logic [DPA_W:0]    pend_cap;
 
   // pack active -> ports
   genvar gp;
@@ -167,11 +181,14 @@ module hdm_config #(
   integer k;
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
+      // Reset from ANY FSM state returns cleanly to ACTIVE with a disabled
+      // active config and no partial commit; shadow/pending are cleared.
       for (k = 0; k < N_WIN; k++) begin
         sh_en[k]<=1'b0; sh_base[k]<='0; sh_size[k]<='0; sh_dpa[k]<='0;
         act_en[k]<=1'b0; act_base[k]<='0; act_size[k]<='0; act_dpa[k]<='0;
+        pend_en[k]<=1'b0; pend_base[k]<='0; pend_size[k]<='0; pend_dpa[k]<='0;
       end
-      sh_cap<='0; act_cap<='0;
+      sh_cap<='0; act_cap<='0; pend_cap<='0;
       cfg_ok<=1'b0; cfg_reject<=1'b0; cfg_update_done<=1'b0;
       cfg_reason<=CFG_OK; cfg_epoch<='0; state<=S_ACTIVE;
     end else begin
@@ -179,28 +196,36 @@ module hdm_config #(
       cfg_reject      <= 1'b0;
       cfg_update_done <= 1'b0;
 
-      // Shadow writes accepted only while ACTIVE (shadow frozen during reconfig
-      // so the config validated at request time is exactly what commits).
-      if (state == S_ACTIVE) begin
-        if (sh_we) begin
-          sh_en[sh_idx]   <= sh_en_i;
-          sh_base[sh_idx] <= sh_base_i;
-          sh_size[sh_idx] <= sh_size_i;
-          sh_dpa[sh_idx]  <= sh_dpa_i;
-        end
-        if (sh_cap_we) sh_cap <= sh_cap_i;
+      // Shadow writes are always allowed; they never touch the in-flight PENDING
+      // snapshot, so a shadow write between accept and commit is harmless.
+      if (sh_we) begin
+        sh_en[sh_idx]   <= sh_en_i;
+        sh_base[sh_idx] <= sh_base_i;
+        sh_size[sh_idx] <= sh_size_i;
+        sh_dpa[sh_idx]  <= sh_dpa_i;
       end
+      if (sh_cap_we) sh_cap <= sh_cap_i;
 
       unique case (state)
         S_ACTIVE: begin
+          // A second cfg_update_req is only ever acted on in ACTIVE; requests
+          // arriving during FREEZE/COMMIT are ignored (software sees freeze).
           if (cfg_update_req) begin
             if (!shadow_valid) begin
-              // fast reject: no point freezing/draining for an invalid config
+              // fast reject: no freeze/drain for an invalid config
               cfg_reject      <= 1'b1;
               cfg_update_done <= 1'b1;
               cfg_reason      <= shadow_reason;
             end else begin
-              state <= S_FREEZE;   // valid -> freeze new traffic, then drain
+              // SNAPSHOT the validated shadow into pending (immutable hereafter).
+              for (k = 0; k < N_WIN; k++) begin
+                pend_en[k]   <= sh_en[k];
+                pend_base[k] <= sh_base[k];
+                pend_size[k] <= sh_size[k];
+                pend_dpa[k]  <= sh_dpa[k];
+              end
+              pend_cap <= sh_cap;
+              state    <= S_FREEZE;
             end
           end
         end
@@ -209,13 +234,13 @@ module hdm_config #(
         end
         S_COMMIT: begin
           for (k = 0; k < N_WIN; k++) begin
-            act_en[k]   <= sh_en[k];
-            act_base[k] <= sh_base[k];
-            act_size[k] <= sh_size[k];
-            act_dpa[k]  <= sh_dpa[k];
+            act_en[k]   <= pend_en[k];
+            act_base[k] <= pend_base[k];
+            act_size[k] <= pend_size[k];
+            act_dpa[k]  <= pend_dpa[k];
           end
-          act_cap         <= sh_cap;
-          cfg_epoch       <= cfg_epoch + 16'd1;
+          act_cap         <= pend_cap;
+          cfg_epoch       <= cfg_epoch + 16'd1;   // 16-bit rolling; wrap is benign
           cfg_ok          <= 1'b1;
           cfg_update_done <= 1'b1;
           cfg_reason      <= CFG_OK;
@@ -225,5 +250,43 @@ module hdm_config #(
       endcase
     end
   end
+
+`ifdef FORMAL
+  // ---- Snapshot / atomicity / drain safety properties (internal access) ----
+  logic f_init;
+  logic [1:0]           f_pstate;
+  logic [OCNT_W-1:0]    f_pout;
+  logic [15:0]          f_pepoch;
+  logic                 f_pen0;      // active window-0 enable, previous cycle
+  logic                 f_ppend0;    // pending window-0 enable, previous cycle
+  initial f_init = 1'b0;
+  always_ff @(posedge clk) begin
+    f_init   <= 1'b1;
+    f_pstate <= cfg_state;
+    f_pout   <= outstanding_cnt;
+    f_pepoch <= cfg_epoch;
+    f_pen0   <= act_en[0];
+    f_ppend0 <= pend_en[0];
+  end
+
+  always @(posedge clk) begin
+    if (rst_n && f_init) begin
+      // epoch increments by exactly one on commit, else unchanged (mod 2^16)
+      assert (cfg_epoch == (f_pepoch + (cfg_ok ? 16'd1 : 16'd0)));
+      // active config changes ONLY on a successful commit (atomicity)
+      if (!cfg_ok) assert (act_en[0] == f_pen0);
+      // commit writes active from the PENDING snapshot
+      if (cfg_ok) assert (act_en[0] == f_ppend0);
+      // pending snapshot is STABLE while an update is in flight (not ACTIVE)
+      if (f_pstate != S_ACTIVE && cfg_state != S_ACTIVE)
+        assert (pend_en[0] == f_ppend0);
+      // cfg_ok only out of COMMIT; FREEZE->COMMIT only when drained
+      if (cfg_ok) assert (f_pstate == S_COMMIT);
+      if (f_pstate == S_FREEZE && cfg_state == S_COMMIT) assert (f_pout == '0);
+    end
+    // freeze and admission are mutually exclusive every cycle
+    assert (!(traffic_freeze && req_accept_enable));
+  end
+`endif
 endmodule
 `endif

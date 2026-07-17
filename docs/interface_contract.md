@@ -20,11 +20,17 @@ FREEZE  traffic_freeze=1, req_accept_enable=0 (no NEW request accepted);
 COMMIT  copy shadow->active atomically, cfg_epoch++, cfg_ok; -> ACTIVE
 ```
 
-Shadow writes are ignored while an update is in flight. Because active config
-changes **only** in COMMIT — entered only after freeze + full drain — no accepted
-request can span a config change: **every accepted request captures exactly one
-epoch** (formally proved, `formal/config.sby`). The request path must gate its
-acceptance on `req_accept_enable`.
+The validated shadow is snapshotted into an immutable **pending** copy at accept;
+COMMIT writes active from *pending*, so a shadow rewrite between accept and commit
+cannot corrupt the update. Because active config changes **only** in COMMIT —
+entered only after admission is frozen and `outstanding_cnt` reaches 0 — the
+**active configuration remains stable until admission is frozen and all reported
+outstanding transactions have drained** (formally verified, `formal/config.sby`).
+The request path must gate its acceptance on `req_accept_enable`.
+
+> Per-request epoch *capture* ("each accepted request carries exactly one config
+> epoch") is **deferred to M2**: it cannot be proved until the outstanding
+> tracker stores an epoch alongside each accepted tag. Not claimed in M1.
 
 A reconfiguration is **rejected** immediately (active config unchanged, no epoch
 bump, no freeze) if, for any enabled window, in this priority order:

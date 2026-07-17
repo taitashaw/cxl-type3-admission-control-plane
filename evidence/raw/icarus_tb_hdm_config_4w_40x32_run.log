@@ -1,8 +1,0 @@
-=== tb_hdm_config file=tb/vectors/cfg_4w_40x32.vec vectors=2000 ===
-[pass] D1 freeze->drain->commit (epoch 3)
-[pass] D1 reopens after commit
-[pass] D2 invalid config rejected immediately, active unchanged
-[pass] D3 no commit-vs-request race; commit only after drain (epoch 4)
-=== checks=2014 errors=0 ===
-TB_RESULT: PASS
-tb/sv/tb_hdm_config.sv:214: $finish called at 180480000 (1ps)

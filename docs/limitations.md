@@ -82,10 +82,35 @@ and an **unbounded** safety proof (`prove`/induction):
   FREEZE→COMMIT only when `outstanding_cnt==0` (drain-before-commit),
   `traffic_freeze ⇒ ¬req_accept_enable`. **PASS** (bmc + induction).
 
-Evidence: `evidence/raw/formal_{decode,config}.log`. The free-Yosys frontend has
-a limited SV subset, so the harnesses use manual state/counter registers rather
-than SVA `$past`/`property`; the proofs are genuine bounded+induction safety
-proofs, not claims of exhaustive liveness/Tabby-grade coverage.
+Evidence: `evidence/raw/formal_{decode,config}.log`, `formal_mutation.log`.
+
+**Non-vacuity is demonstrated, not assumed:**
+- Each suite has a `cover` task; all cover statements are reachable (valid
+  accept, miss, overlap reject, unaligned reject, HPA line-cross, DPA
+  capacity-cross, invalid-config reject, ACTIVE→FREEZE→DRAIN→COMMIT→ACTIVE,
+  DRAIN with `outstanding_cnt>0`, concurrent update+admission, reset from each
+  FSM state). `make formal` fails if any cover is unreachable.
+- A **formal-mutation** pass (`scripts/run_formal_mutation.sh`) breaks each
+  protection in turn and confirms the relevant proof now **fails** (5/5). Sim
+  mutation and formal mutation catch different weaknesses; both are run.
+
+**Explicit formal assumptions (config):**
+- `initial assume(!rst_n)` — a defined start in reset; `rst_n` is **free**
+  thereafter, so it may deassert (required for the useful covers) and re-assert
+  (required for reset-from-each-state covers). Reset is not held.
+- `sh_*`, `cfg_update_req`, `outstanding_cnt` are **fully free** every cycle —
+  `outstanding_cnt` may rise, stay nonzero, and return to zero; no input is
+  constrained to force the asserted behavior, and `req_accept_enable` is an
+  output (never assumed).
+- Temporal asserts are gated on `rst_n && f_init` so they are not evaluated
+  across the reset boundary; they are otherwise unconstrained.
+
+**Scope caveats:** the free-Yosys frontend has a limited SV subset, so harnesses
+use manual state/counter registers, not SVA `$past`/`property`. These are
+**safety** proofs (bmc + induction) — no liveness/Tabby-grade claims. In
+particular, drain **liveness** (that `outstanding_cnt` eventually reaches 0) is
+NOT proved here — a never-draining datapath leaves the FSM frozen; the M2
+outstanding-tracker timeout is what forces progress.
 
 ## Not-yet-claimed (deliberately)
 

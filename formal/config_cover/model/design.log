@@ -1,0 +1,769 @@
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.67+40 (git sha1 45ea2b8d6-dirty, Release, Clang /usr/bin/clang++ 18.1.8)
+
+-- Executing script file `../model/design.ys' --
+
+1. Executing Verilog-2005 frontend: hdm_config.sv
+Parsing formal SystemVerilog input from `hdm_config.sv' to AST representation.
+Generating RTLIL representation for module `\hdm_config'.
+Warning: Replacing memory \win_reason with list of registers. See hdm_config.sv:115
+Warning: Replacing memory \pend_dpa with list of registers. See hdm_config.sv:186
+Warning: Replacing memory \pend_size with list of registers. See hdm_config.sv:186
+Warning: Replacing memory \pend_base with list of registers. See hdm_config.sv:186
+Warning: Replacing memory \pend_en with list of registers. See hdm_config.sv:186
+Warning: Replacing memory \act_dpa with list of registers. See hdm_config.sv:185
+Warning: Replacing memory \act_size with list of registers. See hdm_config.sv:185
+Warning: Replacing memory \act_base with list of registers. See hdm_config.sv:185
+Warning: Replacing memory \act_en with list of registers. See hdm_config.sv:185
+Warning: Replacing memory \sh_dpa with list of registers. See hdm_config.sv:184
+Warning: Replacing memory \sh_size with list of registers. See hdm_config.sv:184
+Warning: Replacing memory \sh_base with list of registers. See hdm_config.sv:184
+Warning: Replacing memory \sh_en with list of registers. See hdm_config.sv:184
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: formal_config.sv
+Parsing formal SystemVerilog input from `formal_config.sv' to AST representation.
+Generating RTLIL representation for module `\formal_config'.
+Successfully finished Verilog frontend.
+
+3. Executing PREP pass.
+
+3.1. Executing HIERARCHY pass (managing design hierarchy).
+
+3.1.1. Analyzing design hierarchy..
+Top module:  \formal_config
+Used module:     \hdm_config
+Parameter \HPA_W = 16
+Parameter \DPA_W = 12
+Parameter \N_WIN = 2
+Parameter \OCNT_W = 3
+
+3.1.2. Executing AST frontend in derive mode using pre-parsed AST for module `\hdm_config'.
+Parameter \HPA_W = 16
+Parameter \DPA_W = 12
+Parameter \N_WIN = 2
+Parameter \OCNT_W = 3
+Generating RTLIL representation for module `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config'.
+Warning: Replacing memory \win_reason with list of registers. See hdm_config.sv:115
+Warning: Replacing memory \pend_dpa with list of registers. See hdm_config.sv:186
+Warning: Replacing memory \pend_size with list of registers. See hdm_config.sv:186
+Warning: Replacing memory \pend_base with list of registers. See hdm_config.sv:186
+Warning: Replacing memory \pend_en with list of registers. See hdm_config.sv:186
+Warning: Replacing memory \act_dpa with list of registers. See hdm_config.sv:185
+Warning: Replacing memory \act_size with list of registers. See hdm_config.sv:185
+Warning: Replacing memory \act_base with list of registers. See hdm_config.sv:185
+Warning: Replacing memory \act_en with list of registers. See hdm_config.sv:185
+Warning: Replacing memory \sh_dpa with list of registers. See hdm_config.sv:184
+Warning: Replacing memory \sh_size with list of registers. See hdm_config.sv:184
+Warning: Replacing memory \sh_base with list of registers. See hdm_config.sv:184
+Warning: Replacing memory \sh_en with list of registers. See hdm_config.sv:184
+
+3.1.3. Analyzing design hierarchy..
+Top module:  \formal_config
+Used module:     $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config
+
+3.1.4. Analyzing design hierarchy..
+Top module:  \formal_config
+Used module:     $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config
+Removing unused module `\hdm_config'.
+Removed 1 unused modules.
+Module formal_config directly or indirectly contains formal properties -> setting "keep" attribute.
+Module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config directly or indirectly contains formal properties -> setting "keep" attribute.
+
+3.2. Executing PROC pass (convert processes to netlists).
+
+3.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+3.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 8 switch rules as full_case in process $proc$hdm_config.sv:179$255 in module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.
+Marked 2 switch rules as full_case in process $proc$hdm_config.sv:160$250 in module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.
+Marked 2 switch rules as full_case in process $proc$hdm_config.sv:130$245 in module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.
+Removed a total of 0 dead cases.
+
+3.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 16 redundant assignments.
+Promoted 37 assignments to connections.
+
+3.2.4. Executing PROC_INIT pass (extract init attributes).
+Found init rule in `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:259$356'.
+  Set init value: \f_init = 1'0
+
+3.2.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst_n in `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+
+3.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~20 debug messages>
+
+3.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\formal_config.$proc$formal_config.sv:39$238'.
+Creating decoders for process `\formal_config.$proc$formal_config.sv:47$198'.
+Creating decoders for process `\formal_config.$proc$formal_config.sv:44$197'.
+Creating decoders for process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:259$356'.
+Creating decoders for process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:115$339'.
+Creating decoders for process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:115$322'.
+Creating decoders for process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:269$285'.
+     1/6: $assert$hdm_config.sv:282$306_EN
+     2/6: $assert$hdm_config.sv:281$301_EN
+     3/6: $assert$hdm_config.sv:279$299_EN
+     4/6: $assert$hdm_config.sv:276$294_EN
+     5/6: $assert$hdm_config.sv:274$292_EN
+     6/6: $assert$hdm_config.sv:272$287_EN
+Creating decoders for process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:260$284'.
+Creating decoders for process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+     1/53: $4\k[31:0]
+     2/53: $3\k[31:0]
+     3/53: $2\k[31:0]
+     4/53: $2$mem2reg_wr$\sh_dpa$hdm_config.sv:202$244_ADDR[0:0]$279
+     5/53: $2$mem2reg_wr$\sh_dpa$hdm_config.sv:202$244_DATA[11:0]$280
+     6/53: $2$mem2reg_wr$\sh_size$hdm_config.sv:201$243_ADDR[0:0]$277
+     7/53: $2$mem2reg_wr$\sh_size$hdm_config.sv:201$243_DATA[15:0]$278
+     8/53: $2$mem2reg_wr$\sh_base$hdm_config.sv:200$242_ADDR[0:0]$275
+     9/53: $2$mem2reg_wr$\sh_base$hdm_config.sv:200$242_DATA[15:0]$276
+    10/53: $2$mem2reg_wr$\sh_en$hdm_config.sv:199$241_ADDR[0:0]$273
+    11/53: $2$mem2reg_wr$\sh_en$hdm_config.sv:199$241_DATA[0:0]$274
+    12/53: $1\k[31:0]
+    13/53: $1$mem2reg_wr$\sh_dpa$hdm_config.sv:202$244_DATA[11:0]$272
+    14/53: $1$mem2reg_wr$\sh_dpa$hdm_config.sv:202$244_ADDR[0:0]$271
+    15/53: $1$mem2reg_wr$\sh_size$hdm_config.sv:201$243_DATA[15:0]$270
+    16/53: $1$mem2reg_wr$\sh_size$hdm_config.sv:201$243_ADDR[0:0]$269
+    17/53: $1$mem2reg_wr$\sh_base$hdm_config.sv:200$242_DATA[15:0]$268
+    18/53: $1$mem2reg_wr$\sh_base$hdm_config.sv:200$242_ADDR[0:0]$267
+    19/53: $1$mem2reg_wr$\sh_en$hdm_config.sv:199$241_DATA[0:0]$266
+    20/53: $1$mem2reg_wr$\sh_en$hdm_config.sv:199$241_ADDR[0:0]$265
+    21/53: $0\cfg_update_done[0:0]
+    22/53: $0\cfg_reject[0:0]
+    23/53: $0\cfg_ok[0:0]
+    24/53: $0\pend_dpa[1][11:0]
+    25/53: $0\pend_dpa[0][11:0]
+    26/53: $0\pend_size[1][15:0]
+    27/53: $0\pend_size[0][15:0]
+    28/53: $0\pend_base[1][15:0]
+    29/53: $0\pend_base[0][15:0]
+    30/53: $0\pend_en[1][0:0]
+    31/53: $0\pend_en[0][0:0]
+    32/53: $0\act_dpa[1][11:0]
+    33/53: $0\act_dpa[0][11:0]
+    34/53: $0\act_size[1][15:0]
+    35/53: $0\act_size[0][15:0]
+    36/53: $0\act_base[1][15:0]
+    37/53: $0\act_base[0][15:0]
+    38/53: $0\act_en[1][0:0]
+    39/53: $0\act_en[0][0:0]
+    40/53: $0\sh_dpa[1][11:0]
+    41/53: $0\sh_dpa[0][11:0]
+    42/53: $0\sh_size[1][15:0]
+    43/53: $0\sh_size[0][15:0]
+    44/53: $0\sh_base[1][15:0]
+    45/53: $0\sh_base[0][15:0]
+    46/53: $0\sh_en[1][0:0]
+    47/53: $0\sh_en[0][0:0]
+    48/53: $0\state[1:0]
+    49/53: $0\pend_cap[12:0]
+    50/53: $0\act_cap[12:0]
+    51/53: $0\sh_cap[12:0]
+    52/53: $0\cfg_epoch[15:0]
+    53/53: $0\cfg_reason[3:0]
+Creating decoders for process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:160$250'.
+     1/2: $2\shadow_reason[3:0]
+     2/2: $1\shadow_reason[3:0]
+Creating decoders for process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:130$245'.
+     1/2: $2\first_win_reason[3:0]
+     2/2: $1\first_win_reason[3:0]
+
+3.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\win_reason[1]' from process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:115$339'.
+No latch inferred for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\win_reason[0]' from process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:115$322'.
+No latch inferred for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\shadow_reason' from process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:160$250'.
+No latch inferred for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\shadow_valid' from process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:160$250'.
+No latch inferred for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\first_win_reason' from process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:130$245'.
+
+3.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\formal_config.\p_state' using process `\formal_config.$proc$formal_config.sv:44$197'.
+  created $dff cell `$procdff$663' with positive edge clock.
+Creating register for signal `\formal_config.\p_rst_n' using process `\formal_config.$proc$formal_config.sv:44$197'.
+  created $dff cell `$procdff$664' with positive edge clock.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\f_init' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:260$284'.
+  created $dff cell `$procdff$665' with positive edge clock.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\f_pstate' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:260$284'.
+  created $dff cell `$procdff$666' with positive edge clock.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\f_pout' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:260$284'.
+  created $dff cell `$procdff$667' with positive edge clock.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\f_pepoch' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:260$284'.
+  created $dff cell `$procdff$668' with positive edge clock.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\f_pen0' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:260$284'.
+  created $dff cell `$procdff$669' with positive edge clock.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\f_ppend0' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:260$284'.
+  created $dff cell `$procdff$670' with positive edge clock.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\cfg_update_done' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$675' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\cfg_ok' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$680' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\cfg_reject' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$685' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\cfg_reason' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$690' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\cfg_epoch' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$695' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\sh_cap' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$700' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\act_cap' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$705' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\pend_cap' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$710' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\state' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$715' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\k' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$720' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\sh_en[0]' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$725' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\sh_en[1]' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$730' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\sh_base[0]' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$735' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\sh_base[1]' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$740' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\sh_size[0]' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$745' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\sh_size[1]' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$750' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\sh_dpa[0]' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$755' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\sh_dpa[1]' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$760' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\act_en[0]' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$765' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\act_en[1]' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$770' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\act_base[0]' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$775' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\act_base[1]' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$780' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\act_size[0]' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$785' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\act_size[1]' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$790' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\act_dpa[0]' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$795' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\act_dpa[1]' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$800' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\pend_en[0]' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$805' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\pend_en[1]' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$810' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\pend_base[0]' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$815' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\pend_base[1]' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$820' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\pend_size[0]' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$825' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\pend_size[1]' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$830' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\pend_dpa[0]' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$835' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.\pend_dpa[1]' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$840' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$mem2reg_wr$\sh_en$hdm_config.sv:199$241_ADDR' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$845' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$mem2reg_wr$\sh_en$hdm_config.sv:199$241_DATA' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$850' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$mem2reg_wr$\sh_base$hdm_config.sv:200$242_ADDR' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$855' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$mem2reg_wr$\sh_base$hdm_config.sv:200$242_DATA' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$860' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$mem2reg_wr$\sh_size$hdm_config.sv:201$243_ADDR' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$865' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$mem2reg_wr$\sh_size$hdm_config.sv:201$243_DATA' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$870' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$mem2reg_wr$\sh_dpa$hdm_config.sv:202$244_ADDR' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$875' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$mem2reg_wr$\sh_dpa$hdm_config.sv:202$244_DATA' using process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+  created $adff cell `$procdff$880' with positive edge clock and positive level reset.
+
+3.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+3.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Removing empty process `formal_config.$proc$formal_config.sv:39$238'.
+Removing empty process `formal_config.$proc$formal_config.sv:47$198'.
+Removing empty process `formal_config.$proc$formal_config.sv:44$197'.
+Removing empty process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:259$356'.
+Removing empty process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:115$339'.
+Removing empty process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:115$322'.
+Found and cleaned up 6 empty switches in `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:269$285'.
+Removing empty process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:269$285'.
+Removing empty process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:260$284'.
+Found and cleaned up 10 empty switches in `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+Removing empty process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:179$255'.
+Found and cleaned up 2 empty switches in `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:160$250'.
+Removing empty process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:160$250'.
+Found and cleaned up 2 empty switches in `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:130$245'.
+Removing empty process `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$proc$hdm_config.sv:130$245'.
+Cleaned up 20 empty switches.
+
+3.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module formal_config.
+<suppressed ~6 debug messages>
+Optimizing module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.
+<suppressed ~144 debug messages>
+
+3.3. Executing FUTURE pass.
+
+3.4. Executing OPT_EXPR pass (perform const folding).
+Optimizing module formal_config.
+Optimizing module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.
+
+3.5. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \formal_config..
+Finding unused cells or wires in module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config..
+Removed 78 unused cells and 304 unused wires.
+<suppressed ~81 debug messages>
+
+3.6. Executing CHECK pass (checking for obvious problems).
+Checking module formal_config...
+Warning: Wire formal_config.\sh_cap_i [12] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [11] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [10] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [9] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [8] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [7] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [6] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [5] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [4] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [3] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [2] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [1] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [0] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_we is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [11] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [10] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [9] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [8] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [7] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [6] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [5] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [4] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [3] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [2] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [1] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [0] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [15] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [14] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [13] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [12] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [11] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [10] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [9] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [8] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [7] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [6] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [5] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [4] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [3] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [2] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [1] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [0] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [15] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [14] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [13] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [12] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [11] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [10] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [9] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [8] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [7] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [6] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [5] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [4] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [3] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [2] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [1] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [0] is used but has no driver.
+Warning: Wire formal_config.\sh_en_i is used but has no driver.
+Warning: Wire formal_config.\sh_idx is used but has no driver.
+Warning: Wire formal_config.\sh_we is used but has no driver.
+Warning: Wire formal_config.\outstanding_cnt [2] is used but has no driver.
+Warning: Wire formal_config.\outstanding_cnt [1] is used but has no driver.
+Warning: Wire formal_config.\outstanding_cnt [0] is used but has no driver.
+Warning: Wire formal_config.\cfg_update_req is used but has no driver.
+Warning: Wire formal_config.\rst_n is used but has no driver.
+Checking module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config...
+Found and reported 66 problems.
+
+3.7. Executing OPT pass (performing simple optimizations).
+
+3.7.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module formal_config.
+Optimizing module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.
+
+3.7.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\formal_config'.
+Computing hashes of 43 cells of `\formal_config'.
+Finding duplicate cells in `\formal_config'.
+Computing hashes of 39 cells of `\formal_config'.
+Finding duplicate cells in `\formal_config'.
+Computing hashes of 38 cells of `\formal_config'.
+Finding duplicate cells in `\formal_config'.
+<suppressed ~15 debug messages>
+Finding identical cells in module `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config'.
+Computing hashes of 223 cells of `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config'.
+Finding duplicate cells in `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config'.
+Computing hashes of 194 cells of `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config'.
+Finding duplicate cells in `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config'.
+<suppressed ~87 debug messages>
+Removed a total of 34 cells.
+
+3.7.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \formal_config..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+    dead port 1/2 on $mux $procmux$652.
+Removed 1 multiplexer ports.
+<suppressed ~145 debug messages>
+
+3.7.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \formal_config.
+  Optimizing cells in module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.
+Performed a total of 0 changes.
+
+3.7.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\formal_config'.
+Computing hashes of 38 cells of `\formal_config'.
+Finding duplicate cells in `\formal_config'.
+Finding identical cells in module `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config'.
+Computing hashes of 193 cells of `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config'.
+Finding duplicate cells in `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config'.
+Computing hashes of 191 cells of `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config'.
+Finding duplicate cells in `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config'.
+Computing hashes of 189 cells of `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config'.
+Finding duplicate cells in `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config'.
+<suppressed ~12 debug messages>
+Removed a total of 4 cells.
+
+3.7.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \formal_config..
+Finding unused cells or wires in module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config..
+Removed 0 unused cells and 37 unused wires.
+<suppressed ~2 debug messages>
+
+3.7.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module formal_config.
+Optimizing module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.
+
+3.7.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+3.7.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \formal_config..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~144 debug messages>
+
+3.7.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \formal_config.
+  Optimizing cells in module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.
+Performed a total of 0 changes.
+
+3.7.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\formal_config'.
+Computing hashes of 38 cells of `\formal_config'.
+Finding duplicate cells in `\formal_config'.
+Finding identical cells in module `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config'.
+Computing hashes of 189 cells of `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config'.
+Finding duplicate cells in `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config'.
+Removed a total of 0 cells.
+
+3.7.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \formal_config..
+Finding unused cells or wires in module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config..
+
+3.7.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module formal_config.
+Optimizing module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.
+
+3.7.14. Finished fast OPT passes. (There is nothing left to do.)
+
+3.8. Executing WREDUCE pass (reducing word size of cells).
+Removed top 1 bits (of 2) from port B of cell formal_config.$eq$formal_config.sv:49$203 ($eq).
+Removed top 1 bits (of 2) from port B of cell formal_config.$eq$formal_config.sv:56$228 ($eq).
+Removed top 15 bits (of 16) from port B of cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$add$hdm_config.sv:240$283 ($add).
+Removed top 15 bits (of 16) from mux cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:272$288 ($mux).
+Removed top 15 bits (of 16) from port B of cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$add$hdm_config.sv:272$289 ($add).
+Removed top 1 bits (of 2) from port B of cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$eq$hdm_config.sv:282$303 ($eq).
+Removed top 5 bits (of 17) from port A of cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$add$hdm_config.sv:112$312 ($add).
+Removed top 1 bits (of 17) from port B of cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$add$hdm_config.sv:112$312 ($add).
+Removed top 5 bits (of 17) from port A of cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$add$hdm_config.sv:112$314 ($add).
+Removed top 1 bits (of 17) from port B of cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$add$hdm_config.sv:112$314 ($add).
+Removed top 1 bits (of 17) from port A of cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$add$hdm_config.sv:145$315 ($add).
+Removed top 1 bits (of 17) from port B of cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$add$hdm_config.sv:145$315 ($add).
+Removed top 1 bits (of 17) from port A of cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$add$hdm_config.sv:146$316 ($add).
+Removed top 1 bits (of 17) from port B of cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$add$hdm_config.sv:146$316 ($add).
+Removed top 1 bits (of 17) from port A of cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$lt$hdm_config.sv:147$318 ($lt).
+Removed top 1 bits (of 17) from port A of cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$lt$hdm_config.sv:147$320 ($lt).
+Removed top 4 bits (of 17) from port B of cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$gt$hdm_config.sv:122$329 ($gt).
+Removed top 4 bits (of 17) from port B of cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$gt$hdm_config.sv:123$330 ($gt).
+Removed top 1 bits (of 4) from mux cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:123$331 ($mux).
+Removed top 1 bits (of 4) from mux cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:122$332 ($mux).
+Removed top 1 bits (of 4) from mux cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:121$333 ($mux).
+Removed top 1 bits (of 4) from mux cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:120$334 ($mux).
+Removed top 1 bits (of 4) from mux cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:119$335 ($mux).
+Removed top 1 bits (of 4) from mux cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:118$336 ($mux).
+Removed top 1 bits (of 4) from mux cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:117$337 ($mux).
+Removed top 1 bits (of 4) from mux cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:116$338 ($mux).
+Removed top 4 bits (of 17) from port B of cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$gt$hdm_config.sv:122$346 ($gt).
+Removed top 4 bits (of 17) from port B of cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$gt$hdm_config.sv:123$347 ($gt).
+Removed top 1 bits (of 4) from mux cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:123$348 ($mux).
+Removed top 1 bits (of 4) from mux cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:122$349 ($mux).
+Removed top 1 bits (of 4) from mux cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:121$350 ($mux).
+Removed top 1 bits (of 4) from mux cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:120$351 ($mux).
+Removed top 1 bits (of 4) from mux cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:119$352 ($mux).
+Removed top 1 bits (of 4) from mux cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:118$353 ($mux).
+Removed top 1 bits (of 4) from mux cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:117$354 ($mux).
+Removed top 1 bits (of 4) from mux cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:116$355 ($mux).
+Removed top 1 bits (of 2) from port B of cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procmux$611_CMP0 ($eq).
+Removed top 1 bits (of 4) from mux cell $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$procmux$661 ($mux).
+Removed top 15 bits (of 16) from wire $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:272$288_Y.
+Removed top 1 bits (of 4) from wire $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:123$331_Y.
+Removed top 1 bits (of 4) from wire $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:122$332_Y.
+Removed top 1 bits (of 4) from wire $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:121$333_Y.
+Removed top 1 bits (of 4) from wire $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:120$334_Y.
+Removed top 1 bits (of 4) from wire $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:119$335_Y.
+Removed top 1 bits (of 4) from wire $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:118$336_Y.
+Removed top 1 bits (of 4) from wire $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:117$337_Y.
+Removed top 1 bits (of 4) from wire $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:123$348_Y.
+Removed top 1 bits (of 4) from wire $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$1\first_win_reason[3:0].
+Removed top 1 bits (of 4) from wire $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:122$349_Y.
+Removed top 1 bits (of 4) from wire $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:121$350_Y.
+Removed top 1 bits (of 4) from wire $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:120$351_Y.
+Removed top 1 bits (of 4) from wire $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:117$354_Y.
+Removed top 1 bits (of 4) from wire $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.win_reason[1].
+Removed top 1 bits (of 4) from wire $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.win_reason[0].
+Removed top 1 bits (of 4) from wire $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:118$353_Y.
+Removed top 1 bits (of 4) from wire $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.$ternary$hdm_config.sv:119$352_Y.
+Removed top 2 bits (of 4) from wire $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.pair_ovl.
+
+3.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \formal_config..
+Finding unused cells or wires in module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config..
+Removed 0 unused cells and 19 unused wires.
+<suppressed ~1 debug messages>
+
+3.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+3.11. Executing OPT pass (performing simple optimizations).
+
+3.11.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module formal_config.
+Optimizing module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config.
+
+3.11.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\formal_config'.
+Computing hashes of 38 cells of `\formal_config'.
+Finding duplicate cells in `\formal_config'.
+Finding identical cells in module `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config'.
+Computing hashes of 189 cells of `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config'.
+Finding duplicate cells in `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config'.
+Computing hashes of 188 cells of `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config'.
+Finding duplicate cells in `$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config'.
+<suppressed ~3 debug messages>
+Removed a total of 1 cells.
+
+3.11.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \formal_config..
+Finding unused cells or wires in module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config..
+Removed 0 unused cells and 1 unused wires.
+<suppressed ~1 debug messages>
+
+3.11.4. Finished fast OPT passes.
+
+3.12. Executing SORT pass.
+
+3.13. Printing statistics.
+
+=== $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      204 wires
+     1488 wire bits
+       74 public wires
+      686 public wire bits
+       25 ports
+      197 port bits
+      188 cells
+        6   $add
+       33   $adff
+        7   $check
+        6   $dff
+        8   $eq
+        6   $gt
+        7   $logic_and
+        7   $logic_not
+        2   $lt
+       92   $mux
+        3   $pmux
+       11   $reduce_bool
+
+=== formal_config ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       50 wires
+      223 wire bits
+       27 public wires
+      200 public wire bits
+        1 ports
+        1 port bits
+       37 cells
+       12   $check
+        2   $dff
+        4   $eq
+       13   $logic_and
+        3   $logic_not
+        1   $not
+        2   $reduce_bool
+        1 submodules
+        1   $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config
+
+=== design hierarchy ===
+
+        +----------Count including submodules.
+        | 
+      225 formal_config
+      188 $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config
+
+        +----------Count including submodules.
+        | 
+      254 wires
+     1711 wire bits
+      101 public wires
+      886 public wire bits
+       26 ports
+      198 port bits
+        - memories
+        - memory bits
+        - processes
+      225 cells
+        6   $add
+       33   $adff
+       19   $check
+        8   $dff
+       12   $eq
+        6   $gt
+       20   $logic_and
+       10   $logic_not
+        2   $lt
+       92   $mux
+        1   $not
+        3   $pmux
+       13   $reduce_bool
+        1 submodules
+        1   $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config
+
+3.14. Executing CHECK pass (checking for obvious problems).
+Checking module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config...
+Checking module formal_config...
+Warning: Wire formal_config.\sh_we is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [15] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [14] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [13] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [12] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [11] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [10] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [9] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [8] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [7] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [6] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [5] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [4] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [3] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [2] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [1] is used but has no driver.
+Warning: Wire formal_config.\sh_size_i [0] is used but has no driver.
+Warning: Wire formal_config.\sh_idx is used but has no driver.
+Warning: Wire formal_config.\sh_en_i is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [11] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [10] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [9] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [8] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [7] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [6] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [5] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [4] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [3] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [2] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [1] is used but has no driver.
+Warning: Wire formal_config.\sh_dpa_i [0] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_we is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [12] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [11] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [10] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [9] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [8] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [7] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [6] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [5] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [4] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [3] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [2] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [1] is used but has no driver.
+Warning: Wire formal_config.\sh_cap_i [0] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [15] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [14] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [13] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [12] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [11] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [10] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [9] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [8] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [7] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [6] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [5] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [4] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [3] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [2] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [1] is used but has no driver.
+Warning: Wire formal_config.\sh_base_i [0] is used but has no driver.
+Warning: Wire formal_config.\outstanding_cnt [2] is used but has no driver.
+Warning: Wire formal_config.\outstanding_cnt [1] is used but has no driver.
+Warning: Wire formal_config.\outstanding_cnt [0] is used but has no driver.
+Warning: Wire formal_config.\cfg_update_req is used but has no driver.
+Warning: Wire formal_config.\rst_n is used but has no driver.
+Found and reported 66 problems.
+
+4. Executing HIERARCHY pass (managing design hierarchy).
+Attribute `top' found on module `formal_config'. Setting top module to formal_config.
+
+4.1. Analyzing design hierarchy..
+Top module:  \formal_config
+Used module:     $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config
+
+4.2. Analyzing design hierarchy..
+Top module:  \formal_config
+Used module:     $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config
+Removed 0 unused modules.
+Module $paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\hdm_config directly or indirectly contains formal properties -> setting "keep" attribute.
+Module formal_config directly or indirectly contains formal properties -> setting "keep" attribute.
+
+5. Executing jny backend.
+
+6. Executing RTLIL backend.
+Output filename: ../model/design.il
+
+Warnings: 79 unique messages, 158 total
+End of script. Logfile hash: 33707cddc9, time: 0.05s, user: 0.05s, system: 0.00s, MEM: 21.72 MB peak
+Yosys 0.67+40 (git sha1 45ea2b8d6-dirty, Release, Clang /usr/bin/clang++ 18.1.8)
+Time spent: 28% 3x read_verilog (0 sec), 16% 5x opt_clean (0 sec), ...

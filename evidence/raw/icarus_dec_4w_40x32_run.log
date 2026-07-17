@@ -1,4 +1,0 @@
-=== tb_hdm_decoder N_WIN=4 HPA_W=40 DPA_W=32 vectors=5422 ===
-=== checks=5422 errors=0 ===
-TB_RESULT: PASS
-tb/sv/tb_hdm_decoder.sv:137: $finish called at 108436000 (1ps)

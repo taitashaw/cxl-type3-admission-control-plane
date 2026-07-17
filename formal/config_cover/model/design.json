@@ -1,0 +1,3248 @@
+{
+  "$schema": "https://raw.githubusercontent.com/YosysHQ/yosys/main/misc/jny.schema.json",
+  "generator": "Yosys 0.67+40 (git sha1 45ea2b8d6-dirty, Release, Clang /usr/bin/clang++ 18.1.8)",
+  "version": "0.0.1",
+  "invocation": "write_jny -no-connections ../model/design.json ",
+  "features": ["attributes", "properties"],
+  "modules": [
+      {
+        "name": "$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\\hdm_config",
+        "cell_sorts": [
+          {
+            "type": "$adff",
+            "ports": [
+                {
+                  "name": "ARST",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "CLK",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "D",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "Q",
+                  "direction": "",
+                  "range": [0, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$procdff$675",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procdff$680",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procdff$685",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procdff$690",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000000100"
+                  }
+                },
+                {
+                  "name": "$procdff$695",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0000000000000000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$700",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0000000000000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000001101"
+                  }
+                },
+                {
+                  "name": "$procdff$705",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0000000000000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000001101"
+                  }
+                },
+                {
+                  "name": "$procdff$710",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0000000000000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000001101"
+                  }
+                },
+                {
+                  "name": "$procdff$715",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "00",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000000010"
+                  }
+                },
+                {
+                  "name": "$procdff$725",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procdff$730",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procdff$735",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0000000000000000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$740",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0000000000000000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$745",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0000000000000000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$750",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0000000000000000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$755",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "000000000000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000001100"
+                  }
+                },
+                {
+                  "name": "$procdff$760",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "000000000000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000001100"
+                  }
+                },
+                {
+                  "name": "$procdff$765",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procdff$770",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procdff$775",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0000000000000000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$780",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0000000000000000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$785",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0000000000000000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$790",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0000000000000000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$795",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "000000000000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000001100"
+                  }
+                },
+                {
+                  "name": "$procdff$800",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "000000000000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000001100"
+                  }
+                },
+                {
+                  "name": "$procdff$805",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procdff$810",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procdff$815",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0000000000000000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$820",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0000000000000000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$825",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0000000000000000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$830",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "0000000000000000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$835",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "000000000000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000001100"
+                  }
+                },
+                {
+                  "name": "$procdff$840",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:179.3-249.6"
+                  },
+                  "parameters": {
+                    "ARST_POLARITY": "00000000000000000000000000000000",
+                    "ARST_VALUE": "000000000000",
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000001100"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$mux",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "B",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "S",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [0, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$procmux$357",
+                  "attributes": {
+                    "src": "hdm_config.sv:282.11-282.56|hdm_config.sv:282.7-282.80"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$359",
+                  "attributes": {
+                    "src": "hdm_config.sv:270.9-270.24|hdm_config.sv:270.5-283.8"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$365",
+                  "attributes": {
+                    "src": "hdm_config.sv:278.11-278.56|hdm_config.sv:278.7-279.41"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$367",
+                  "attributes": {
+                    "src": "hdm_config.sv:270.9-270.24|hdm_config.sv:270.5-283.8"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$369",
+                  "attributes": {
+                    "src": "hdm_config.sv:276.11-276.17|hdm_config.sv:276.7-276.50"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$371",
+                  "attributes": {
+                    "src": "hdm_config.sv:270.9-270.24|hdm_config.sv:270.5-283.8"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$373",
+                  "attributes": {
+                    "src": "hdm_config.sv:274.11-274.18|hdm_config.sv:274.7-274.49"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$375",
+                  "attributes": {
+                    "src": "hdm_config.sv:270.9-270.24|hdm_config.sv:270.5-283.8"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$377",
+                  "attributes": {
+                    "src": "hdm_config.sv:270.9-270.24|hdm_config.sv:270.5-283.8"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$441",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:211.17-211.30|hdm_config.sv:211.13-226.16"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$443",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:210.15-210.29|hdm_config.sv:210.11-227.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$445",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "parallel_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:206.26-206.26|hdm_config.sv:206.14-247.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$448",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "parallel_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:231.12-231.12|hdm_config.sv:206.14-247.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$455",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:211.17-211.30|hdm_config.sv:211.13-226.16"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000001100"
+                  }
+                },
+                {
+                  "name": "$procmux$457",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:210.15-210.29|hdm_config.sv:210.11-227.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000001100"
+                  }
+                },
+                {
+                  "name": "$procmux$459",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "parallel_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:206.26-206.26|hdm_config.sv:206.14-247.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000001100"
+                  }
+                },
+                {
+                  "name": "$procmux$466",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:211.17-211.30|hdm_config.sv:211.13-226.16"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000001100"
+                  }
+                },
+                {
+                  "name": "$procmux$468",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:210.15-210.29|hdm_config.sv:210.11-227.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000001100"
+                  }
+                },
+                {
+                  "name": "$procmux$470",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "parallel_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:206.26-206.26|hdm_config.sv:206.14-247.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000001100"
+                  }
+                },
+                {
+                  "name": "$procmux$477",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:211.17-211.30|hdm_config.sv:211.13-226.16"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$479",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:210.15-210.29|hdm_config.sv:210.11-227.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$481",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "parallel_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:206.26-206.26|hdm_config.sv:206.14-247.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$488",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:211.17-211.30|hdm_config.sv:211.13-226.16"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$490",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:210.15-210.29|hdm_config.sv:210.11-227.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$492",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "parallel_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:206.26-206.26|hdm_config.sv:206.14-247.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$499",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:211.17-211.30|hdm_config.sv:211.13-226.16"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$501",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:210.15-210.29|hdm_config.sv:210.11-227.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$503",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "parallel_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:206.26-206.26|hdm_config.sv:206.14-247.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$510",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:211.17-211.30|hdm_config.sv:211.13-226.16"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$512",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:210.15-210.29|hdm_config.sv:210.11-227.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$514",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "parallel_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:206.26-206.26|hdm_config.sv:206.14-247.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$521",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:211.17-211.30|hdm_config.sv:211.13-226.16"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$523",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:210.15-210.29|hdm_config.sv:210.11-227.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$525",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "parallel_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:206.26-206.26|hdm_config.sv:206.14-247.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$532",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:211.17-211.30|hdm_config.sv:211.13-226.16"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$534",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:210.15-210.29|hdm_config.sv:210.11-227.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$536",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "parallel_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:206.26-206.26|hdm_config.sv:206.14-247.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$539",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "parallel_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:231.12-231.12|hdm_config.sv:206.14-247.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000001100"
+                  }
+                },
+                {
+                  "name": "$procmux$542",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "parallel_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:231.12-231.12|hdm_config.sv:206.14-247.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000001100"
+                  }
+                },
+                {
+                  "name": "$procmux$545",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "parallel_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:231.12-231.12|hdm_config.sv:206.14-247.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$548",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "parallel_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:231.12-231.12|hdm_config.sv:206.14-247.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$551",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "parallel_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:231.12-231.12|hdm_config.sv:206.14-247.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$554",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "parallel_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:231.12-231.12|hdm_config.sv:206.14-247.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$557",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "parallel_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:231.12-231.12|hdm_config.sv:206.14-247.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$560",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "parallel_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:231.12-231.12|hdm_config.sv:206.14-247.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$563",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:202.9-202.36"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000001100"
+                  }
+                },
+                {
+                  "name": "$procmux$565",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:198.11-198.16|hdm_config.sv:198.7-203.10"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000001100"
+                  }
+                },
+                {
+                  "name": "$procmux$569",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:202.9-202.36"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000001100"
+                  }
+                },
+                {
+                  "name": "$procmux$571",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:198.11-198.16|hdm_config.sv:198.7-203.10"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000001100"
+                  }
+                },
+                {
+                  "name": "$procmux$574",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:201.9-201.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$576",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:198.11-198.16|hdm_config.sv:198.7-203.10"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$580",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:201.9-201.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$582",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:198.11-198.16|hdm_config.sv:198.7-203.10"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$585",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:200.9-200.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$587",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:198.11-198.16|hdm_config.sv:198.7-203.10"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$591",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:200.9-200.37"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$593",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:198.11-198.16|hdm_config.sv:198.7-203.10"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$596",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:199.9-199.35"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$598",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:198.11-198.16|hdm_config.sv:198.7-203.10"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$602",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:199.9-199.35"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$604",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:198.11-198.16|hdm_config.sv:198.7-203.10"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$608",
+                  "attributes": {
+                    "src": "hdm_config.sv:230.15-230.36|hdm_config.sv:230.11-230.56"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000010"
+                  }
+                },
+                {
+                  "name": "$procmux$614",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:211.17-211.30|hdm_config.sv:211.13-226.16"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000010"
+                  }
+                },
+                {
+                  "name": "$procmux$616",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:210.15-210.29|hdm_config.sv:210.11-227.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000010"
+                  }
+                },
+                {
+                  "name": "$procmux$624",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:211.17-211.30|hdm_config.sv:211.13-226.16"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000001101"
+                  }
+                },
+                {
+                  "name": "$procmux$626",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:210.15-210.29|hdm_config.sv:210.11-227.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000001101"
+                  }
+                },
+                {
+                  "name": "$procmux$628",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "parallel_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:206.26-206.26|hdm_config.sv:206.14-247.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000001101"
+                  }
+                },
+                {
+                  "name": "$procmux$631",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "parallel_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:231.12-231.12|hdm_config.sv:206.14-247.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000001101"
+                  }
+                },
+                {
+                  "name": "$procmux$633",
+                  "attributes": {
+                    "src": "hdm_config.sv:204.11-204.20|hdm_config.sv:204.7-204.41"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000001101"
+                  }
+                },
+                {
+                  "name": "$procmux$636",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "parallel_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:231.12-231.12|hdm_config.sv:206.14-247.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procmux$643",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:211.17-211.30|hdm_config.sv:211.13-226.16"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000100"
+                  }
+                },
+                {
+                  "name": "$procmux$645",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:210.15-210.29|hdm_config.sv:210.11-227.14"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000100"
+                  }
+                },
+                {
+                  "name": "$procmux$649",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:162.14-162.25|hdm_config.sv:162.10-163.60"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000100"
+                  }
+                },
+                {
+                  "name": "$procmux$655",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:161.9-161.35|hdm_config.sv:161.5-163.60"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000100"
+                  }
+                },
+                {
+                  "name": "$procmux$658",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:133.11-133.34|hdm_config.sv:133.7-133.69"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000100"
+                  }
+                },
+                {
+                  "name": "$procmux$661",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:133.11-133.34|hdm_config.sv:133.7-133.69"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000011"
+                  }
+                },
+                {
+                  "name": "$ternary$hdm_config.sv:116$338",
+                  "attributes": {
+                    "src": "hdm_config.sv:116.11-124.66"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000011"
+                  }
+                },
+                {
+                  "name": "$ternary$hdm_config.sv:116$355",
+                  "attributes": {
+                    "src": "hdm_config.sv:116.11-124.66"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000011"
+                  }
+                },
+                {
+                  "name": "$ternary$hdm_config.sv:117$337",
+                  "attributes": {
+                    "src": "hdm_config.sv:117.11-124.66"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000011"
+                  }
+                },
+                {
+                  "name": "$ternary$hdm_config.sv:117$354",
+                  "attributes": {
+                    "src": "hdm_config.sv:117.11-124.66"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000011"
+                  }
+                },
+                {
+                  "name": "$ternary$hdm_config.sv:118$336",
+                  "attributes": {
+                    "src": "hdm_config.sv:118.11-124.66"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000011"
+                  }
+                },
+                {
+                  "name": "$ternary$hdm_config.sv:118$353",
+                  "attributes": {
+                    "src": "hdm_config.sv:118.11-124.66"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000011"
+                  }
+                },
+                {
+                  "name": "$ternary$hdm_config.sv:119$335",
+                  "attributes": {
+                    "src": "hdm_config.sv:119.11-124.66"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000011"
+                  }
+                },
+                {
+                  "name": "$ternary$hdm_config.sv:119$352",
+                  "attributes": {
+                    "src": "hdm_config.sv:119.11-124.66"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000011"
+                  }
+                },
+                {
+                  "name": "$ternary$hdm_config.sv:120$334",
+                  "attributes": {
+                    "src": "hdm_config.sv:120.11-124.66"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000011"
+                  }
+                },
+                {
+                  "name": "$ternary$hdm_config.sv:120$351",
+                  "attributes": {
+                    "src": "hdm_config.sv:120.11-124.66"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000011"
+                  }
+                },
+                {
+                  "name": "$ternary$hdm_config.sv:121$333",
+                  "attributes": {
+                    "src": "hdm_config.sv:121.11-124.66"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000011"
+                  }
+                },
+                {
+                  "name": "$ternary$hdm_config.sv:121$350",
+                  "attributes": {
+                    "src": "hdm_config.sv:121.11-124.66"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000011"
+                  }
+                },
+                {
+                  "name": "$ternary$hdm_config.sv:122$332",
+                  "attributes": {
+                    "src": "hdm_config.sv:122.11-124.66"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000011"
+                  }
+                },
+                {
+                  "name": "$ternary$hdm_config.sv:122$349",
+                  "attributes": {
+                    "src": "hdm_config.sv:122.11-124.66"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000011"
+                  }
+                },
+                {
+                  "name": "$ternary$hdm_config.sv:123$331",
+                  "attributes": {
+                    "src": "hdm_config.sv:123.11-124.66"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000011"
+                  }
+                },
+                {
+                  "name": "$ternary$hdm_config.sv:123$348",
+                  "attributes": {
+                    "src": "hdm_config.sv:123.11-124.66"
+                  },
+                  "parameters": {
+                    "WIDTH": "00000000000000000000000000000011"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$reduce_bool",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [6, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [0, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$ne$hdm_config.sv:118$325",
+                  "attributes": {
+                    "src": "hdm_config.sv:118.12-118.34"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000110",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$ne$hdm_config.sv:118$342",
+                  "attributes": {
+                    "src": "hdm_config.sv:118.12-118.34"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000110",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$ne$hdm_config.sv:119$326",
+                  "attributes": {
+                    "src": "hdm_config.sv:119.12-119.34"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000110",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$ne$hdm_config.sv:119$343",
+                  "attributes": {
+                    "src": "hdm_config.sv:119.12-119.34"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000110",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$ne$hdm_config.sv:120$327",
+                  "attributes": {
+                    "src": "hdm_config.sv:120.12-120.34"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000110",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$ne$hdm_config.sv:120$344",
+                  "attributes": {
+                    "src": "hdm_config.sv:120.12-120.34"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000110",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$ne$hdm_config.sv:133$247",
+                  "attributes": {
+                    "src": "hdm_config.sv:133.11-133.34"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000100",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$ne$hdm_config.sv:133$248",
+                  "attributes": {
+                    "src": "hdm_config.sv:133.11-133.34"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000100",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$ne$hdm_config.sv:161$251",
+                  "attributes": {
+                    "src": "hdm_config.sv:161.9-161.35"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000100",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$ne$hdm_config.sv:278$296",
+                  "attributes": {
+                    "src": "hdm_config.sv:278.11-278.31"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000010",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$ne$hdm_config.sv:278$297",
+                  "attributes": {
+                    "src": "hdm_config.sv:278.35-278.56"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000010",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$dff",
+            "ports": [
+                {
+                  "name": "CLK",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "D",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "Q",
+                  "direction": "",
+                  "range": [0, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$procdff$665",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:260.3-267.6"
+                  },
+                  "parameters": {
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procdff$666",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:260.3-267.6"
+                  },
+                  "parameters": {
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000000010"
+                  }
+                },
+                {
+                  "name": "$procdff$667",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:260.3-267.6"
+                  },
+                  "parameters": {
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000000011"
+                  }
+                },
+                {
+                  "name": "$procdff$668",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:260.3-267.6"
+                  },
+                  "parameters": {
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$procdff$669",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:260.3-267.6"
+                  },
+                  "parameters": {
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procdff$670",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:260.3-267.6"
+                  },
+                  "parameters": {
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$lt",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [16, 0]
+                },
+                {
+                  "name": "B",
+                  "direction": "io",
+                  "range": [17, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [0, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$lt$hdm_config.sv:147$318",
+                  "attributes": {
+                    "src": "hdm_config.sv:147.69-147.78"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000010000",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000010001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$lt$hdm_config.sv:147$320",
+                  "attributes": {
+                    "src": "hdm_config.sv:147.84-147.93"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000010000",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000010001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$check",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "ARGS",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "EN",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "TRG",
+                  "direction": "io",
+                  "range": [0, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "_witness_.check_assert_hdm_config_sv_272_287",
+                  "attributes": {
+                    "hdlname": "_witness_ check_assert_hdm_config_sv_272_287",
+                    "keep": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:272.7-272.66"
+                  },
+                  "parameters": {
+                    "ARGS_WIDTH": "00000000000000000000000000000000",
+                    "FLAVOR": "assert",
+                    "FORMAT": true,
+                    "PRIORITY": "11111111111111111111111111111111",
+                    "TRG_ENABLE": "00000000000000000000000000000001",
+                    "TRG_POLARITY": "1",
+                    "TRG_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "_witness_.check_assert_hdm_config_sv_274_292",
+                  "attributes": {
+                    "hdlname": "_witness_ check_assert_hdm_config_sv_274_292",
+                    "keep": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:274.20-274.48"
+                  },
+                  "parameters": {
+                    "ARGS_WIDTH": "00000000000000000000000000000000",
+                    "FLAVOR": "assert",
+                    "FORMAT": true,
+                    "PRIORITY": "11111111111111111111111111111110",
+                    "TRG_ENABLE": "00000000000000000000000000000001",
+                    "TRG_POLARITY": "1",
+                    "TRG_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "_witness_.check_assert_hdm_config_sv_276_294",
+                  "attributes": {
+                    "hdlname": "_witness_ check_assert_hdm_config_sv_276_294",
+                    "keep": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:276.19-276.49"
+                  },
+                  "parameters": {
+                    "ARGS_WIDTH": "00000000000000000000000000000000",
+                    "FLAVOR": "assert",
+                    "FORMAT": true,
+                    "PRIORITY": "11111111111111111111111111111101",
+                    "TRG_ENABLE": "00000000000000000000000000000001",
+                    "TRG_POLARITY": "1",
+                    "TRG_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "_witness_.check_assert_hdm_config_sv_279_299",
+                  "attributes": {
+                    "hdlname": "_witness_ check_assert_hdm_config_sv_279_299",
+                    "keep": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:279.9-279.40"
+                  },
+                  "parameters": {
+                    "ARGS_WIDTH": "00000000000000000000000000000000",
+                    "FLAVOR": "assert",
+                    "FORMAT": true,
+                    "PRIORITY": "11111111111111111111111111111100",
+                    "TRG_ENABLE": "00000000000000000000000000000001",
+                    "TRG_POLARITY": "1",
+                    "TRG_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "_witness_.check_assert_hdm_config_sv_281_301",
+                  "attributes": {
+                    "hdlname": "_witness_ check_assert_hdm_config_sv_281_301",
+                    "keep": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:281.19-281.48"
+                  },
+                  "parameters": {
+                    "ARGS_WIDTH": "00000000000000000000000000000000",
+                    "FLAVOR": "assert",
+                    "FORMAT": true,
+                    "PRIORITY": "11111111111111111111111111111011",
+                    "TRG_ENABLE": "00000000000000000000000000000001",
+                    "TRG_POLARITY": "1",
+                    "TRG_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "_witness_.check_assert_hdm_config_sv_282_306",
+                  "attributes": {
+                    "hdlname": "_witness_ check_assert_hdm_config_sv_282_306",
+                    "keep": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:282.58-282.79"
+                  },
+                  "parameters": {
+                    "ARGS_WIDTH": "00000000000000000000000000000000",
+                    "FLAVOR": "assert",
+                    "FORMAT": true,
+                    "PRIORITY": "11111111111111111111111111111010",
+                    "TRG_ENABLE": "00000000000000000000000000000001",
+                    "TRG_POLARITY": "1",
+                    "TRG_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "_witness_.check_assert_hdm_config_sv_285_308",
+                  "attributes": {
+                    "hdlname": "_witness_ check_assert_hdm_config_sv_285_308",
+                    "keep": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:285.5-285.52"
+                  },
+                  "parameters": {
+                    "ARGS_WIDTH": "00000000000000000000000000000000",
+                    "FLAVOR": "assert",
+                    "FORMAT": true,
+                    "PRIORITY": "11111111111111111111111111111001",
+                    "TRG_ENABLE": "00000000000000000000000000000001",
+                    "TRG_POLARITY": "1",
+                    "TRG_WIDTH": "00000000000000000000000000000001"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$logic_and",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "B",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [0, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$logic_and$hdm_config.sv:147$317",
+                  "attributes": {
+                    "src": "hdm_config.sv:147.42-147.64"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$logic_and$hdm_config.sv:147$319",
+                  "attributes": {
+                    "src": "hdm_config.sv:147.42-147.79"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$logic_and$hdm_config.sv:147$321",
+                  "attributes": {
+                    "src": "hdm_config.sv:147.42-147.94"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$logic_and$hdm_config.sv:270$286",
+                  "attributes": {
+                    "src": "hdm_config.sv:270.9-270.24"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$logic_and$hdm_config.sv:278$298",
+                  "attributes": {
+                    "src": "hdm_config.sv:278.11-278.56"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$logic_and$hdm_config.sv:282$305",
+                  "attributes": {
+                    "src": "hdm_config.sv:282.11-282.56"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$logic_and$hdm_config.sv:285$309",
+                  "attributes": {
+                    "src": "hdm_config.sv:285.15-285.50"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$gt",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [17, 0]
+                },
+                {
+                  "name": "B",
+                  "direction": "io",
+                  "range": [17, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [0, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$gt$hdm_config.sv:121$328",
+                  "attributes": {
+                    "src": "hdm_config.sv:121.12-121.40"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000010001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000010001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$gt$hdm_config.sv:121$345",
+                  "attributes": {
+                    "src": "hdm_config.sv:121.12-121.40"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000010001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000010001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$gt$hdm_config.sv:122$329",
+                  "attributes": {
+                    "src": "hdm_config.sv:122.12-122.64"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000010001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000001101",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$gt$hdm_config.sv:122$346",
+                  "attributes": {
+                    "src": "hdm_config.sv:122.12-122.64"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000010001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000001101",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$gt$hdm_config.sv:123$330",
+                  "attributes": {
+                    "src": "hdm_config.sv:123.12-123.51"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000010001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000001101",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$gt$hdm_config.sv:123$347",
+                  "attributes": {
+                    "src": "hdm_config.sv:123.12-123.51"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000010001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000001101",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$eq",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [16, 0]
+                },
+                {
+                  "name": "B",
+                  "direction": "io",
+                  "range": [16, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [0, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$eq$hdm_config.sv:272$290",
+                  "attributes": {
+                    "src": "hdm_config.sv:272.15-272.65"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000010000",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000010000",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$eq$hdm_config.sv:274$293",
+                  "attributes": {
+                    "src": "hdm_config.sv:274.28-274.47"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$eq$hdm_config.sv:276$295",
+                  "attributes": {
+                    "src": "hdm_config.sv:276.27-276.48"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$eq$hdm_config.sv:279$300",
+                  "attributes": {
+                    "src": "hdm_config.sv:279.17-279.39"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$eq$hdm_config.sv:281$302",
+                  "attributes": {
+                    "src": "hdm_config.sv:281.27-281.47"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000010",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000010",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$eq$hdm_config.sv:282$303",
+                  "attributes": {
+                    "src": "hdm_config.sv:282.11-282.31"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000010",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$611_CMP0",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "parallel_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:228.12-228.12|hdm_config.sv:206.14-247.14"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000010",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$640_CMP0",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "parallel_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:231.12-231.12|hdm_config.sv:206.14-247.14"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000010",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000010",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$logic_not",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [16, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [0, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$eq$hdm_config.sv:117$324",
+                  "attributes": {
+                    "src": "hdm_config.sv:117.12-117.29"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000010000",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$eq$hdm_config.sv:117$341",
+                  "attributes": {
+                    "src": "hdm_config.sv:117.12-117.29"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000010000",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$eq$hdm_config.sv:164$252",
+                  "attributes": {
+                    "src": "hdm_config.sv:164.21-164.44"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000100",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$eq$hdm_config.sv:230$282",
+                  "attributes": {
+                    "src": "hdm_config.sv:230.15-230.36"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000011",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$eq$hdm_config.sv:282$307",
+                  "attributes": {
+                    "src": "hdm_config.sv:282.66-282.78"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000011",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$logic_not$hdm_config.sv:285$310",
+                  "attributes": {
+                    "src": "hdm_config.sv:285.13-285.51"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$647_CMP0",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "parallel_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:206.26-206.26|hdm_config.sv:206.14-247.14"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000010",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$pmux",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "B",
+                  "direction": "io",
+                  "range": [2, 0]
+                },
+                {
+                  "name": "S",
+                  "direction": "io",
+                  "range": [2, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [0, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$procmux$427",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "parallel_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:231.12-231.12|hdm_config.sv:206.14-247.14"
+                  },
+                  "parameters": {
+                    "S_WIDTH": "00000000000000000000000000000010",
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$procmux$610",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "parallel_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:228.12-228.12|hdm_config.sv:206.14-247.14"
+                  },
+                  "parameters": {
+                    "S_WIDTH": "00000000000000000000000000000010",
+                    "WIDTH": "00000000000000000000000000000010"
+                  }
+                },
+                {
+                  "name": "$procmux$639",
+                  "attributes": {
+                    "full_case": "00000000000000000000000000000001",
+                    "parallel_case": "00000000000000000000000000000001",
+                    "src": "hdm_config.sv:231.12-231.12|hdm_config.sv:206.14-247.14"
+                  },
+                  "parameters": {
+                    "S_WIDTH": "00000000000000000000000000000010",
+                    "WIDTH": "00000000000000000000000000000100"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$add",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [12, 0]
+                },
+                {
+                  "name": "B",
+                  "direction": "io",
+                  "range": [16, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [17, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$add$hdm_config.sv:112$312",
+                  "attributes": {
+                    "src": "hdm_config.sv:112.21-113.56"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000001100",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000010000",
+                    "Y_WIDTH": "00000000000000000000000000010001"
+                  }
+                },
+                {
+                  "name": "$add$hdm_config.sv:112$314",
+                  "attributes": {
+                    "src": "hdm_config.sv:112.21-113.56"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000001100",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000010000",
+                    "Y_WIDTH": "00000000000000000000000000010001"
+                  }
+                },
+                {
+                  "name": "$add$hdm_config.sv:145$315",
+                  "attributes": {
+                    "src": "hdm_config.sv:145.32-145.73"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000010000",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000010000",
+                    "Y_WIDTH": "00000000000000000000000000010001"
+                  }
+                },
+                {
+                  "name": "$add$hdm_config.sv:146$316",
+                  "attributes": {
+                    "src": "hdm_config.sv:146.32-146.73"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000010000",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000010000",
+                    "Y_WIDTH": "00000000000000000000000000010001"
+                  }
+                },
+                {
+                  "name": "$add$hdm_config.sv:240$283",
+                  "attributes": {
+                    "src": "hdm_config.sv:240.30-240.47"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000010000",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000010000"
+                  }
+                },
+                {
+                  "name": "$add$hdm_config.sv:272$289",
+                  "attributes": {
+                    "src": "hdm_config.sv:272.29-272.64"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000010000",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000010000"
+                  }
+                }
+            ]
+          }
+        ],
+        "attributes": {
+            "keep": "00000000000000000000000000000001",
+            "dynports": "00000000000000000000000000000001",
+            "hdlname": "hdm_config",
+            "src": "hdm_config.sv:21.1-288.10"
+        }
+      },
+      {
+        "name": "formal_config",
+        "cell_sorts": [
+          {
+            "type": "$dff",
+            "ports": [
+                {
+                  "name": "CLK",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "D",
+                  "direction": "io",
+                  "range": [2, 0]
+                },
+                {
+                  "name": "Q",
+                  "direction": "",
+                  "range": [2, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$procdff$663",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "formal_config.sv:44.3-44.77"
+                  },
+                  "parameters": {
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000000010"
+                  }
+                },
+                {
+                  "name": "$procdff$664",
+                  "attributes": {
+                    "always_ff": "00000000000000000000000000000001",
+                    "src": "formal_config.sv:44.3-44.77"
+                  },
+                  "parameters": {
+                    "CLK_POLARITY": "1",
+                    "WIDTH": "00000000000000000000000000000001"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$reduce_bool",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [3, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [0, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$ne$formal_config.sv:49$205",
+                  "attributes": {
+                    "src": "formal_config.sv:49.46-49.67"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000011",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$ne$formal_config.sv:53$215",
+                  "attributes": {
+                    "src": "formal_config.sv:53.21-53.40"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000010",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$check",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "ARGS",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "EN",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "TRG",
+                  "direction": "io",
+                  "range": [0, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "_witness_.check_assume_formal_config_sv_39_239",
+                  "attributes": {
+                    "hdlname": "_witness_ check_assume_formal_config_sv_39_239",
+                    "keep": "00000000000000000000000000000001",
+                    "src": "formal_config.sv:39.11-39.26"
+                  },
+                  "parameters": {
+                    "ARGS_WIDTH": "00000000000000000000000000000000",
+                    "FLAVOR": "assume",
+                    "FORMAT": true,
+                    "PRIORITY": "11111111111111111111111111111111",
+                    "TRG_ENABLE": "00000000000000000000000000000001",
+                    "TRG_POLARITY": true,
+                    "TRG_WIDTH": "00000000000000000000000000000000"
+                  }
+                },
+                {
+                  "name": "_witness_.check_cover_formal_config_sv_48_199",
+                  "attributes": {
+                    "hdlname": "_witness_ check_cover_formal_config_sv_48_199",
+                    "keep": "00000000000000000000000000000001",
+                    "src": "formal_config.sv:48.5-48.43"
+                  },
+                  "parameters": {
+                    "ARGS_WIDTH": "00000000000000000000000000000000",
+                    "FLAVOR": "cover",
+                    "FORMAT": true,
+                    "PRIORITY": "11111111111111111111111111111111",
+                    "TRG_ENABLE": "00000000000000000000000000000001",
+                    "TRG_POLARITY": "1",
+                    "TRG_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "_witness_.check_cover_formal_config_sv_49_202",
+                  "attributes": {
+                    "hdlname": "_witness_ check_cover_formal_config_sv_49_202",
+                    "keep": "00000000000000000000000000000001",
+                    "src": "formal_config.sv:49.5-49.68"
+                  },
+                  "parameters": {
+                    "ARGS_WIDTH": "00000000000000000000000000000000",
+                    "FLAVOR": "cover",
+                    "FORMAT": true,
+                    "PRIORITY": "11111111111111111111111111111110",
+                    "TRG_ENABLE": "00000000000000000000000000000001",
+                    "TRG_POLARITY": "1",
+                    "TRG_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "_witness_.check_cover_formal_config_sv_50_207",
+                  "attributes": {
+                    "hdlname": "_witness_ check_cover_formal_config_sv_50_207",
+                    "keep": "00000000000000000000000000000001",
+                    "src": "formal_config.sv:50.5-50.43"
+                  },
+                  "parameters": {
+                    "ARGS_WIDTH": "00000000000000000000000000000000",
+                    "FLAVOR": "cover",
+                    "FORMAT": true,
+                    "PRIORITY": "11111111111111111111111111111101",
+                    "TRG_ENABLE": "00000000000000000000000000000001",
+                    "TRG_POLARITY": "1",
+                    "TRG_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "_witness_.check_cover_formal_config_sv_51_210",
+                  "attributes": {
+                    "hdlname": "_witness_ check_cover_formal_config_sv_51_210",
+                    "keep": "00000000000000000000000000000001",
+                    "src": "formal_config.sv:51.5-51.28"
+                  },
+                  "parameters": {
+                    "ARGS_WIDTH": "00000000000000000000000000000000",
+                    "FLAVOR": "cover",
+                    "FORMAT": true,
+                    "PRIORITY": "11111111111111111111111111111100",
+                    "TRG_ENABLE": "00000000000000000000000000000001",
+                    "TRG_POLARITY": "1",
+                    "TRG_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "_witness_.check_cover_formal_config_sv_52_212",
+                  "attributes": {
+                    "hdlname": "_witness_ check_cover_formal_config_sv_52_212",
+                    "keep": "00000000000000000000000000000001",
+                    "src": "formal_config.sv:52.5-52.32"
+                  },
+                  "parameters": {
+                    "ARGS_WIDTH": "00000000000000000000000000000000",
+                    "FLAVOR": "cover",
+                    "FORMAT": true,
+                    "PRIORITY": "11111111111111111111111111111011",
+                    "TRG_ENABLE": "00000000000000000000000000000001",
+                    "TRG_POLARITY": "1",
+                    "TRG_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "_witness_.check_cover_formal_config_sv_53_214",
+                  "attributes": {
+                    "hdlname": "_witness_ check_cover_formal_config_sv_53_214",
+                    "keep": "00000000000000000000000000000001",
+                    "src": "formal_config.sv:53.5-53.66"
+                  },
+                  "parameters": {
+                    "ARGS_WIDTH": "00000000000000000000000000000000",
+                    "FLAVOR": "cover",
+                    "FORMAT": true,
+                    "PRIORITY": "11111111111111111111111111111010",
+                    "TRG_ENABLE": "00000000000000000000000000000001",
+                    "TRG_POLARITY": "1",
+                    "TRG_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "_witness_.check_cover_formal_config_sv_54_219",
+                  "attributes": {
+                    "hdlname": "_witness_ check_cover_formal_config_sv_54_219",
+                    "keep": "00000000000000000000000000000001",
+                    "src": "formal_config.sv:54.5-54.57"
+                  },
+                  "parameters": {
+                    "ARGS_WIDTH": "00000000000000000000000000000000",
+                    "FLAVOR": "cover",
+                    "FORMAT": true,
+                    "PRIORITY": "11111111111111111111111111111001",
+                    "TRG_ENABLE": "00000000000000000000000000000001",
+                    "TRG_POLARITY": "1",
+                    "TRG_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "_witness_.check_cover_formal_config_sv_55_222",
+                  "attributes": {
+                    "hdlname": "_witness_ check_cover_formal_config_sv_55_222",
+                    "keep": "00000000000000000000000000000001",
+                    "src": "formal_config.sv:55.5-55.42"
+                  },
+                  "parameters": {
+                    "ARGS_WIDTH": "00000000000000000000000000000000",
+                    "FLAVOR": "cover",
+                    "FORMAT": true,
+                    "PRIORITY": "11111111111111111111111111111000",
+                    "TRG_ENABLE": "00000000000000000000000000000001",
+                    "TRG_POLARITY": "1",
+                    "TRG_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "_witness_.check_cover_formal_config_sv_56_226",
+                  "attributes": {
+                    "hdlname": "_witness_ check_cover_formal_config_sv_56_226",
+                    "keep": "00000000000000000000000000000001",
+                    "src": "formal_config.sv:56.5-56.42"
+                  },
+                  "parameters": {
+                    "ARGS_WIDTH": "00000000000000000000000000000000",
+                    "FLAVOR": "cover",
+                    "FORMAT": true,
+                    "PRIORITY": "11111111111111111111111111110111",
+                    "TRG_ENABLE": "00000000000000000000000000000001",
+                    "TRG_POLARITY": "1",
+                    "TRG_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "_witness_.check_cover_formal_config_sv_57_230",
+                  "attributes": {
+                    "hdlname": "_witness_ check_cover_formal_config_sv_57_230",
+                    "keep": "00000000000000000000000000000001",
+                    "src": "formal_config.sv:57.5-57.42"
+                  },
+                  "parameters": {
+                    "ARGS_WIDTH": "00000000000000000000000000000000",
+                    "FLAVOR": "cover",
+                    "FORMAT": true,
+                    "PRIORITY": "11111111111111111111111111110110",
+                    "TRG_ENABLE": "00000000000000000000000000000001",
+                    "TRG_POLARITY": "1",
+                    "TRG_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "_witness_.check_cover_formal_config_sv_58_234",
+                  "attributes": {
+                    "hdlname": "_witness_ check_cover_formal_config_sv_58_234",
+                    "keep": "00000000000000000000000000000001",
+                    "src": "formal_config.sv:58.5-58.45"
+                  },
+                  "parameters": {
+                    "ARGS_WIDTH": "00000000000000000000000000000000",
+                    "FLAVOR": "cover",
+                    "FORMAT": true,
+                    "PRIORITY": "11111111111111111111111111110101",
+                    "TRG_ENABLE": "00000000000000000000000000000001",
+                    "TRG_POLARITY": "1",
+                    "TRG_WIDTH": "00000000000000000000000000000001"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$logic_and",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "B",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [0, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$logic_and$formal_config.sv:49$204",
+                  "attributes": {
+                    "src": "formal_config.sv:49.12-49.42"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$logic_and$formal_config.sv:49$206",
+                  "attributes": {
+                    "src": "formal_config.sv:49.12-49.67"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$logic_and$formal_config.sv:50$209",
+                  "attributes": {
+                    "src": "formal_config.sv:50.12-50.42"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$logic_and$formal_config.sv:51$211",
+                  "attributes": {
+                    "src": "formal_config.sv:51.12-51.27"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$logic_and$formal_config.sv:52$213",
+                  "attributes": {
+                    "src": "formal_config.sv:52.12-52.31"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$logic_and$formal_config.sv:53$216",
+                  "attributes": {
+                    "src": "formal_config.sv:53.12-53.40"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$logic_and$formal_config.sv:53$218",
+                  "attributes": {
+                    "src": "formal_config.sv:53.12-53.65"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$logic_and$formal_config.sv:54$220",
+                  "attributes": {
+                    "src": "formal_config.sv:54.12-54.35"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$logic_and$formal_config.sv:54$221",
+                  "attributes": {
+                    "src": "formal_config.sv:54.12-54.56"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$logic_and$formal_config.sv:55$225",
+                  "attributes": {
+                    "src": "formal_config.sv:55.12-55.41"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$logic_and$formal_config.sv:56$229",
+                  "attributes": {
+                    "src": "formal_config.sv:56.12-56.41"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$logic_and$formal_config.sv:57$233",
+                  "attributes": {
+                    "src": "formal_config.sv:57.12-57.41"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$logic_and$formal_config.sv:58$237",
+                  "attributes": {
+                    "src": "formal_config.sv:58.12-58.44"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000001",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$not",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [0, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$eq$formal_config.sv:58$235",
+                  "attributes": {
+                    "src": "formal_config.sv:58.12-58.27"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$paramod$eb111459d11e1ce0b7c6e2008e1b1d29fe47f5fc\\hdm_config",
+            "ports": [
+                {
+                  "name": "cfg_epoch",
+                  "direction": "",
+                  "range": [16, 0]
+                },
+                {
+                  "name": "cfg_ok",
+                  "direction": "",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "cfg_reason",
+                  "direction": "",
+                  "range": [4, 0]
+                },
+                {
+                  "name": "cfg_reject",
+                  "direction": "",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "cfg_state",
+                  "direction": "",
+                  "range": [2, 0]
+                },
+                {
+                  "name": "cfg_update_done",
+                  "direction": "",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "cfg_update_req",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "clk",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "dev_capacity",
+                  "direction": "",
+                  "range": [13, 0]
+                },
+                {
+                  "name": "outstanding_cnt",
+                  "direction": "io",
+                  "range": [3, 0]
+                },
+                {
+                  "name": "req_accept_enable",
+                  "direction": "",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "rst_n",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "sh_base_i",
+                  "direction": "io",
+                  "range": [16, 0]
+                },
+                {
+                  "name": "sh_cap_i",
+                  "direction": "io",
+                  "range": [13, 0]
+                },
+                {
+                  "name": "sh_cap_we",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "sh_dpa_i",
+                  "direction": "io",
+                  "range": [12, 0]
+                },
+                {
+                  "name": "sh_en_i",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "sh_idx",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "sh_size_i",
+                  "direction": "io",
+                  "range": [16, 0]
+                },
+                {
+                  "name": "sh_we",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "traffic_freeze",
+                  "direction": "",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "win_base",
+                  "direction": "",
+                  "range": [32, 0]
+                },
+                {
+                  "name": "win_dpa_base",
+                  "direction": "",
+                  "range": [24, 0]
+                },
+                {
+                  "name": "win_en",
+                  "direction": "",
+                  "range": [2, 0]
+                },
+                {
+                  "name": "win_size",
+                  "direction": "",
+                  "range": [32, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "dut",
+                  "attributes": {
+                    "src": "formal_config.sv:37.78-37.86"
+                  },
+                  "parameters": {
+
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$logic_not",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [2, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [0, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$eq$formal_config.sv:53$217",
+                  "attributes": {
+                    "src": "formal_config.sv:53.44-53.65"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000010",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$eq$formal_config.sv:55$224",
+                  "attributes": {
+                    "src": "formal_config.sv:55.22-55.41"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000010",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$logic_not$formal_config.sv:39$240",
+                  "attributes": {
+                    "src": "formal_config.sv:39.19-39.25"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                }
+            ]
+          },
+          {
+            "type": "$eq",
+            "ports": [
+                {
+                  "name": "A",
+                  "direction": "io",
+                  "range": [2, 0]
+                },
+                {
+                  "name": "B",
+                  "direction": "io",
+                  "range": [0, 0]
+                },
+                {
+                  "name": "Y",
+                  "direction": "",
+                  "range": [0, 0]
+                }
+            ],
+            "cells": [
+                {
+                  "name": "$eq$formal_config.sv:49$203",
+                  "attributes": {
+                    "src": "formal_config.sv:49.21-49.42"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000010",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$eq$formal_config.sv:50$208",
+                  "attributes": {
+                    "src": "formal_config.sv:50.21-50.42"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000010",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000010",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$eq$formal_config.sv:56$228",
+                  "attributes": {
+                    "src": "formal_config.sv:56.22-56.41"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000010",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000001",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                },
+                {
+                  "name": "$eq$formal_config.sv:57$232",
+                  "attributes": {
+                    "src": "formal_config.sv:57.22-57.41"
+                  },
+                  "parameters": {
+                    "A_SIGNED": "00000000000000000000000000000000",
+                    "A_WIDTH": "00000000000000000000000000000010",
+                    "B_SIGNED": "00000000000000000000000000000000",
+                    "B_WIDTH": "00000000000000000000000000000010",
+                    "Y_WIDTH": "00000000000000000000000000000001"
+                  }
+                }
+            ]
+          }
+        ],
+        "attributes": {
+            "keep": "00000000000000000000000000000001",
+            "dynports": "00000000000000000000000000000001",
+            "top": "00000000000000000000000000000001",
+            "src": "formal_config.sv:10.1-60.10"
+        }
+      }
+  ]
+}
