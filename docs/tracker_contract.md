@@ -38,23 +38,77 @@ Stored metadata is read **before** the entry is cleared. Only `VALID` retires
 (clears live, occupancy −1). Each class has a counter; the first bad-response
 class is captured in a sticky `err_first_class`.
 
-## Same-cycle allocate + retire
-Supported. Occupancy delta ∈ {+1, 0, −1, −2}. The free slot chosen for
-allocation is guaranteed distinct from a same-cycle retiring/reclaimed slot
-(those are still live this cycle — **no forwarding**), so a freed slot becomes
-allocatable only on the *next* cycle. Reads of retiring metadata precede any
-write to that slot.
+## Same-cycle event priority (explicit contract)
 
-## Timeout — QUARANTINE + REPORT
-`age = (current_ts − issue_ts) mod 2^TS_W`; timeout when `age >= timeout_thresh`
-(require `timeout_thresh < 2^(TS_W−1)`). A timed-out entry is flagged sticky and
-counted but **stays live** — its slot is never silently freed, so a late response
-cannot alias a new transaction. An explicit `reclaim` frees a slot; the next
-allocation bumps its generation, so any later response is `STALE_GEN`/`NON_LIVE`.
+| simultaneous events on ONE slot | required result |
+|---|---|
+| reset + anything | **reset wins** (all live cleared, no partial commit) |
+| valid response + timeout threshold | **response retires; no timeout marking** |
+| valid response + reclaim | **response wins; reclaim rejected** |
+| reclaim + timeout discovery | reclaim only if the slot was **already quarantined before this cycle** |
+| allocation + retirement | both allowed; **no same-cycle reuse** of the retiring slot |
+| allocation + reclaim | reclaimed slot becomes allocatable **next** cycle |
+| stale/invalid response + anything | **diagnostic only**; no live-state change |
+
+Timeout qualification is exactly:
+```
+live && !timed_out && timeout_active && age_expired
+     && !valid_retire_this_cycle(slot) && !valid_reclaim_this_cycle(slot)
+```
+This is formalized (asserted), not left to statement ordering. Occupancy delta ∈
+{+1, 0, −1, −2}. Retiring metadata is read before any write to that slot.
+
+## Timeout contract (hard)
+- `timeout_thresh == 0` ⇒ **disabled** (no timeouts).
+- otherwise require `0 < timeout_thresh < 2^(TS_W−1)` so modulo age is
+  unambiguous. A **nonzero out-of-range** threshold is treated as **disabled**
+  and raises sticky **`timeout_cfg_bad`**.
+- `age = (current_ts − issue_ts) mod 2^TS_W`. Threshold changes apply to
+  already-live entries **using their original `issue_ts`**.
+- A timed-out entry is **quarantined**: flagged, counted, and **kept live** — its
+  slot is never silently freed, so a late response cannot alias a new
+  transaction. Timestamp wrap during quarantine does not free the entry.
+- **All diagnostic counters SATURATE** (never wrap).
+
+## Recovery ownership (reclaim)
+`reclaim` is the recovery authority for quarantined entries:
+- `reclaim_done` requires `live && timed_out` (already quarantined **before**
+  this cycle) and no same-cycle valid response to that slot.
+- A reclaimed slot is freed; the **next allocation bumps its generation**, so any
+  later response to the old transaction is `NON_LIVE` (before realloc) or
+  `STALE_GEN` (after) — **never** able to retire a new transaction.
+- Reclaim does **not** require the composite tag (it is a slot-level recovery op);
+  authority is whoever drives `reclaim_req` (software/recovery FSM). Reset is the
+  bulk alternative: it invalidates every live entry.
+- `quarantined_count` (current live+timed_out) and `reclaim_count` are exposed so
+  a system can detect and bound quarantine accumulation.
 
 ## Counters / status
-occupancy, high-watermark, alloc/retire/full/timeout/invalid-slot/non-live/
-stale-generation counts, `timeout_any`, sticky first-error.
+occupancy, high-watermark, **quarantined_count**, alloc/retire/full/timeout/
+**reclaim**/invalid-slot/non-live/stale-generation counts (**saturating**),
+`timeout_any`, `timeout_cfg_bad`, sticky first-error class.
+
+## Formal parameter matrix (exact instances proved)
+
+One `.sby` instance does **not** prove all parameter values. Safety properties
+were **formally verified for the documented parameter instances** below
+(`formal/tracker_matrix.sby`, each run as `prove`/induction **and** `cover`):
+
+| instance | DEPTH | GEN_W | TS_W | rationale |
+|---|---|---|---|---|
+| `d1`    | 1 | 1 | 3 | DEPTH=1 edge (no same-cycle reuse possible) |
+| `d3np`  | 3 | 2 | 4 | non-power-of-two depth |
+| `d4pow` | 4 | 1 | 3 | power-of-two depth + gen wrap + ts wrap |
+| `gwrap` | 2 | 1 | 4 | generation wraps fast (GEN_W=1) |
+| `twrap` | 7 | 2 | 3 | non-power-of-two + small TS_W (timestamp wrap) |
+
+Plus the default instance (`formal/tracker.sby`, DEPTH=3/GEN_W=2/TS_W=4) with
+bmc + induction + cover. **10/10 matrix tasks + 3/3 default tasks PASS.** This is
+not a universal proof over all parameter values.
+
+Note: the *simultaneous alloc+retire* cover is guarded to `DEPTH>1` — with a
+single slot it is genuinely unreachable (a retiring slot is not reusable the same
+cycle, by design), which the matrix surfaced.
 
 ## Formally verified (bmc + induction, `formal/tracker.sby`)
 `occupancy == popcount(live)`; `occupancy <= DEPTH`; `high_watermark >= occupancy`;

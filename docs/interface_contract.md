@@ -29,8 +29,28 @@ outstanding transactions have drained** (formally verified, `formal/config.sby`)
 The request path must gate its acceptance on `req_accept_enable`.
 
 > Per-request epoch *capture* ("each accepted request carries exactly one config
-> epoch") is **deferred to M2**: it cannot be proved until the outstanding
-> tracker stores an epoch alongside each accepted tag. Not claimed in M1.
+> epoch") is **deferred**: it cannot be proved until the outstanding tracker
+> stores an epoch alongside each accepted tag **and** is wired to `cfg_epoch`.
+> Not claimed yet.
+
+### Update disposition — exact current behavior (no universal claim)
+
+`cfg_update_req` is a **1-cycle pulse**, not a valid/ready transaction. Precisely:
+
+| state when a request arrives | disposition |
+|---|---|
+| ACTIVE, shadow valid | accepted → snapshot → FREEZE (later `cfg_ok` + `cfg_update_done`) |
+| ACTIVE, shadow invalid | `cfg_reject` + `cfg_update_done`, reason = validation code |
+| FREEZE (update in flight) | `cfg_reject` + `cfg_update_done`, reason = `CFG_BUSY`; sticky `cfg_busy_seen` |
+| COMMIT (single cycle) | **sticky `cfg_busy_seen` only** — the commit owns the `done`/`cfg_ok` pulse this cycle; the request is dropped and must be retried |
+
+So a request arriving in the COMMIT cycle does **not** receive a pulse
+disposition. **Therefore no claim is made that every update request receives an
+observable disposition.** `cfg_busy` (level) always indicates an in-flight
+update, so software can poll, but the correct fix is a real handshake:
+`cfg_update_valid`/`cfg_update_ready` + `cfg_response_valid`/`cfg_response_code
+∈ {OK, INVALID, BUSY}`, where acceptance is `valid && ready` and a held `valid`
+is never lost. **That handshake is planned and not yet implemented.**
 
 A reconfiguration is **rejected** immediately (active config unchanged, no epoch
 bump, no freeze) if, for any enabled window, in this priority order:

@@ -1,12 +1,12 @@
 {
-  "git_commit": "083872d24ab8459bcf05c5c53dc8773b1b856c48",
+  "git_commit": "04ae7d1cd98c8c7b8acb84090ce19ea456e25b40",
   "git_dirty": true,
-  "utc": "2026-07-17T03:35:55Z",
+  "utc": "2026-07-17T06:06:26Z",
   "kind": "mutation_sim",
-  "killed": 9,
+  "killed": 12,
   "survived": 0,
   "raw": {
     "path": "evidence/raw/sim_mutation.log",
-    "sha256": "20a7830652e6a8a76e7e2bd5ff0c4360b75c76dc430b3a4a9a1b4acd71ec50ac"
+    "sha256": "7977c8ab4fb3688666c48d65a84df676e1d2960f3c384f591be19d7d1162ffd9"
   }
 }

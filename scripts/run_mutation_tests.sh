@@ -14,8 +14,15 @@ mutate() {
   local name=$1 file=$2 sed=$3 tb=$4 srcs=$5 vec=$6
   local defs=${7:-"-DNWIN=4 -DHPAW=40 -DDPAW=32"}   # per-DUT compile defines
   cp -r rtl tb "$WORK"/ 2>/dev/null
-  # apply mutation to the copy
+  # apply mutation to the copy; FAIL LOUDLY if the pattern does not match --
+  # a non-matching sed would silently leave the RTL intact and report a
+  # misleading SURVIVED/killed verdict.
+  cp "$WORK/$file" "$WORK/.orig" 2>/dev/null
   sed -i "$sed" "$WORK/$file"
+  if cmp -s "$WORK/.orig" "$WORK/$file"; then
+    echo "   [ERROR]    $name  <-- mutation sed did not match; harness bug, not a result"
+    survivors=$((survivors+1)); rm -rf "$WORK/rtl" "$WORK/tb"; return
+  fi
   # build/run under Icarus against the mutated copy
   ( cd "$WORK" && iverilog -g2012 -grelative-include -Irtl/interfaces $defs \
        -o mut.vvp $srcs > mut_c.log 2>&1 && vvp mut.vvp +VEC="$ROOT/$vec" > mut_run.log 2>&1 )
@@ -66,15 +73,27 @@ OVEC="tb/vectors/tracker_8d_4g.vec"
 OTDEF="-DDEPTH=8 -DGENW=4 -DEPOCHW=16 -DOPW=2 -DMETAW=16 -DTSW=8"
 # M7 generation check removed: a stale response would wrongly retire
 mutate "tracker generation check" rtl/core/outstanding_tracker.sv \
-  "s/else if (r_gen != gen\[r_slot\])      resp_class = RC_STALE_GEN;/else if (1'b0)                       resp_class = RC_STALE_GEN;/" \
+  "s/else if (r_gen != gen\[r_slot\])  resp_class = RC_STALE_GEN;/else if (1'b0)                  resp_class = RC_STALE_GEN;/" \
   tb_outstanding_tracker "$OT" "$OVEC" "$OTDEF"
 # M8 timeout aggregate broken: undercounts simultaneous timeouts
 mutate "tracker timeout aggregate" rtl/core/outstanding_tracker.sv \
-  "s/timeout_count <= timeout_count + {{(CNT_W-OCC_W){1'b0}}, n_new_timeout};/timeout_count <= timeout_count + 1'b1;/" \
+  "s/timeout_count <= sat_addn(timeout_count, n_new_timeout);/timeout_count <= sat_add1(timeout_count);/" \
   tb_outstanding_tracker "$OT" "$OVEC" "$OTDEF"
 # M9 no-generation-bump on realloc: stale detection after reuse breaks
 mutate "tracker generation bump" rtl/core/outstanding_tracker.sv \
   "s/gen\[free_slot\]      <= gen\[free_slot\] + {{(GEN_W-1){1'b0}},1'b1};/gen[free_slot]      <= gen[free_slot];/" \
+  tb_outstanding_tracker "$OT" "$OVEC" "$OTDEF"
+# M10 recovery contract broken: reclaim frees a NON-quarantined live slot
+mutate "tracker reclaim needs quarantine" rtl/core/outstanding_tracker.sv \
+  "s/&& live\[reclaim_slot\] && timed_out\[reclaim_slot\]/\&\& live[reclaim_slot]/" \
+  tb_outstanding_tracker "$OT" "$OVEC" "$OTDEF"
+# M11 event priority broken: a validly-retiring slot still gets timeout-marked
+mutate "tracker timeout-vs-retire priority" rtl/core/outstanding_tracker.sv \
+  "s/&& !(resp_retire  && r_slot == gt\[SLOT_W-1:0\])/\&\& 1'b1/" \
+  tb_outstanding_tracker "$OT" "$OVEC" "$OTDEF"
+# M12 threshold contract broken: out-of-range threshold still enables timeouts
+mutate "tracker threshold range contract" rtl/core/outstanding_tracker.sv \
+  "s/assign timeout_active  = timeout_enabled && thresh_in_range;/assign timeout_active  = timeout_enabled;/" \
   tb_outstanding_tracker "$OT" "$OVEC" "$OTDEF"
 
 echo "=================================================="

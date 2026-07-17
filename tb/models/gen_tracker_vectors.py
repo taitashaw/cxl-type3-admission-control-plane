@@ -33,8 +33,9 @@ def hx(v): return format(int(v) & ((1<<256)-1), "x")
 
 OUTFIELDS = ["alloc_gnt","alloc_tag","alloc_slot","full","resp_retire","resp_class",
              "retired_epoch","retired_op","retired_meta","reclaim_done","occupancy",
-             "high_watermark","timeout_any","alloc_count","retire_count","full_count",
-             "timeout_count","invalid_slot_count","non_live_count","stale_gen_count",
+             "high_watermark","quarantined_count","timeout_any","timeout_cfg_bad",
+             "alloc_count","retire_count","full_count","timeout_count","reclaim_count",
+             "invalid_slot_count","non_live_count","stale_gen_count",
              "err_sticky","err_first_class"]
 
 def gen_one(DEPTH, GEN_W):
@@ -42,9 +43,13 @@ def gen_one(DEPTH, GEN_W):
     granted = []          # (tag, slot) history for crafting responses
     ts = 0
     lines = []
+    half = 1 << (TS_W-1)
     for cyc in range(N_CYCLES):
         # advance timestamp (sometimes jump to force timeouts / ts-wrap)
-        ts = (ts + random.choice([0,1,1,1,2,5, THRESH+3])) & ((1<<TS_W)-1)
+        ts = (ts + random.choice([0,1,1,1,2,5, THRESH+3, (1<<(TS_W-1))+5])) & ((1<<TS_W)-1)  # incl. big jump to age past an out-of-range threshold
+        # vary threshold: mostly valid, sometimes disabled(0) or out-of-range(>=half)
+        rt = random.random()
+        thr = THRESH if rt < 0.8 else (0 if rt < 0.9 else (half + random.randint(0, half-1)) & ((1<<TS_W)-1))
         alloc_req = 1 if random.random() < 0.55 else 0
         alloc_epoch = random.randint(0, (1<<EPOCH_W)-1)
         alloc_op = random.randint(0, (1<<OP_W)-1)
@@ -70,7 +75,7 @@ def gen_one(DEPTH, GEN_W):
         reclaim_req = 1 if random.random() < 0.15 else 0
         reclaim_slot = random.randint(0, (1<<m.SLOT_W)-1)
 
-        inp = dict(current_ts=ts, timeout_thresh=THRESH, alloc_req=alloc_req,
+        inp = dict(current_ts=ts, timeout_thresh=thr, alloc_req=alloc_req,
                    alloc_epoch=alloc_epoch, alloc_op=alloc_op, alloc_meta=alloc_meta,
                    resp_valid=resp_valid, resp_tag=resp_tag,
                    reclaim_req=reclaim_req, reclaim_slot=reclaim_slot)
@@ -78,7 +83,7 @@ def gen_one(DEPTH, GEN_W):
         if o["alloc_gnt"]:
             granted.append((o["alloc_tag"], o["alloc_slot"]))
             if len(granted) > 64: granted.pop(0)
-        toks = [hx(ts),hx(THRESH),hx(alloc_req),hx(alloc_epoch),hx(alloc_op),hx(alloc_meta),
+        toks = [hx(ts),hx(thr),hx(alloc_req),hx(alloc_epoch),hx(alloc_op),hx(alloc_meta),
                 hx(resp_valid),hx(resp_tag),hx(reclaim_req),hx(reclaim_slot)]
         toks += [hx(o[f]) for f in OUTFIELDS]
         lines.append(" ".join(toks))

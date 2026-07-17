@@ -34,10 +34,10 @@ module formal_tracker #(
   logic [META_W-1:0]  retired_meta;
   logic               reclaim_req, reclaim_done;
   logic [SLOT_W-1:0]  reclaim_slot;
-  logic [OCC_W-1:0]   occupancy, high_watermark;
-  logic               timeout_any, err_sticky;
+  logic [OCC_W-1:0]   occupancy, high_watermark, quarantined_count;
+  logic               timeout_any, timeout_cfg_bad, err_sticky;
   logic [2:0]         err_first_class;
-  logic [31:0]        alloc_count, retire_count, full_count, timeout_count,
+  logic [31:0]        alloc_count, retire_count, full_count, timeout_count, reclaim_count,
                       invalid_slot_count, non_live_count, stale_gen_count;
 
   outstanding_tracker #(.DEPTH(DEPTH), .GEN_W(GEN_W), .EPOCH_W(EPOCH_W),
@@ -51,11 +51,19 @@ module formal_tracker #(
     cover (rst_n && alloc_gnt);                                  // allocation
     cover (rst_n && full);                                       // full boundary
     cover (rst_n && resp_retire);                                // valid retirement
-    cover (rst_n && alloc_gnt && resp_retire);                   // simultaneous alloc + retire
     cover (rst_n && resp_valid && resp_class == RC_STALE_GEN);   // stale-generation response
     cover (rst_n && timeout_any);                                // timeout reached
     cover (rst_n && occupancy == OCC_W'(DEPTH));                 // fully occupied
+    cover (rst_n && reclaim_done);                               // reclaim of a quarantined slot
+    cover (rst_n && quarantined_count != '0);                    // a slot is quarantined
+    cover (rst_n && timeout_cfg_bad);                            // bad-threshold flagged
     cover (!rst_n && p_occ != 0);                                // reset with live entries
     cover (p_rst == 1'b0 && rst_n == 1'b1);                      // reset deasserts
   end
+
+  // simultaneous alloc+retire is only reachable for DEPTH>1 (a single slot
+  // cannot be reused the same cycle it retires — no forwarding, by design).
+  generate if (DEPTH > 1) begin : g_simul
+    always @(posedge clk) cover (rst_n && alloc_gnt && resp_retire);
+  end endgenerate
 endmodule

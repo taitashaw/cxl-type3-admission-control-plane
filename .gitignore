@@ -27,3 +27,4 @@ formal/*_cover/
 formal/*_bmc/
 formal/*_prove/
 formal/tracker/
+formal/tracker_matrix_*/

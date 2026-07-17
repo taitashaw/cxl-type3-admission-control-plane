@@ -12,6 +12,10 @@ Composite tag = (gen << SLOT_W) | slot.  Response classes:
   0 VALID  1 INVALID_SLOT  2 NON_LIVE  3 STALE_GEN
 """
 RC_VALID, RC_INVALID_SLOT, RC_NON_LIVE, RC_STALE_GEN = 0, 1, 2, 3
+CNT_MAX = (1 << 32) - 1
+
+def sat1(c): return c if c >= CNT_MAX else c + 1
+def satn(c, n): return CNT_MAX if c + n > CNT_MAX else c + n
 
 class Tracker:
     def __init__(self, DEPTH=8, GEN_W=4, EPOCH_W=16, OP_W=2, META_W=32, TS_W=16):
@@ -21,12 +25,20 @@ class Tracker:
         self.TAG_W = GEN_W + self.SLOT_W
         self.gmask = (1 << GEN_W) - 1
         self.tsmask = (1 << TS_W) - 1
+        self.half = 1 << (TS_W - 1)          # 2^(TS_W-1)
         self.live = [0]*DEPTH; self.gen = [0]*DEPTH; self.epoch = [0]*DEPTH
         self.op = [0]*DEPTH; self.meta = [0]*DEPTH; self.issue_ts = [0]*DEPTH
         self.timed = [0]*DEPTH
         self.occ = 0; self.hwm = 0
-        self.c = dict(alloc=0, retire=0, full=0, timeout=0, invalid=0, non_live=0, stale=0)
-        self.err_sticky = 0; self.err_first = RC_VALID
+        self.c = dict(alloc=0, retire=0, full=0, timeout=0, reclaim=0, invalid=0, non_live=0, stale=0)
+        self.err_sticky = 0; self.err_first = RC_VALID; self.timeout_cfg_bad = 0
+
+    def _timeout_active(self, th):
+        return 1 if (th != 0 and th < self.half) else 0
+    def _reclaim_done(self, inp, do_retire, slot):
+        s = inp['reclaim_slot']
+        return 1 if (inp['reclaim_req'] and s < self.DEPTH and self.live[s] and self.timed[s]
+                     and not (do_retire and slot == s)) else 0
 
     # ---- combinational helpers ----
     def free_slot(self):
@@ -63,18 +75,19 @@ class Tracker:
         rr_ep = self.epoch[slot] if slot_ok else 0
         rr_op = self.op[slot] if slot_ok else 0
         rr_me = self.meta[slot] if slot_ok else 0
-        reclaim_done = 1 if (inp['reclaim_req'] and inp['reclaim_slot'] < self.DEPTH
-                             and self.live[inp['reclaim_slot']]) else 0
+        reclaim_done = self._reclaim_done(inp, resp_retire, slot)
         timeout_any = 1 if any(self.live[i] and self.timed[i] for i in range(self.DEPTH)) else 0
+        quarantined = sum(1 for i in range(self.DEPTH) if self.live[i] and self.timed[i])
         return dict(alloc_gnt=alloc_gnt, alloc_tag=alloc_tag, alloc_slot=fs, full=1 if full else 0,
                     resp_retire=resp_retire, resp_class=(rc if inp['resp_valid'] else RC_VALID),
                     retired_epoch=rr_ep, retired_op=rr_op, retired_meta=rr_me,
                     reclaim_done=reclaim_done, occupancy=self.occ, high_watermark=self.hwm,
-                    timeout_any=timeout_any,
+                    quarantined_count=quarantined, timeout_any=timeout_any,
+                    timeout_cfg_bad=self.timeout_cfg_bad,
                     alloc_count=self.c['alloc'], retire_count=self.c['retire'], full_count=self.c['full'],
-                    timeout_count=self.c['timeout'], invalid_slot_count=self.c['invalid'],
-                    non_live_count=self.c['non_live'], stale_gen_count=self.c['stale'],
-                    err_sticky=self.err_sticky, err_first_class=self.err_first)
+                    timeout_count=self.c['timeout'], reclaim_count=self.c['reclaim'],
+                    invalid_slot_count=self.c['invalid'], non_live_count=self.c['non_live'],
+                    stale_gen_count=self.c['stale'], err_sticky=self.err_sticky, err_first_class=self.err_first)
 
     def step(self, inp):
         fs, have = self.free_slot()
@@ -82,43 +95,46 @@ class Tracker:
         do_alloc = 1 if (inp['alloc_req'] and have and not full) else 0
         rc, slot, g = self.classify(inp['resp_valid'], inp['resp_tag'])
         do_retire = 1 if (rc == RC_VALID and inp['resp_valid']) else 0
-        reclaim_done = 1 if (inp['reclaim_req'] and inp['reclaim_slot'] < self.DEPTH
-                             and self.live[inp['reclaim_slot']]) else 0
-        do_reclaim = 1 if (reclaim_done and not (do_retire and slot == inp['reclaim_slot'])) else 0
+        do_reclaim = self._reclaim_done(inp, do_retire, slot)
         ts = inp['current_ts']; th = inp['timeout_thresh']
+        active = self._timeout_active(th)
+        if th != 0 and th >= self.half:
+            self.timeout_cfg_bad = 1
 
-        # timeout marking (uses pre-edge live/timed)
+        # timeout marking with event priority (exclude same-slot retire/reclaim)
+        n_new = 0
         for i in range(self.DEPTH):
-            if self.live[i]:
+            if self.live[i] and not self.timed[i] and active:
                 age = (ts - self.issue_ts[i]) & self.tsmask
-                if age >= th and not self.timed[i]:
-                    self.timed[i] = 1
-                    self.c['timeout'] += 1
+                if age >= th and not (do_retire and slot == i) and not (do_reclaim and inp['reclaim_slot'] == i):
+                    self.timed[i] = 1; n_new += 1
+        self.c['timeout'] = satn(self.c['timeout'], n_new)
         # response side effects
         if inp['resp_valid']:
             if rc == RC_VALID:
-                self.live[slot] = 0; self.timed[slot] = 0; self.c['retire'] += 1
+                self.live[slot] = 0; self.timed[slot] = 0; self.c['retire'] = sat1(self.c['retire'])
             elif rc == RC_INVALID_SLOT:
-                self.c['invalid'] += 1
+                self.c['invalid'] = sat1(self.c['invalid'])
                 if not self.err_sticky: self.err_sticky = 1; self.err_first = RC_INVALID_SLOT
             elif rc == RC_NON_LIVE:
-                self.c['non_live'] += 1
+                self.c['non_live'] = sat1(self.c['non_live'])
                 if not self.err_sticky: self.err_sticky = 1; self.err_first = RC_NON_LIVE
             elif rc == RC_STALE_GEN:
-                self.c['stale'] += 1
+                self.c['stale'] = sat1(self.c['stale'])
                 if not self.err_sticky: self.err_sticky = 1; self.err_first = RC_STALE_GEN
-        # reclaim
+        # reclaim (recovery)
         if do_reclaim:
             self.live[inp['reclaim_slot']] = 0; self.timed[inp['reclaim_slot']] = 0
+            self.c['reclaim'] = sat1(self.c['reclaim'])
         # allocation
         if do_alloc:
             self.live[fs] = 1
             self.gen[fs] = (self.gen[fs] + 1) & self.gmask
             self.epoch[fs] = inp['alloc_epoch']; self.op[fs] = inp['alloc_op']
             self.meta[fs] = inp['alloc_meta']; self.issue_ts[fs] = ts; self.timed[fs] = 0
-            self.c['alloc'] += 1
+            self.c['alloc'] = sat1(self.c['alloc'])
         if inp['alloc_req'] and (full or not have):
-            self.c['full'] += 1
+            self.c['full'] = sat1(self.c['full'])
         # occupancy
         self.occ = self.occ + do_alloc - do_retire - do_reclaim
         if self.occ > self.hwm: self.hwm = self.occ

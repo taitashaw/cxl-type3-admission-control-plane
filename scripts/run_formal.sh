@@ -27,6 +27,12 @@ for job in decode config tracker; do
     echo "   ${job}: FAIL (bmc=$bmc prove=$prv cover=$cov; see $RAW/formal_${job}.log)"; fail=1
   fi
 done
+echo "-- tracker formal parameter matrix (DEPTH 1/2/3/4/7 x GEN_W x TS_W) --"
+for d in formal/tracker_matrix_*; do rm -rf "$d"; done
+sby -f formal/tracker_matrix.sby > "$RAW/formal_tracker_matrix.log" 2>&1
+mtot=$(grep -c "DONE (" "$RAW/formal_tracker_matrix.log"); mpass=$(grep -c "DONE (PASS" "$RAW/formal_tracker_matrix.log")
+echo "   tracker matrix: $mpass/$mtot tasks PASS"
+[ "$mpass" = "$mtot" ] && [ "$mtot" -gt 0 ] || fail=1
 echo "-- non-vacuity: proofs must fail when protections are broken --"
 bash scripts/run_formal_mutation.sh > "$RAW/formal_mutation.log" 2>&1
 grep -E "killed=|SURVIVED" "$RAW/formal_mutation.log" | sed 's/^/   /'

@@ -1,0 +1,54 @@
+[tasks]
+d1_p
+d1_c
+d3np_p
+d3np_c
+d4pow_p
+d4pow_c
+gwrap_p
+gwrap_c
+twrap_p
+twrap_c
+
+[options]
+d1_p: mode prove
+d1_p: depth 12
+d1_c: mode cover
+d1_c: depth 14
+d3np_p: mode prove
+d3np_p: depth 12
+d3np_c: mode cover
+d3np_c: depth 14
+d4pow_p: mode prove
+d4pow_p: depth 12
+d4pow_c: mode cover
+d4pow_c: depth 14
+gwrap_p: mode prove
+gwrap_p: depth 12
+gwrap_c: mode cover
+gwrap_c: depth 14
+twrap_p: mode prove
+twrap_p: depth 12
+twrap_c: mode cover
+twrap_c: depth 14
+
+[engines]
+smtbmc yices
+
+[script]
+read_verilog -sv -formal -DFORMAL outstanding_tracker.sv formal_tracker.sv
+d1_p: chparam -set DEPTH 1 -set GEN_W 1 -set TS_W 3 formal_tracker
+d1_c: chparam -set DEPTH 1 -set GEN_W 1 -set TS_W 3 formal_tracker
+d3np_p: chparam -set DEPTH 3 -set GEN_W 2 -set TS_W 4 formal_tracker
+d3np_c: chparam -set DEPTH 3 -set GEN_W 2 -set TS_W 4 formal_tracker
+d4pow_p: chparam -set DEPTH 4 -set GEN_W 1 -set TS_W 3 formal_tracker
+d4pow_c: chparam -set DEPTH 4 -set GEN_W 1 -set TS_W 3 formal_tracker
+gwrap_p: chparam -set DEPTH 2 -set GEN_W 1 -set TS_W 4 formal_tracker
+gwrap_c: chparam -set DEPTH 2 -set GEN_W 1 -set TS_W 4 formal_tracker
+twrap_p: chparam -set DEPTH 7 -set GEN_W 2 -set TS_W 3 formal_tracker
+twrap_c: chparam -set DEPTH 7 -set GEN_W 2 -set TS_W 3 formal_tracker
+prep -top formal_tracker
+
+[files]
+rtl/core/outstanding_tracker.sv
+formal/formal_tracker.sv
