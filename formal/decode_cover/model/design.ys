@@ -1,8 +1,0 @@
-# running in formal/decode_cover/src/
-read_verilog -sv -formal hdm_decoder.sv dpa_translator.sv formal_decode.sv
-prep -top formal_decode
-
-hierarchy -smtcheck
-rename -witness
-write_jny -no-connections ../model/design.json
-write_rtlil ../model/design.il

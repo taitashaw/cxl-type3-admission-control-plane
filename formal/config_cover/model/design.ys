@@ -1,8 +1,0 @@
-# running in formal/config_cover/src/
-read_verilog -sv -formal -DFORMAL hdm_config.sv formal_config.sv
-prep -top formal_config
-
-hierarchy -smtcheck
-rename -witness
-write_jny -no-connections ../model/design.json
-write_rtlil ../model/design.il

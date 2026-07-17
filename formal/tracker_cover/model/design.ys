@@ -1,8 +1,0 @@
-# running in formal/tracker_cover/src/
-read_verilog -sv -formal -DFORMAL outstanding_tracker.sv formal_tracker.sv
-prep -top formal_tracker
-
-hierarchy -smtcheck
-rename -witness
-write_jny -no-connections ../model/design.json
-write_rtlil ../model/design.il
