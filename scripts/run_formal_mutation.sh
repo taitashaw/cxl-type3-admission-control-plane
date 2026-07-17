@@ -40,7 +40,7 @@ fmut "config: snapshot commit" formal/config.sby rtl/csr/hdm_config.sv \
   's/act_en\[k\]   <= pend_en\[k\];/act_en[k]   <= sh_en[k];/' bmc
 # drain: commit without waiting for outstanding==0 -> drain assert must fail
 fmut "config: drain-before-commit" formal/config.sby rtl/csr/hdm_config.sv \
-  "s/if (outstanding_cnt == '0) state <= S_COMMIT;/if (1'b1) state <= S_COMMIT;/" bmc
+  "s/if ((outstanding_cnt == '0) \&\& !alloc_fire) state <= S_COMMIT;/if (1'b1) state <= S_COMMIT;/" bmc
 
 # tracker: aggregate timeout counter -> per-slot +1 (undercounts simultaneous timeouts)
 fmut "tracker: timeout aggregate" formal/tracker.sby rtl/core/outstanding_tracker.sv \

@@ -33,11 +33,8 @@ class Tracker:
         self.timed = [0]*DEPTH
         self.occ = 0; self.hwm = 0
         self.c = dict(alloc=0, retire=0, full=0, timeout=0, reclaim=0, invalid=0, non_live=0, stale=0)
-        self.err_sticky = 0; self.err_first = RC_VALID; self.timeout_cfg_bad = 0
-        self.active_thresh = 0          # in-use threshold (latched only while empty)
+        self.err_sticky = 0; self.err_first = RC_VALID
 
-    def _thresh_legal(self, th):
-        return (th == 0) or (th < self.half)
     def _reclaim_class(self, inp, do_retire, r_slot):
         if not inp['reclaim_req']:
             return RCL_OK
@@ -99,7 +96,6 @@ class Tracker:
                     reclaim_done=reclaim_done, reclaim_class=reclaim_class,
                     occupancy=self.occ, high_watermark=self.hwm,
                     quarantined_count=quarantined, timeout_any=timeout_any,
-                    timeout_cfg_bad=self.timeout_cfg_bad,
                     alloc_count=self.c['alloc'], retire_count=self.c['retire'], full_count=self.c['full'],
                     timeout_count=self.c['timeout'], reclaim_count=self.c['reclaim'],
                     invalid_slot_count=self.c['invalid'], non_live_count=self.c['non_live'],
@@ -114,16 +110,15 @@ class Tracker:
         do_reclaim = self._reclaim_done(inp, do_retire, slot)
         rc_slot = self._rc_slot(inp)
         ts = inp['current_ts']; th = inp['timeout_thresh']
-        old_occ = self.occ                       # pre-edge occupancy
-        old_active = self.active_thresh          # timeouts age against the PRE-EDGE threshold
-        active = 1 if old_active != 0 else 0
+        # committed timeout configuration (owned by hdm_config; used directly)
+        active = 1 if (inp['timeout_enable'] and th != 0) else 0
 
         # timeout marking with event priority (exclude same-slot retire/reclaim)
         n_new = 0
         for i in range(self.DEPTH):
             if self.live[i] and not self.timed[i] and active:
                 age = (ts - self.issue_ts[i]) & self.tsmask
-                if age >= old_active and not (do_retire and slot == i) and not (do_reclaim and rc_slot == i):
+                if age >= th and not (do_retire and slot == i) and not (do_reclaim and rc_slot == i):
                     self.timed[i] = 1; n_new += 1
         self.c['timeout'] = satn(self.c['timeout'], n_new)
         # response side effects
@@ -152,11 +147,6 @@ class Tracker:
             self.c['alloc'] = sat1(self.c['alloc'])
         if inp['alloc_req'] and (full or not have):
             self.c['full'] = sat1(self.c['full'])
-        # threshold: reject illegal (flag, don't latch); latch legal only while EMPTY
-        if not self._thresh_legal(th):
-            self.timeout_cfg_bad = 1
-        elif old_occ == 0:
-            self.active_thresh = th
         # occupancy
         self.occ = self.occ + do_alloc - do_retire - do_reclaim
         if self.occ > self.hwm: self.hwm = self.occ

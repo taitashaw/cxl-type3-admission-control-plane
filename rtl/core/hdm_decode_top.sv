@@ -11,6 +11,7 @@ module hdm_decode_top #(
   parameter int unsigned DPA_W  = 32,
   parameter int unsigned N_WIN  = 4,
   parameter int unsigned OCNT_W = 16,
+  parameter int unsigned TS_W   = 8,
   parameter int unsigned IDX_W = (N_WIN > 1) ? $clog2(N_WIN) : 1
 ) (
   input  logic                     clk,
@@ -24,18 +25,23 @@ module hdm_decode_top #(
   input  logic [DPA_W-1:0]         sh_dpa_i,
   input  logic                     sh_cap_we,
   input  logic [DPA_W:0]           sh_cap_i,
-  input  logic                     cfg_update_req,
+  // M2.1 configuration request/response channels
+  input  logic                     cfg_req_valid,
+  output logic                     cfg_req_ready,
+  input  logic                     cfg_req_timeout_en,
+  input  logic [TS_W-1:0]          cfg_req_timeout_thresh,
+  output logic                     cfg_rsp_valid,
+  input  logic                     cfg_rsp_ready,
+  output logic [1:0]               cfg_rsp_code,
+  output logic [3:0]               cfg_rsp_reason,
   input  logic [OCNT_W-1:0]        outstanding_cnt,
+  input  logic                     alloc_fire,
   output logic                     traffic_freeze,
   output logic                     req_accept_enable,
-  output logic                     cfg_update_done,
-  output logic                     cfg_ok,
-  output logic                     cfg_reject,
-  output logic [3:0]               cfg_reason,
   output logic [15:0]              cfg_epoch,
   output logic [1:0]               cfg_state,
-  output logic                     cfg_busy,
-  output logic                     cfg_busy_seen,
+  output logic                     timeout_enable,
+  output logic [TS_W-1:0]          timeout_thresh,
   // decode request (combinational against active config)
   input  logic [HPA_W-1:0]         hpa,
   output logic                     accept,
@@ -54,11 +60,14 @@ module hdm_decode_top #(
   logic [N_WIN-1:0][DPA_W-1:0]  a_dpa;
   logic [DPA_W:0]               a_cap;
 
-  hdm_config #(.HPA_W(HPA_W), .DPA_W(DPA_W), .N_WIN(N_WIN), .OCNT_W(OCNT_W)) u_cfg (
+  hdm_config #(.HPA_W(HPA_W), .DPA_W(DPA_W), .N_WIN(N_WIN),
+               .OCNT_W(OCNT_W), .TS_W(TS_W)) u_cfg (
     .clk, .rst_n, .sh_we, .sh_idx, .sh_en_i, .sh_base_i, .sh_size_i, .sh_dpa_i,
-    .sh_cap_we, .sh_cap_i, .cfg_update_req, .outstanding_cnt,
-    .traffic_freeze, .req_accept_enable, .cfg_update_done, .cfg_ok,
-    .cfg_reject, .cfg_reason, .cfg_epoch, .cfg_state, .cfg_busy, .cfg_busy_seen,
+    .sh_cap_we, .sh_cap_i,
+    .cfg_req_valid, .cfg_req_ready, .cfg_req_timeout_en, .cfg_req_timeout_thresh,
+    .cfg_rsp_valid, .cfg_rsp_ready, .cfg_rsp_code, .cfg_rsp_reason,
+    .outstanding_cnt, .alloc_fire, .traffic_freeze, .req_accept_enable,
+    .cfg_epoch, .cfg_state, .timeout_enable, .timeout_thresh,
     .win_en(a_en), .win_base(a_base), .win_size(a_size),
     .win_dpa_base(a_dpa), .dev_capacity(a_cap)
   );

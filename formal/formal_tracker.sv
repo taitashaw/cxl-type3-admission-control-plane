@@ -19,6 +19,7 @@ module formal_tracker #(
 
   logic               rst_n;
   logic [TS_W-1:0]    current_ts, timeout_thresh;
+  logic               timeout_enable;
   logic               alloc_req;
   logic [EPOCH_W-1:0] alloc_epoch;
   logic [OP_W-1:0]    alloc_op;
@@ -36,7 +37,7 @@ module formal_tracker #(
   logic [TAG_W-1:0]   reclaim_tag;
   logic [2:0]         reclaim_class;
   logic [OCC_W-1:0]   occupancy, high_watermark, quarantined_count;
-  logic               timeout_any, timeout_cfg_bad, err_sticky;
+  logic               timeout_any, err_sticky;
   logic [2:0]         err_first_class;
   logic [31:0]        alloc_count, retire_count, full_count, timeout_count, reclaim_count,
                       invalid_slot_count, non_live_count, stale_gen_count;
@@ -57,7 +58,6 @@ module formal_tracker #(
     cover (rst_n && occupancy == OCC_W'(DEPTH));                 // fully occupied
     cover (rst_n && reclaim_done);                               // reclaim of a quarantined slot
     cover (rst_n && quarantined_count != '0);                    // a slot is quarantined
-    cover (rst_n && timeout_cfg_bad);                            // bad-threshold flagged
     cover (!rst_n && p_occ != 0);                                // reset with live entries
     cover (p_rst == 1'b0 && rst_n == 1'b1);                      // reset deasserts
   end

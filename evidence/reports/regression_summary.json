@@ -1,7 +1,7 @@
 {
-  "git_commit": "2cc565ac4f674211ba249bcd09c2d1fbd073dac3",
+  "git_commit": "a4832f0bef003fab9cf29756e588fbc61fbedaf1",
   "git_dirty": true,
-  "utc": "2026-07-17T06:54:10Z",
+  "utc": "2026-07-17T12:40:22Z",
   "kind": "regression",
   "engines": [
     "icarus",
@@ -93,28 +93,28 @@
       "engine": "icarus",
       "tb": "tb_hdm_config_1w_32x24",
       "result": "PASS",
-      "checks": 2018,
+      "checks": 2015,
       "errors": 0
     },
     {
       "engine": "icarus",
       "tb": "tb_hdm_config_2w_40x32",
       "result": "PASS",
-      "checks": 2018,
+      "checks": 2015,
       "errors": 0
     },
     {
       "engine": "icarus",
       "tb": "tb_hdm_config_4w_40x32",
       "result": "PASS",
-      "checks": 2018,
+      "checks": 2015,
       "errors": 0
     },
     {
       "engine": "icarus",
       "tb": "tb_hdm_config_8w_44x36",
       "result": "PASS",
-      "checks": 2018,
+      "checks": 2015,
       "errors": 0
     },
     {
@@ -198,28 +198,28 @@
       "engine": "verilator",
       "tb": "tb_hdm_config_1w_32x24",
       "result": "PASS",
-      "checks": 2018,
+      "checks": 2015,
       "errors": 0
     },
     {
       "engine": "verilator",
       "tb": "tb_hdm_config_2w_40x32",
       "result": "PASS",
-      "checks": 2018,
+      "checks": 2015,
       "errors": 0
     },
     {
       "engine": "verilator",
       "tb": "tb_hdm_config_4w_40x32",
       "result": "PASS",
-      "checks": 2018,
+      "checks": 2015,
       "errors": 0
     },
     {
       "engine": "verilator",
       "tb": "tb_hdm_config_8w_44x36",
       "result": "PASS",
-      "checks": 2018,
+      "checks": 2015,
       "errors": 0
     },
     {
@@ -254,47 +254,47 @@
   "raw_logs": [
     {
       "path": "evidence/raw/icarus_ot_16d_4g_run.log",
-      "sha256": "678d2b4fa22aca8eefc93684becd986ace9a92349a8154dba303446be4d90925"
+      "sha256": "167337acee1196268ce001996603c9d030d314c3455c03de80781da59c067951"
     },
     {
       "path": "evidence/raw/icarus_ot_1d_2g_run.log",
-      "sha256": "f8c599c9ca61a518709a39fd1fbc7f4fd27e1657a58ca9e239624fe8d6bf85e9"
+      "sha256": "93c17645656b3610c31ca13698c40d365af5834862a1d71dd09e423c5a0dd927"
     },
     {
       "path": "evidence/raw/icarus_ot_2d_4g_run.log",
-      "sha256": "b91af5f873dee1dd9872ae77ec51174f9ded1b65a694cc96aef34e5dbf1f73a7"
+      "sha256": "7a511953a1a4201578d7850f54cf48755d01cab1ab4c83779ec6d8c4d692d54a"
     },
     {
       "path": "evidence/raw/icarus_ot_3d_2g_run.log",
-      "sha256": "ab96fa3f45073706cd1380d2196034c5300dcb885f6fd6971fa7a42e4bccc574"
+      "sha256": "e6127b6ecf2e3d01a023dfe31ff7b82595dd7791157607ce4ffc0cabb6e87e85"
     },
     {
       "path": "evidence/raw/icarus_ot_4d_4g_run.log",
-      "sha256": "2cfde92f746407fc9b61f5865214f108cb53639b686cf707b1430c3a9404345a"
+      "sha256": "29a4f2491abfa5b9435bfacfbbfd4463baecb2d2fcbb9e22b500fa7941ea0919"
     },
     {
       "path": "evidence/raw/icarus_ot_7d_2g_run.log",
-      "sha256": "33775d35b209edb1002bc055676319239717dd3ef4ca354178a763c19c1a9dbe"
+      "sha256": "a5581cfff83821a1fe9b4db676d4a491d4f73995c742a25b6b716f1e0eeb4c66"
     },
     {
       "path": "evidence/raw/icarus_ot_8d_4g_run.log",
-      "sha256": "c568b1c23a44aa6fcaf99b8bea858c97c9e1db877ccbe46a95450643cf08b18e"
+      "sha256": "de15bb04b897dd25b900a83acdd1d3ad8917299aea90152e88af37e69a8e1dcd"
     },
     {
       "path": "evidence/raw/icarus_tb_hdm_config_1w_32x24_run.log",
-      "sha256": "56cdb33ea05915a9094c870c481f29925bd7f49fb5ba5603482c80f5437dea1f"
+      "sha256": "5d602b97a02d7f970bb3177084a1ebe56aef3e6363e77d893d77ca3cd0742497"
     },
     {
       "path": "evidence/raw/icarus_tb_hdm_config_2w_40x32_run.log",
-      "sha256": "2ee661f055ab342621ab1e0e9b311326c473c24ec4f921d1afead512b5c08dca"
+      "sha256": "71d1dd4467affe176552aaeeaa97271f45abb7d549fd3470cb759071c15ce5be"
     },
     {
       "path": "evidence/raw/icarus_tb_hdm_config_4w_40x32_run.log",
-      "sha256": "298076c91cf4ca84fc6dd61359c3d0fe5ea871833624fb37054c5c8d2adeeede"
+      "sha256": "67c1729765c08055de6dc347035870be34a810b81f3af5971b35d3a20adb163a"
     },
     {
       "path": "evidence/raw/icarus_tb_hdm_config_8w_44x36_run.log",
-      "sha256": "2c515afd6a13ae65959edd7253c172cde0e53967d2bfdfb126453dd1822cb8a4"
+      "sha256": "85b9bcc6fea9ad8aabe0097143f57b1c06cab963f8d6a3d6e6ebc45eb083e567"
     },
     {
       "path": "evidence/raw/icarus_tb_hdm_decoder_1w_32x24_run.log",
@@ -314,47 +314,47 @@
     },
     {
       "path": "evidence/raw/verilator_ot_16d_4g_run.log",
-      "sha256": "bc35ef47bcee64cecaed5301a1058e5e1007609d9218669fe90ce35c226fef7d"
+      "sha256": "5089ed0d21c386e0c3aec07c21dc56bc98fe065ab8a8185ad7ad27a6eb7c9950"
     },
     {
       "path": "evidence/raw/verilator_ot_1d_2g_run.log",
-      "sha256": "f1285fe3f18e8f13a97ae439c0f408d0f5482ca2d80deda726ef544523f8881d"
+      "sha256": "3a7400782433b807ab5ec17c7983bdc8bd1a2cac44af1ff0e8d0dd8b52ada8b0"
     },
     {
       "path": "evidence/raw/verilator_ot_2d_4g_run.log",
-      "sha256": "264b763b288cf1189e193ff557c1f8d270cbfa59cae8b9f5efd7f1b4469abfba"
+      "sha256": "33abdd7a8c1a2d594d86790ed981f9d06aa3269987c3b939c506f07f7a775bea"
     },
     {
       "path": "evidence/raw/verilator_ot_3d_2g_run.log",
-      "sha256": "adea8fe3fa2bc5dbca10ab93a23a83bafdbbc5fe189a590cf5905fa0d23d50c6"
+      "sha256": "73158f671dc618a6e30e8a42af4e4283c42d474185c49be9ac34fe4fa8716780"
     },
     {
       "path": "evidence/raw/verilator_ot_4d_4g_run.log",
-      "sha256": "fa71c488bb90abded9f29b3a71c8fed9a37b8b0e74f3d4bc7c0dfbb0b41be0a4"
+      "sha256": "3776f631c67c7dcd2f943701deda5970b517fe29d018f2b1e21c7c9f3d56d72f"
     },
     {
       "path": "evidence/raw/verilator_ot_7d_2g_run.log",
-      "sha256": "15b42e951bf25f5e618d545da2899f9aff0d5733c0fee9eb8c40722c48ecb64f"
+      "sha256": "7585a1ec1c60c0610bf31f8195625a8913f9684f645eb47fe037f62c392f9fa1"
     },
     {
       "path": "evidence/raw/verilator_ot_8d_4g_run.log",
-      "sha256": "24e2d56cbaa39b1848d1e7f961f51da170557a9a238da82d0afed40ac716d4fc"
+      "sha256": "eafe52a4de1404f3fd162423d3b7bfbb6c870ffdff274c89bc637582e8471ba0"
     },
     {
       "path": "evidence/raw/verilator_tb_hdm_config_1w_32x24_run.log",
-      "sha256": "8040fab1fce923efb5abf8f1db3c7ef0eee3a4011ea846505f5a84b719e1acf3"
+      "sha256": "486e7a11f801ffa55f78dc0e475152a2bca4cf7f8b996b53aaf8af121ecccfea"
     },
     {
       "path": "evidence/raw/verilator_tb_hdm_config_2w_40x32_run.log",
-      "sha256": "4599a612d2944207696eefa436224421a832854aa90bd375ebf8986f5f2a653f"
+      "sha256": "c128b37219cdce6152e1620cf7eeb49e6efc4dfa2f0b9d6589aa3ae8fb97907a"
     },
     {
       "path": "evidence/raw/verilator_tb_hdm_config_4w_40x32_run.log",
-      "sha256": "63c54f5b7e4bc0c9ea481a267d489f5d07af6ef42ed90fdd53562cc506609d32"
+      "sha256": "0dc75be3dca4001f39eab574ec5abc675da661a61e25bcfb8fe706004e943428"
     },
     {
       "path": "evidence/raw/verilator_tb_hdm_config_8w_44x36_run.log",
-      "sha256": "e88b3bd73bb25a5577197b7a7275e992afaffeddcae98a0b235c52253d9b4847"
+      "sha256": "0efcb198a8f4a020dca3776bcfe7e258e107347ffa131d05869d4d0297bb23c3"
     },
     {
       "path": "evidence/raw/verilator_tb_hdm_decoder_1w_32x24_run.log",

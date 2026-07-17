@@ -1,6 +1,16 @@
 // hdm_config.sv
-// Registered HDM window configuration with a real FREEZE -> DRAIN -> atomic
-// COMMIT -> REOPEN protocol (not a bare busy-reject gate).
+// Registered HDM + TIMEOUT configuration owned behind a DECOUPLED valid/ready
+// request/response handshake with a FREEZE -> DRAIN -> atomic COMMIT -> REOPEN
+// sequence. Backpressure (cfg_req_ready=0) replaces BUSY pulses: nothing is
+// dropped, so no contradictory disposition exists.
+//
+// The configuration payload is ATOMIC and includes the timeout policy:
+//   {HDM windows + device capacity (from shadow), timeout_enable, timeout_thresh}
+// all commit on ONE edge together with cfg_epoch. The tracker never mutates its
+// own threshold, so a live entry can never observe a threshold change.
+//
+// COMMIT is gated on: frozen AND outstanding_cnt==0 AND !alloc_fire — so a
+// threshold/config change can never land on the same edge as an admission.
 //
 //   ACTIVE : req_accept_enable=1. On cfg_update_req:
 //              - shadow invalid  -> reject immediately (no freeze), stay ACTIVE
@@ -26,6 +36,7 @@ module hdm_config #(
   parameter int unsigned DPA_W = 32,
   parameter int unsigned N_WIN = 4,
   parameter int unsigned OCNT_W = 16,
+  parameter int unsigned TS_W   = 8,
   parameter int unsigned IDX_W = (N_WIN > 1) ? $clog2(N_WIN) : 1  // derived; do not override
 ) (
   input  logic                       clk,
@@ -41,19 +52,28 @@ module hdm_config #(
   input  logic                       sh_cap_we,
   input  logic [DPA_W:0]             sh_cap_i,
 
-  // Reconfiguration protocol
-  input  logic                       cfg_update_req,  // 1-cycle pulse: begin reconfig
+  // ---- configuration REQUEST channel (decoupled, backpressured) ----
+  input  logic                       cfg_req_valid,
+  output logic                       cfg_req_ready,
+  input  logic                       cfg_req_timeout_en,      // payload
+  input  logic [TS_W-1:0]            cfg_req_timeout_thresh,  // payload
+  // ---- configuration RESPONSE channel (decoupled, backpressured) ----
+  output logic                       cfg_rsp_valid,
+  input  logic                       cfg_rsp_ready,
+  output logic [1:0]                 cfg_rsp_code,    // RSP_OK | RSP_INVALID
+  output logic [3:0]                 cfg_rsp_reason,
+
+  // ---- datapath status / admission control ----
   input  logic [OCNT_W-1:0]          outstanding_cnt, // from tracker; 0 == drained
-  output logic                       traffic_freeze,  // level: block new requests
-  output logic                       req_accept_enable,// level: request path may accept
-  output logic                       cfg_update_done, // pulse: reconfig finished
-  output logic                       cfg_ok,          // pulse (with done): success
-  output logic                       cfg_reject,      // pulse (with done): refused
-  output logic [3:0]                 cfg_reason,      // reason for last attempt
-  output logic [15:0]                cfg_epoch,       // increments per successful commit
-  output logic [1:0]                 cfg_state,       // FSM state (observability/formal)
-  output logic                       cfg_busy,        // level: an update is in flight
-  output logic                       cfg_busy_seen,   // sticky: a req arrived while busy
+  input  logic                       alloc_fire,      // tracker allocation firing THIS cycle
+  output logic                       traffic_freeze,
+  output logic                       req_accept_enable,
+  output logic [15:0]                cfg_epoch,
+  output logic [1:0]                 cfg_state,
+
+  // ---- committed timeout configuration (to the tracker) ----
+  output logic                       timeout_enable,
+  output logic [TS_W-1:0]            timeout_thresh,
 
   // Active (validated) configuration for the decoder
   output logic [N_WIN-1:0]           win_en,
@@ -66,7 +86,8 @@ module hdm_config #(
   // reason codes (match hdm_model.py)
   localparam logic [3:0] CFG_OK=0, CFG_ZERO_SIZE=1, CFG_BASE_ALIGN=2, CFG_SIZE_ALIGN=3,
                          CFG_DPA_ALIGN=4, CFG_HPA_OVF=5, CFG_DPA_OVF=6, CFG_CAP_EXCEED=7,
-                         CFG_OVERLAP=8, CFG_BUSY=9;   // update requested while one in flight
+                         CFG_OVERLAP=8, CFG_TIMEOUT_BAD=9;  // illegal timeout threshold
+  localparam logic [1:0] RSP_OK=0, RSP_INVALID=1;
 
   // ---- shadow + active storage (unpacked for portable element writes) -----
   logic              sh_en   [N_WIN];
@@ -80,6 +101,8 @@ module hdm_config #(
   logic [HPA_W-1:0]  act_size [N_WIN];
   logic [DPA_W-1:0]  act_dpa  [N_WIN];
   logic [DPA_W:0]    act_cap;
+  logic              act_to_en;
+  logic [TS_W-1:0]   act_to_th;
 
   // Immutable PENDING snapshot: shadow is copied here the cycle cfg_update_req is
   // accepted, and COMMIT writes active from PENDING (not shadow). This closes the
@@ -91,6 +114,8 @@ module hdm_config #(
   logic [HPA_W-1:0]  pend_size [N_WIN];
   logic [DPA_W-1:0]  pend_dpa  [N_WIN];
   logic [DPA_W:0]    pend_cap;
+  logic              pend_to_en;
+  logic [TS_W-1:0]   pend_to_th;
 
   // pack active -> ports
   genvar gp;
@@ -102,7 +127,9 @@ module hdm_config #(
       assign win_dpa_base[gp] = act_dpa[gp];
     end
   endgenerate
-  assign dev_capacity = act_cap;
+  assign dev_capacity   = act_cap;
+  assign timeout_enable = act_to_en;
+  assign timeout_thresh = act_to_th;
 
   // ---- combinational validation of the SHADOW config ----------------------
   // Per-window reason (priority order matches the reference model).
@@ -159,14 +186,24 @@ module hdm_config #(
   logic overlap_bad;
   assign overlap_bad = |pair_ovl;
 
-  // overall shadow verdict
-  logic [3:0] shadow_reason;
-  logic       shadow_valid;
+  // timeout payload legality: disabled is always legal; if enabled the threshold
+  // must satisfy 0 < t < 2^(TS_W-1) so modulo age is unambiguous.
+  logic to_legal;
+  assign to_legal = (!cfg_req_timeout_en)
+                 || ((cfg_req_timeout_thresh != '0)
+                     && (cfg_req_timeout_thresh < (TS_W'(1) << (TS_W-1))));
+
+  // overall request verdict = HDM shadow validity AND timeout payload legality
+  logic [3:0] shadow_reason, req_reason;
+  logic       req_ok;
   always_comb begin
     if (first_win_reason != CFG_OK) shadow_reason = first_win_reason;
     else if (overlap_bad)           shadow_reason = CFG_OVERLAP;
     else                            shadow_reason = CFG_OK;
-    shadow_valid = (shadow_reason == CFG_OK);
+    if (shadow_reason != CFG_OK)    req_reason = shadow_reason;
+    else if (!to_legal)             req_reason = CFG_TIMEOUT_BAD;
+    else                            req_reason = CFG_OK;
+    req_ok = (req_reason == CFG_OK);
   end
 
   // ---- FSM: freeze -> drain -> atomic commit -> reopen --------------------
@@ -179,26 +216,29 @@ module hdm_config #(
   assign traffic_freeze    = (state != S_ACTIVE);
   assign req_accept_enable = (state == S_ACTIVE);
   assign cfg_state         = 2'(state);
-  assign cfg_busy          = (state != S_ACTIVE);   // update in flight
+  // Backpressure: not ready while processing an update OR while a response is
+  // still unconsumed. At most ONE accepted request is in flight.
+  assign cfg_req_ready     = (state == S_ACTIVE) && !cfg_rsp_valid;
+  logic req_accept;
+  assign req_accept        = cfg_req_valid && cfg_req_ready;
 
   integer k;
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
-      // Reset from ANY FSM state returns cleanly to ACTIVE with a disabled
-      // active config and no partial commit; shadow/pending are cleared.
+      // Reset from ANY state: cancels an incomplete request, clears an unconsumed
+      // response (no post-reset response for a pre-reset request), and returns the
+      // active configuration to documented defaults (all windows disabled,
+      // timeouts disabled, epoch 0).
       for (k = 0; k < N_WIN; k++) begin
         sh_en[k]<=1'b0; sh_base[k]<='0; sh_size[k]<='0; sh_dpa[k]<='0;
         act_en[k]<=1'b0; act_base[k]<='0; act_size[k]<='0; act_dpa[k]<='0;
         pend_en[k]<=1'b0; pend_base[k]<='0; pend_size[k]<='0; pend_dpa[k]<='0;
       end
       sh_cap<='0; act_cap<='0; pend_cap<='0;
-      cfg_ok<=1'b0; cfg_reject<=1'b0; cfg_update_done<=1'b0;
-      cfg_reason<=CFG_OK; cfg_epoch<='0; state<=S_ACTIVE; cfg_busy_seen<=1'b0;
+      pend_to_en<=1'b0; pend_to_th<='0; act_to_en<=1'b0; act_to_th<='0;
+      cfg_rsp_valid<=1'b0; cfg_rsp_code<=RSP_OK; cfg_rsp_reason<=CFG_OK;
+      cfg_epoch<='0; state<=S_ACTIVE;
     end else begin
-      cfg_ok          <= 1'b0;
-      cfg_reject      <= 1'b0;
-      cfg_update_done <= 1'b0;
-
       // Shadow writes are always allowed; they never touch the in-flight PENDING
       // snapshot, so a shadow write between accept and commit is harmless.
       if (sh_we) begin
@@ -209,55 +249,54 @@ module hdm_config #(
       end
       if (sh_cap_we) sh_cap <= sh_cap_i;
 
+      // response consumption (contents stay stable while valid && !ready)
+      if (cfg_rsp_valid && cfg_rsp_ready) cfg_rsp_valid <= 1'b0;
+
       unique case (state)
         S_ACTIVE: begin
-          // A second cfg_update_req is only ever acted on in ACTIVE; requests
-          // arriving during FREEZE/COMMIT are ignored (software sees freeze).
-          if (cfg_update_req) begin
-            if (!shadow_valid) begin
-              // fast reject: no freeze/drain for an invalid config
-              cfg_reject      <= 1'b1;
-              cfg_update_done <= 1'b1;
-              cfg_reason      <= shadow_reason;
+          if (req_accept) begin
+            if (!req_ok) begin
+              // INVALID: respond immediately; never freeze, never touch active cfg
+              cfg_rsp_valid  <= 1'b1;
+              cfg_rsp_code   <= RSP_INVALID;
+              cfg_rsp_reason <= req_reason;
             end else begin
-              // SNAPSHOT the validated shadow into pending (immutable hereafter).
+              // SNAPSHOT the whole payload exactly once (windows+cap+timeout)
               for (k = 0; k < N_WIN; k++) begin
                 pend_en[k]   <= sh_en[k];
                 pend_base[k] <= sh_base[k];
                 pend_size[k] <= sh_size[k];
                 pend_dpa[k]  <= sh_dpa[k];
               end
-              pend_cap <= sh_cap;
-              state    <= S_FREEZE;
+              pend_cap   <= sh_cap;
+              pend_to_en <= cfg_req_timeout_en;
+              pend_to_th <= cfg_req_timeout_thresh;
+              state      <= S_FREEZE;
             end
           end
         end
         S_FREEZE: begin
-          // A second update request while busy gets an OBSERVABLE disposition
-          // (reject pulse + BUSY reason + sticky bit); the in-flight update
-          // continues unaffected.
-          if (cfg_update_req) begin
-            cfg_reject <= 1'b1; cfg_update_done <= 1'b1; cfg_reason <= CFG_BUSY; cfg_busy_seen <= 1'b1;
-          end
-          if (outstanding_cnt == '0) state <= S_COMMIT;  // fully drained
+          // Commit only once admission is frozen, the datapath is drained AND no
+          // allocation fires on this edge -> a config/timeout change can never
+          // land on the same edge as an admission.
+          if ((outstanding_cnt == '0) && !alloc_fire) state <= S_COMMIT;
         end
         S_COMMIT: begin
-          // The commit's cfg_ok/cfg_update_done owns the pulse this cycle; a
-          // concurrent request is recorded only in the sticky bit (no conflicting
-          // reject pulse). It can retry next cycle (ACTIVE).
-          if (cfg_update_req) cfg_busy_seen <= 1'b1;
+          // ATOMIC: windows + capacity + timeout policy + epoch all on ONE edge.
           for (k = 0; k < N_WIN; k++) begin
             act_en[k]   <= pend_en[k];
             act_base[k] <= pend_base[k];
             act_size[k] <= pend_size[k];
             act_dpa[k]  <= pend_dpa[k];
           end
-          act_cap         <= pend_cap;
-          cfg_epoch       <= cfg_epoch + 16'd1;   // 16-bit rolling; wrap is benign
-          cfg_ok          <= 1'b1;
-          cfg_update_done <= 1'b1;
-          cfg_reason      <= CFG_OK;
-          state           <= S_ACTIVE;
+          act_cap        <= pend_cap;
+          act_to_en      <= pend_to_en;
+          act_to_th      <= pend_to_th;
+          cfg_epoch      <= cfg_epoch + 16'd1;
+          cfg_rsp_valid  <= 1'b1;
+          cfg_rsp_code   <= RSP_OK;
+          cfg_rsp_reason <= CFG_OK;
+          state          <= S_ACTIVE;
         end
         default: state <= S_ACTIVE;
       endcase
@@ -265,52 +304,91 @@ module hdm_config #(
   end
 
 `ifdef FORMAL
-  // ---- Snapshot / atomicity / drain safety properties (internal access) ----
+  // ---- M2.1 handshake + atomic-commit safety properties ---------------------
+  // ENVIRONMENT ASSUMPTION (interface contract, not a DUT guarantee): while
+  // cfg_req_valid && !cfg_req_ready the requester holds valid and payload stable.
+  // Published in docs/interface_contract.md.
   logic f_init;
-  logic [1:0]           f_pstate;
-  logic [OCNT_W-1:0]    f_pout;
-  logic [15:0]          f_pepoch;
-  logic                 f_pen0;      // active window-0 enable, previous cycle
-  logic                 f_ppend0;    // pending window-0 enable, previous cycle
-  logic                 f_prst_n;    // rst_n, previous cycle
+  logic [1:0]        f_pstate;
+  logic [OCNT_W-1:0] f_pout;
+  logic              f_palloc, f_paccept, f_prsp_valid, f_prst_n;
+  logic [15:0]       f_pepoch;
+  logic              f_pen0, f_ppend0, f_pto_en, f_ppto_en;
+  logic [TS_W-1:0]   f_pto_th, f_ppto_th;
+  logic [1:0]        f_prsp_code;
+  logic [3:0]        f_prsp_reason;
+  logic              f_prsp_ready;
+  logic [3:0]        f_inflight;      // accepted - completed
   initial f_init = 1'b0;
+
+  always_ff @(posedge clk or negedge rst_n) begin
+    if (!rst_n) f_inflight <= '0;
+    else f_inflight <= f_inflight + {3'b0, req_accept} - {3'b0, (cfg_rsp_valid && cfg_rsp_ready)};
+  end
   always_ff @(posedge clk) begin
-    f_init   <= 1'b1;
-    f_pstate <= cfg_state;
-    f_pout   <= outstanding_cnt;
-    f_pepoch <= cfg_epoch;
-    f_pen0   <= act_en[0];
-    f_ppend0 <= pend_en[0];
-    f_prst_n <= rst_n;
+    f_init<=1'b1; f_pstate<=cfg_state; f_pout<=outstanding_cnt; f_palloc<=alloc_fire;
+    f_paccept<=req_accept; f_prsp_valid<=cfg_rsp_valid; f_pepoch<=cfg_epoch; f_prst_n<=rst_n;
+    f_pen0<=act_en[0]; f_ppend0<=pend_en[0];
+    f_pto_en<=act_to_en; f_pto_th<=act_to_th; f_ppto_en<=pend_to_en; f_ppto_th<=pend_to_th;
+    f_prsp_code<=cfg_rsp_code; f_prsp_reason<=cfg_rsp_reason; f_prsp_ready<=cfg_rsp_ready;
   end
 
   always @(posedge clk) begin
-    // ---- reset recovery: the cycle after a reset cycle must be a clean IDLE
+    // reset returns protocol accounting to zero and emits no response
     if (f_init && !f_prst_n && rst_n) begin
-      assert (cfg_state == S_ACTIVE);        // FSM returns to ACTIVE/IDLE
-      assert (cfg_update_done == 1'b0);       // reset never produces a done pulse
-      assert (!cfg_ok && !cfg_reject);
-      assert (pend_en[0] == 1'b0);            // update_pending cleared
-      assert (act_en[0]  == 1'b0);            // documented default: active disabled
-      assert (cfg_epoch  == 16'd0);           // epoch reset
-      assert (req_accept_enable == 1'b1);     // admission deterministic (open)
+      assert (f_inflight == '0);
+      assert (!cfg_rsp_valid);
+      assert (cfg_state == S_ACTIVE);
+      assert (cfg_epoch == 16'd0);
+      assert (act_en[0] == 1'b0);
+      assert (act_to_en == 1'b0);          // documented timeout default: disabled
     end
-    // during a reset cycle, no done pulse is produced
-    if (f_init && !rst_n) assert (cfg_update_done == 1'b0);
-
     if (rst_n && f_init) begin
-      // epoch increments by exactly one on commit, else unchanged (mod 2^16)
-      assert (cfg_epoch == (f_pepoch + (cfg_ok ? 16'd1 : 16'd0)));
-      // active config changes ONLY on a successful commit (atomicity)
-      if (!cfg_ok) assert (act_en[0] == f_pen0);
-      // commit writes active from the PENDING snapshot
-      if (cfg_ok) assert (act_en[0] == f_ppend0);
-      // pending snapshot is STABLE while an update is in flight (not ACTIVE)
-      if (f_pstate != S_ACTIVE && cfg_state != S_ACTIVE)
+      // --- strengthening invariants (make the accounting inductive) ---
+      // While an update is being processed no response can be pending: accepting
+      // required cfg_req_ready = (ACTIVE && !rsp_valid), and rsp_valid is only
+      // set on the COMMIT edge (which returns to ACTIVE) or on an INVALID accept.
+      if (cfg_state != S_ACTIVE) assert (!cfg_rsp_valid);
+      // in-flight accounting is exactly "processing OR unconsumed response"
+      assert (f_inflight == ({3'b0, (cfg_state != S_ACTIVE)} + {3'b0, cfg_rsp_valid}));
+      // at most one accepted request in flight (accepted - completed in {0,1})
+      assert (f_inflight <= 4'd1);
+      // ready is low while processing or while a response is unconsumed
+      assert (!cfg_req_ready || ((cfg_state == S_ACTIVE) && !cfg_rsp_valid));
+      // a newly asserted response comes from an accept (INVALID) or a COMMIT
+      if (cfg_rsp_valid && !f_prsp_valid) assert (f_paccept || (f_pstate == S_COMMIT));
+      // response is STABLE while backpressured (held until consumed, contents fixed)
+      if (f_prsp_valid && !f_prsp_ready) begin
+        assert (cfg_rsp_valid);
+        assert (cfg_rsp_code   == f_prsp_code);
+        assert (cfg_rsp_reason == f_prsp_reason);
+      end
+      // epoch increments exactly once per successful commit
+      assert (cfg_epoch == (f_pepoch + ((f_pstate == S_COMMIT) ? 16'd1 : 16'd0)));
+      // active config (incl. timeout policy) changes ONLY on a commit edge
+      if (f_pstate != S_COMMIT) begin
+        assert (act_en[0]  == f_pen0);
+        assert (act_to_en  == f_pto_en);
+        assert (act_to_th  == f_pto_th);
+      end
+      // ...and a commit writes active from the immutable PENDING snapshot
+      // (NOT from the shadow, which may have been rewritten after acceptance).
+      if (f_pstate == S_COMMIT) begin
+        assert (act_en[0]  == f_ppend0);
+        assert (act_to_en  == f_ppto_en);
+        assert (act_to_th  == f_ppto_th);
+      end
+      // the pending snapshot is stable while an update is being processed
+      if (f_pstate != S_ACTIVE && cfg_state != S_ACTIVE) begin
         assert (pend_en[0] == f_ppend0);
-      // cfg_ok only out of COMMIT; FREEZE->COMMIT only when drained
-      if (cfg_ok) assert (f_pstate == S_COMMIT);
-      if (f_pstate == S_FREEZE && cfg_state == S_COMMIT) assert (f_pout == '0);
+        assert (pend_to_en == f_ppto_en);
+        assert (pend_to_th == f_ppto_th);
+      end
+      // COMMIT is entered only from FREEZE with drained datapath and NO allocation
+      if (f_pstate == S_FREEZE && cfg_state == S_COMMIT)
+        assert (f_pout == '0 && !f_palloc);
+      // commit and allocation are mutually exclusive on the same edge
+      if (f_pstate == S_COMMIT) assert (!f_palloc);
     end
     // freeze and admission are mutually exclusive every cycle
     assert (!(traffic_freeze && req_accept_enable));

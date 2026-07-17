@@ -33,7 +33,71 @@ The request path must gate its acceptance on `req_accept_enable`.
 > stores an epoch alongside each accepted tag **and** is wired to `cfg_epoch`.
 > Not claimed yet.
 
-### Update disposition — exact current behavior (no universal claim)
+## M2.1 — configuration request/response handshake (IMPLEMENTED)
+
+Configuration is owned behind **decoupled valid/ready channels**. Backpressure
+replaces BUSY pulses, so nothing is dropped and no contradictory disposition can
+exist. **Every accepted request produces exactly one response.**
+
+```
+cfg_req_valid / cfg_req_ready / cfg_req_timeout_en, cfg_req_timeout_thresh   (payload)
+cfg_rsp_valid / cfg_rsp_ready / cfg_rsp_code = OK | INVALID / cfg_rsp_reason
+```
+
+- Acceptance is **only** `cfg_req_valid && cfg_req_ready`.
+- `cfg_req_ready = (state==ACTIVE) && !cfg_rsp_valid` — low while processing an
+  update *or* while a response is unconsumed. At most **one** accepted request in
+  flight.
+- The payload (HDM shadow + capacity + **timeout_enable + timeout_thresh**) is
+  **snapshotted exactly once** on acceptance into an immutable `pending`.
+- INVALID ⇒ immediate response, **no freeze**, active config untouched.
+- Valid ⇒ **snapshot → freeze → drain → atomic commit → response**.
+- Response contents are **stable** until `cfg_rsp_valid && cfg_rsp_ready`.
+
+### Atomic timeout configuration (closes the threshold race)
+`timeout_enable`/`timeout_thresh` are part of the **atomic payload**, not a
+separate tracker write. The tracker **never mutates its own threshold** — it
+consumes the committed value. COMMIT is gated on:
+
+```
+frozen  &&  outstanding_cnt == 0  &&  !alloc_fire
+```
+
+The `!alloc_fire` term is essential: `occupancy==0` alone is **not** equivalent to
+"frozen and empty" — without it, a threshold change could land on the very edge
+that admits the first entry. HDM windows, capacity, timeout policy and
+`cfg_epoch` all change on **one** edge.
+
+Validation rejects (reason code): invalid HDM range/alignment/overlap/DPA
+overflow/capacity, **and** a `timeout_thresh` that is nonzero and ≥ `2^(TS_W−1)`
+(`CFG_TIMEOUT_BAD`).
+
+### Reset contract
+Reset cancels an incomplete request, clears an unconsumed response (**no
+post-reset response for a pre-reset request**), and restores documented defaults
+(windows disabled, **timeouts disabled**, epoch 0).
+
+### PUBLISHED ENVIRONMENT ASSUMPTIONS (interface contract, not DUT guarantees)
+- **A1** While `cfg_req_valid && !cfg_req_ready`, the requester holds `valid` and
+  the payload **stable**.
+- **A2** The admission path gates allocation on `req_accept_enable`
+  (`!req_accept_enable ⇒ !alloc_fire`).
+
+### Formally verified (bmc + induction + cover, `formal/config.sby`)
+accepted−completed ∈ {0,1}; no response without an accepted request; no double
+response; snapshot stable while processing; **commit writes active from pending**
+(not shadow); active config changes only on a commit edge; commit only while
+frozen, drained and `!alloc_fire`; epoch increments exactly once per commit;
+response stable under backpressure; reset zeroes protocol accounting.
+
+### Reclaim channel note
+Reclaim remains a single-cycle request (`reclaim_req` + `reclaim_tag`) with a
+**combinational** `reclaim_class`. It is always accepted (implicit `ready=1`), so
+no request can be lost — but the requester must sample `reclaim_class` in the
+same cycle. Promoting reclaim to a registered `reclaim_rsp_valid/ready` channel
+is deferred and tracked; it is **not** claimed to have a decoupled response.
+
+### Superseded: old pulse disposition (kept for history)
 
 `cfg_update_req` is a **1-cycle pulse**, not a valid/ready transaction. Precisely:
 

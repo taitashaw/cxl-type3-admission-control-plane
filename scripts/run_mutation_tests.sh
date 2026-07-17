@@ -60,11 +60,15 @@ mutate "line-containment (HPA+63)" rtl/core/dpa_translator.sv \
   tb_hdm_decoder "$DEC" "$DVEC"
 # M5 config validation disabled (everything "valid")
 mutate "config validation" rtl/csr/hdm_config.sv \
-  's/shadow_valid = (shadow_reason == CFG_OK);/shadow_valid = 1'"'"'b1;/' \
+  's/    req_ok = (req_reason == CFG_OK);/    req_ok = 1'"'"'b1;/' \
+  tb_hdm_config "$CFG" "$CVEC"
+# M5b timeout-payload legality disabled -> illegal thresholds would commit
+mutate "config timeout legality" rtl/csr/hdm_config.sv \
+  's/  assign to_legal = (!cfg_req_timeout_en)/  assign to_legal = 1'"'"'b1; wire _unused_to = (!cfg_req_timeout_en)/' \
   tb_hdm_config "$CFG" "$CVEC"
 # M6 drain removed: commit without waiting for outstanding to reach 0
 mutate "freeze/drain protocol" rtl/csr/hdm_config.sv \
-  "s/if (outstanding_cnt == '0) state <= S_COMMIT;/if (1'b1) state <= S_COMMIT;/" \
+  "s/if ((outstanding_cnt == '0) \&\& !alloc_fire) state <= S_COMMIT;/if (1'b1) state <= S_COMMIT;/" \
   tb_hdm_config "$CFG" "$CVEC"
 
 # ---- M2 outstanding_tracker mutations ----
@@ -90,10 +94,6 @@ mutate "tracker reclaim needs quarantine" rtl/core/outstanding_tracker.sv \
 # M11 event priority broken: a validly-retiring slot still gets timeout-marked
 mutate "tracker timeout-vs-retire priority" rtl/core/outstanding_tracker.sv \
   "s/&& !(resp_retire  && r_slot  == gt\[SLOT_W-1:0\])/\&\& 1'b1/" \
-  tb_outstanding_tracker "$OT" "$OVEC" "$OTDEF"
-# M12 threshold contract broken: out-of-range threshold still enables timeouts
-mutate "tracker thresh latch-when-empty" rtl/core/outstanding_tracker.sv \
-  "s/else if (occupancy == '0) active_thresh <= timeout_thresh;/else active_thresh <= timeout_thresh;/" \
   tb_outstanding_tracker "$OT" "$OVEC" "$OTDEF"
 
 echo "=================================================="

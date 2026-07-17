@@ -8,7 +8,7 @@ invalid response classes.
 
 File: tracker_<DEPTH>d_<GEN>g.vec
   line1: DEPTH GEN_W EPOCH_W OP_W META_W TS_W COUNT
-  each line (hex): current_ts timeout_thresh alloc_req alloc_epoch alloc_op alloc_meta
+  each line (hex): current_ts timeout_enable timeout_thresh alloc_req alloc_epoch alloc_op alloc_meta
                    resp_valid resp_tag reclaim_req reclaim_slot |
                    alloc_gnt alloc_tag alloc_slot full resp_retire resp_class
                    retired_epoch retired_op retired_meta reclaim_done occupancy
@@ -33,7 +33,7 @@ def hx(v): return format(int(v) & ((1<<256)-1), "x")
 
 OUTFIELDS = ["alloc_gnt","alloc_tag","alloc_slot","full","resp_retire","resp_class",
              "retired_epoch","retired_op","retired_meta","reclaim_done","reclaim_class","occupancy",
-             "high_watermark","quarantined_count","timeout_any","timeout_cfg_bad",
+             "high_watermark","quarantined_count","timeout_any",
              "alloc_count","retire_count","full_count","timeout_count","reclaim_count",
              "invalid_slot_count","non_live_count","stale_gen_count",
              "err_sticky","err_first_class"]
@@ -48,8 +48,10 @@ def gen_one(DEPTH, GEN_W):
         # advance timestamp (sometimes jump to force timeouts / ts-wrap)
         ts = (ts + random.choice([0,1,1,1,2,5, THRESH+3, (1<<(TS_W-1))+5])) & ((1<<TS_W)-1)  # incl. big jump to age past an out-of-range threshold
         # vary threshold: mostly valid, sometimes disabled(0) or out-of-range(>=half)
+        # committed timeout config (validated upstream by hdm_config): enable + legal threshold
         rt = random.random()
-        thr = THRESH if rt < 0.8 else (0 if rt < 0.9 else (half + random.randint(0, half-1)) & ((1<<TS_W)-1))
+        to_en = 0 if rt < 0.12 else 1
+        thr   = THRESH if rt < 0.85 else random.randint(1, half-1)
         alloc_req = 1 if random.random() < 0.55 else 0
         alloc_epoch = random.randint(0, (1<<EPOCH_W)-1)
         alloc_op = random.randint(0, (1<<OP_W)-1)
@@ -72,6 +74,17 @@ def gen_one(DEPTH, GEN_W):
                 bad_slot &= (1<<m.SLOT_W)-1
                 resp_tag = (random.randint(0,(1<<GEN_W)-1) << m.SLOT_W) | bad_slot  # maybe invalid slot
 
+        # TARGETED: land a VALID retire on the exact cycle a live entry's age
+        # first crosses the threshold -- the only window where the
+        # timeout-vs-retire priority rule is observable.
+        if to_en and random.random() < 0.14:
+            cands = [x for x in range(DEPTH) if m.live[x] and not m.timed[x]]
+            if cands:
+                sl = random.choice(cands)
+                ts = (m.issue_ts[sl] + thr) & ((1<<TS_W)-1)   # age == thr exactly
+                resp_valid = 1
+                resp_tag = (m.gen[sl] << m.SLOT_W) | sl       # valid tag -> VALID retire
+
         reclaim_req = 1 if random.random() < 0.15 else 0
         # composite reclaim tag: often a real granted tag (hits OK / NOT_QUARANTINED),
         # sometimes gen-corrupted (STALE_GEN) or random (NOT_LIVE / INVALID_SLOT)
@@ -84,7 +97,7 @@ def gen_one(DEPTH, GEN_W):
         else:
             reclaim_tag = random.randint(0, (1<<m.TAG_W)-1)
 
-        inp = dict(current_ts=ts, timeout_thresh=thr, alloc_req=alloc_req,
+        inp = dict(current_ts=ts, timeout_enable=to_en, timeout_thresh=thr, alloc_req=alloc_req,
                    alloc_epoch=alloc_epoch, alloc_op=alloc_op, alloc_meta=alloc_meta,
                    resp_valid=resp_valid, resp_tag=resp_tag,
                    reclaim_req=reclaim_req, reclaim_tag=reclaim_tag)
@@ -92,7 +105,7 @@ def gen_one(DEPTH, GEN_W):
         if o["alloc_gnt"]:
             granted.append((o["alloc_tag"], o["alloc_slot"]))
             if len(granted) > 64: granted.pop(0)
-        toks = [hx(ts),hx(thr),hx(alloc_req),hx(alloc_epoch),hx(alloc_op),hx(alloc_meta),
+        toks = [hx(ts),hx(to_en),hx(thr),hx(alloc_req),hx(alloc_epoch),hx(alloc_op),hx(alloc_meta),
                 hx(resp_valid),hx(resp_tag),hx(reclaim_req),hx(reclaim_tag)]
         toks += [hx(o[f]) for f in OUTFIELDS]
         lines.append(" ".join(toks))

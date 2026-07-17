@@ -40,6 +40,10 @@ module outstanding_tracker #(
   input  logic                 rst_n,
 
   input  logic [TS_W-1:0]      current_ts,
+  // COMMITTED timeout configuration (owned by hdm_config's atomic commit; the
+  // tracker never mutates it). Validation and the frozen/drained/!alloc_fire
+  // commit gating live in the configuration controller — see docs/interface_contract.md.
+  input  logic                 timeout_enable,
   input  logic [TS_W-1:0]      timeout_thresh,
 
   // ---- allocation ----
@@ -76,7 +80,6 @@ module outstanding_tracker #(
   output logic [OCC_W-1:0]     high_watermark,
   output logic [OCC_W-1:0]     quarantined_count, // live && timed_out (current)
   output logic                 timeout_any,
-  output logic                 timeout_cfg_bad,   // sticky: bad threshold seen
   output logic [CNT_W-1:0]     alloc_count,
   output logic [CNT_W-1:0]     retire_count,
   output logic [CNT_W-1:0]     full_count,
@@ -148,17 +151,13 @@ module outstanding_tracker #(
   assign retired_op    = (resp_valid && r_slot_ok) ? op[r_slot]    : '0;
   assign retired_meta  = (resp_valid && r_slot_ok) ? meta[r_slot]  : '0;
 
-  // ---- timeout threshold contract ------------------------------------------
-  // A legal threshold is 0 (disabled) or 0 < t < 2^(TS_W-1). An ILLEGAL value is
-  // REJECTED (not latched, active_thresh unchanged) and flags timeout_cfg_bad —
-  // it is not silently reinterpreted as "disabled". The threshold is only
-  // latched while the tracker is EMPTY (occupancy==0), so an administrative
-  // write can never instantly time out already-live traffic. Live entries
-  // therefore always age against the threshold in force when they were issued.
-  logic [TS_W-1:0] active_thresh;
-  logic thresh_legal_in, timeout_active;
-  assign thresh_legal_in = (timeout_thresh == '0) || (timeout_thresh < (TS_W'(1) << (TS_W-1)));
-  assign timeout_active  = (active_thresh != '0);
+  // ---- timeout: committed configuration, used directly ---------------------
+  // The tracker does NOT latch or validate the threshold. hdm_config commits
+  // {HDM windows, capacity, timeout_enable, timeout_thresh, epoch} atomically on
+  // one edge, only while admission is frozen, occupancy==0 and no allocation
+  // fires — so a live entry can never observe a threshold change.
+  logic timeout_active;
+  assign timeout_active = timeout_enable && (timeout_thresh != '0);
 
   // ---- reclaim: composite-tag checked; only an already-quarantined slot -----
   logic [SLOT_W-1:0] rc_slot;
@@ -190,7 +189,7 @@ module outstanding_tracker #(
       // new timeout only if: live, not already timed_out, age expired, timeouts
       // active, and NOT being validly retired or reclaimed this cycle.
       assign new_timeout[gt] = live[gt] && !timed_out[gt] && timeout_active
-                            && (age >= active_thresh)
+                            && (age >= timeout_thresh)
                             && !(resp_retire  && r_slot  == gt[SLOT_W-1:0])
                             && !(reclaim_done && rc_slot == gt[SLOT_W-1:0]);
     end
@@ -230,13 +229,8 @@ module outstanding_tracker #(
       occupancy<='0; high_watermark<='0;
       alloc_count<='0; retire_count<='0; full_count<='0; timeout_count<='0; reclaim_count<='0;
       invalid_slot_count<='0; non_live_count<='0; stale_gen_count<='0;
-      err_sticky<=1'b0; err_first_class<=RC_VALID; timeout_cfg_bad<=1'b0; active_thresh<='0;
+      err_sticky<=1'b0; err_first_class<=RC_VALID;
     end else begin
-      // threshold: reject illegal values (flag, do not latch); latch a legal
-      // value only while the tracker is EMPTY so live traffic is never affected.
-      if (!thresh_legal_in) timeout_cfg_bad <= 1'b1;
-      else if (occupancy == '0) active_thresh <= timeout_thresh;
-
       // timeout marking (sticky) + aggregate saturating counter
       for (i = 0; i < DEPTH; i++) if (new_timeout[i]) timed_out[i] <= 1'b1;
       timeout_count <= sat_addn(timeout_count, n_new_timeout);

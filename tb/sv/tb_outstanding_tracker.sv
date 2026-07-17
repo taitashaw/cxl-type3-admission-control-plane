@@ -39,6 +39,7 @@ module tb_outstanding_tracker;
   logic rst_n;
 
   logic [TS_W-1:0]    current_ts, timeout_thresh;
+  logic               timeout_enable;
   logic               alloc_req;
   logic [EPOCH_W-1:0] alloc_epoch;
   logic [OP_W-1:0]    alloc_op;
@@ -56,7 +57,7 @@ module tb_outstanding_tracker;
   logic [TAG_W-1:0]   reclaim_tag;
   logic [2:0]         reclaim_class;
   logic [OCC_W-1:0]   occupancy, high_watermark, quarantined_count;
-  logic               timeout_any, timeout_cfg_bad, err_sticky;
+  logic               timeout_any, err_sticky;
   logic [2:0]         err_first_class;
   logic [31:0]        alloc_count, retire_count, full_count, timeout_count, reclaim_count,
                       invalid_slot_count, non_live_count, stale_gen_count;
@@ -67,8 +68,8 @@ module tb_outstanding_tracker;
   integer fd, rc, count, i, errors, checks;
   integer f_d,f_g,f_e,f_o,f_m,f_t;
   string  vecfile;
-  logic [63:0] i_ts,i_th,i_areq,i_aep,i_aop,i_ame,i_rv,i_rt,i_rcq,i_rcs;
-  localparam int NOUT = 26;
+  logic [63:0] i_ts,i_ten,i_th,i_areq,i_aep,i_aop,i_ame,i_rv,i_rt,i_rcq,i_rcs;
+  localparam int NOUT = 25;
   logic [63:0] e[NOUT];   // expected outputs
 
   task chk(input string nm, input logic [63:0] got, input logic [63:0] exp, input int w);
@@ -94,16 +95,16 @@ module tb_outstanding_tracker;
     $display("=== tb_outstanding_tracker DEPTH=%0d GEN_W=%0d cycles=%0d ===", DEPTH, GEN_W, count);
 
     // reset
-    current_ts=0; timeout_thresh=0; alloc_req=0; alloc_epoch=0; alloc_op=0; alloc_meta=0;
+    current_ts=0; timeout_enable=0; timeout_thresh=0; alloc_req=0; alloc_epoch=0; alloc_op=0; alloc_meta=0;
     resp_valid=0; resp_tag=0; reclaim_req=0; reclaim_tag=0;
     rst_n=0; repeat(3) @(negedge clk); rst_n=1;
 
     for (i=0;i<count;i++) begin
       @(negedge clk);
-      rc = $fscanf(fd,"%h %h %h %h %h %h %h %h %h %h",
-                   i_ts,i_th,i_areq,i_aep,i_aop,i_ame,i_rv,i_rt,i_rcq,i_rcs);
+      rc = $fscanf(fd,"%h %h %h %h %h %h %h %h %h %h %h",
+                   i_ts,i_ten,i_th,i_areq,i_aep,i_aop,i_ame,i_rv,i_rt,i_rcq,i_rcs);
       for (int j=0;j<NOUT;j++) rc = $fscanf(fd,"%h", e[j]);
-      current_ts=i_ts[TS_W-1:0]; timeout_thresh=i_th[TS_W-1:0];
+      current_ts=i_ts[TS_W-1:0]; timeout_enable=i_ten[0]; timeout_thresh=i_th[TS_W-1:0];
       alloc_req=i_areq[0]; alloc_epoch=i_aep[EPOCH_W-1:0]; alloc_op=i_aop[OP_W-1:0]; alloc_meta=i_ame[META_W-1:0];
       resp_valid=i_rv[0]; resp_tag=i_rt[TAG_W-1:0]; reclaim_req=i_rcq[0]; reclaim_tag=i_rcs[TAG_W-1:0];
       #1;
@@ -124,17 +125,16 @@ module tb_outstanding_tracker;
       chk("high_watermark",high_watermark,     e[12], OCC_W);
       chk("quarantined",   quarantined_count,  e[13], OCC_W);
       chk("timeout_any",   timeout_any,        e[14], 1);
-      chk("timeout_cfgbad",timeout_cfg_bad,    e[15], 1);
-      chk("alloc_count",   alloc_count,        e[16], 32);
-      chk("retire_count",  retire_count,       e[17], 32);
-      chk("full_count",    full_count,         e[18], 32);
-      chk("timeout_count", timeout_count,      e[19], 32);
-      chk("reclaim_count", reclaim_count,      e[20], 32);
-      chk("invalid_cnt",   invalid_slot_count, e[21], 32);
-      chk("non_live_cnt",  non_live_count,     e[22], 32);
-      chk("stale_cnt",     stale_gen_count,    e[23], 32);
-      chk("err_sticky",    err_sticky,         e[24], 1);
-      chk("err_first",     err_first_class,    e[25], 3);
+      chk("alloc_count",   alloc_count,        e[15], 32);
+      chk("retire_count",  retire_count,       e[16], 32);
+      chk("full_count",    full_count,         e[17], 32);
+      chk("timeout_count", timeout_count,      e[18], 32);
+      chk("reclaim_count", reclaim_count,      e[19], 32);
+      chk("invalid_cnt",   invalid_slot_count, e[20], 32);
+      chk("non_live_cnt",  non_live_count,     e[21], 32);
+      chk("stale_cnt",     stale_gen_count,    e[22], 32);
+      chk("err_sticky",    err_sticky,         e[23], 1);
+      chk("err_first",     err_first_class,    e[24], 3);
     end
     $fclose(fd);
     $display("=== checks=%0d (fields=%0d) errors=%0d ===", checks, checks*NOUT, errors);
