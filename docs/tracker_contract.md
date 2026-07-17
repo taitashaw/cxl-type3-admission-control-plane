@@ -142,8 +142,12 @@ This is a *selected set*, **not** a Cartesian product of the listed values:
 | `twrap` | 7 | 2 | 3 | non-power-of-two + small TS_W (timestamp wrap) |
 
 Plus the default instance (`formal/tracker.sby`, DEPTH=3/GEN_W=2/TS_W=4) with
-bmc + induction + cover. **10/10 matrix tasks + 3/3 default tasks PASS.** This is
-not a universal proof over all parameter values.
+bmc + induction + cover.
+
+> **Precise phrasing:** *five documented parameter instances; 10/10 prove/cover
+> tasks passed* (plus 3/3 default-instance tasks). Never state "10/10 parameter
+> instances" — there are five instances, each run in two modes. This is not a
+> universal proof over all parameter values.
 
 Note: the *simultaneous alloc+retire* cover is guarded to `DEPTH>1` — with a
 single slot it is genuinely unreachable (a retiring slot is not reusable the same
