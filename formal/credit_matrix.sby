@@ -1,0 +1,54 @@
+[tasks]
+p1_p
+p1_c
+p2_p
+p2_c
+p3np_p
+p3np_c
+small_p
+small_c
+wide_p
+wide_c
+
+[options]
+p1_p: mode prove
+p1_p: depth 10
+p1_c: mode cover
+p1_c: depth 12
+p2_p: mode prove
+p2_p: depth 10
+p2_c: mode cover
+p2_c: depth 12
+p3np_p: mode prove
+p3np_p: depth 10
+p3np_c: mode cover
+p3np_c: depth 12
+small_p: mode prove
+small_p: depth 10
+small_c: mode cover
+small_c: depth 12
+wide_p: mode prove
+wide_p: depth 10
+wide_c: mode cover
+wide_c: depth 12
+
+[engines]
+smtbmc yices
+
+[script]
+read_verilog -sv -formal -DFORMAL credit_manager.sv formal_credit.sv
+p1_p: chparam -set N_POOLS 1 -set COUNT_W 4 -set AMT_W 2 -set RESET_MAX 1 formal_credit
+p1_c: chparam -set N_POOLS 1 -set COUNT_W 4 -set AMT_W 2 -set RESET_MAX 1 formal_credit
+p2_p: chparam -set N_POOLS 2 -set COUNT_W 4 -set AMT_W 2 -set RESET_MAX 3 formal_credit
+p2_c: chparam -set N_POOLS 2 -set COUNT_W 4 -set AMT_W 2 -set RESET_MAX 3 formal_credit
+p3np_p: chparam -set N_POOLS 3 -set COUNT_W 5 -set AMT_W 3 -set RESET_MAX 7 formal_credit
+p3np_c: chparam -set N_POOLS 3 -set COUNT_W 5 -set AMT_W 3 -set RESET_MAX 7 formal_credit
+small_p: chparam -set N_POOLS 2 -set COUNT_W 3 -set AMT_W 2 -set RESET_MAX 2 formal_credit
+small_c: chparam -set N_POOLS 2 -set COUNT_W 3 -set AMT_W 2 -set RESET_MAX 2 formal_credit
+wide_p: chparam -set N_POOLS 2 -set COUNT_W 6 -set AMT_W 3 -set RESET_MAX 4 formal_credit
+wide_c: chparam -set N_POOLS 2 -set COUNT_W 6 -set AMT_W 3 -set RESET_MAX 4 formal_credit
+prep -top formal_credit
+
+[files]
+rtl/core/credit_manager.sv
+formal/formal_credit.sv

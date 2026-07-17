@@ -96,6 +96,43 @@ mutate "tracker timeout-vs-retire priority" rtl/core/outstanding_tracker.sv \
   "s/&& !(resp_retire  && r_slot  == gt\[SLOT_W-1:0\])/\&\& 1'b1/" \
   tb_outstanding_tracker "$OT" "$OVEC" "$OTDEF"
 
+# ---- M3 credit_manager mutations ----
+CM="rtl/core/credit_manager.sv tb/sv/tb_credit_manager.sv"
+CMVEC="tb/vectors/credit_2p_4c_2a.vec"
+CMDEF="-DNPOOLS=2 -DCOUNTW=4 -DAMTW=2 -DRESETMAX=3"
+# remove one pool from consume legality (all-or-nothing broken)
+mutate "credit consume all-or-none" rtl/core/credit_manager.sv \
+  "s/assign consume_legal = &c_ok_pool;/assign consume_legal = c_ok_pool[0];/" \
+  tb_credit_manager "$CM" "$CMVEC" "$CMDEF"
+# allow partial consume (fire even when a pool blocks)
+mutate "credit no partial consume" rtl/core/credit_manager.sv \
+  "s/assign consume_fire    = rst_n \&\& consume_valid \&\& consume_legal \&\& !cfg_commit_fire;/assign consume_fire    = rst_n \&\& consume_valid \&\& !cfg_commit_fire;/" \
+  tb_credit_manager "$CM" "$CMVEC" "$CMDEF"
+# remove return legality (illegal returns wrongly accepted)
+mutate "credit return legality" rtl/core/credit_manager.sv \
+  "s/assign return_legal  = &r_ok_pool;/assign return_legal  = 1'b1;/" \
+  tb_credit_manager "$CM" "$CMVEC" "$CMDEF"
+# same-cycle update ignores the return term (net delta wrong)
+mutate "credit same-cycle net delta" rtl/core/credit_manager.sv \
+  "s/if (return_accepted) next_used_w\[p\] = next_used_w\[p\] - {{(COUNT_W+1-AMT_W){1'b0}}, return_amount\[p\*AMT_W +: AMT_W\]};/\/\/ mutated: drop return term/" \
+  tb_credit_manager "$CM" "$CMVEC" "$CMDEF"
+# allow configuration while credits are used (all_unused ignored)
+mutate "credit cfg needs empty" rtl/core/credit_manager.sv \
+  "s/config_commit \&\& frozen_and_empty \&\& all_unused \&\& cfg_representable;/config_commit \&\& frozen_and_empty \&\& cfg_representable;/" \
+  tb_credit_manager "$CM" "$CMVEC" "$CMDEF"
+# clamp an illegal return instead of rejecting (represent as accepting it)
+mutate "credit reject not clamp" rtl/core/credit_manager.sv \
+  "s/assign return_accepted = rst_n \&\& return_valid  \&\& return_legal  \&\& !cfg_commit_fire;/assign return_accepted = rst_n \&\& return_valid \&\& !cfg_commit_fire;/" \
+  tb_credit_manager "$CM" "$CMVEC" "$CMDEF"
+# break high-watermark update (hwm no longer tracks used)
+mutate "credit high-watermark" rtl/core/credit_manager.sv \
+  "s/if (next_used_w\[p\]\[COUNT_W-1:0\] > hwm_r\[p\]) hwm_r\[p\] <= next_used_w\[p\]\[COUNT_W-1:0\];/\/\/ mutated: no hwm update/" \
+  tb_credit_manager "$CM" "$CMVEC" "$CMDEF"
+# representability check removed (non-representable max would commit)
+mutate "credit representability" rtl/core/credit_manager.sv \
+  "s/assign cfg_representable = ~(|cmax_unrep);/assign cfg_representable = 1'b1;/" \
+  tb_credit_manager "$CM" "$CMVEC" "$CMDEF"
+
 echo "=================================================="
 echo "mutations killed=$kills survived=$survivors"
 [ $survivors -eq 0 ] && { echo "MUTATION TESTS: PASS (all protections observable)"; exit 0; } || { echo "MUTATION TESTS: FAIL"; exit 1; }

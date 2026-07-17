@@ -1,0 +1,23 @@
+[tasks]
+bmc
+prove
+cover
+
+[options]
+bmc: mode bmc
+bmc: depth 10
+prove: mode prove
+prove: depth 10
+cover: mode cover
+cover: depth 12
+
+[engines]
+smtbmc yices
+
+[script]
+read_verilog -sv -formal -DFORMAL credit_manager.sv formal_credit.sv
+prep -top formal_credit
+
+[files]
+rtl/core/credit_manager.sv
+formal/formal_credit.sv

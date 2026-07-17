@@ -48,6 +48,16 @@ fmut "tracker: timeout aggregate" formal/tracker.sby rtl/core/outstanding_tracke
 # tracker: retire without generation match -> stale response wrongly retires
 fmut "tracker: generation check" formal/tracker.sby rtl/core/outstanding_tracker.sv \
   "s/else if (r_gen != gen\[r_slot\])  resp_class = RC_STALE_GEN;/else if (1'b0)                  resp_class = RC_STALE_GEN;/" bmc
+# credit: config commits while pools are in use -> used<=max invariant breaks
+fmut "credit: cfg needs empty" formal/credit.sby rtl/core/credit_manager.sv \
+  "s/config_commit \&\& frozen_and_empty \&\& all_unused \&\& cfg_representable;/config_commit \&\& frozen_and_empty \&\& cfg_representable;/" bmc
+# credit: drop return term in net delta -> ledger delta property fails
+fmut "credit: net delta" formal/credit.sby rtl/core/credit_manager.sv \
+  "s/if (return_accepted) next_used_w\[p\] = next_used_w\[p\] - {{(COUNT_W+1-AMT_W){1'b0}}, return_amount\[p\*AMT_W +: AMT_W\]};/\/\/ mutated/" bmc
+# credit: config does not block consume -> commit-blocks-both property fails
+fmut "credit: cfg blocks consume" formal/credit.sby rtl/core/credit_manager.sv \
+  "s/assign consume_fire    = rst_n \&\& consume_valid \&\& consume_legal \&\& !cfg_commit_fire;/assign consume_fire    = rst_n \&\& consume_valid \&\& consume_legal;/" bmc
+
 echo "=================================================="
 echo "formal mutations killed=$kills survived=$survivors"
 [ $survivors -eq 0 ] && { echo "FORMAL MUTATION: PASS (proofs are non-vacuous)"; exit 0; } || { echo "FORMAL MUTATION: FAIL"; exit 1; }

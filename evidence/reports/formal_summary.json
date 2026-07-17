@@ -1,7 +1,7 @@
 {
-  "git_commit": "a4832f0bef003fab9cf29756e588fbc61fbedaf1",
+  "git_commit": "e5b9647b4b4e69a1c9f32ec79bf611c4e6f88c1a",
   "git_dirty": true,
-  "utc": "2026-07-17T12:40:22Z",
+  "utc": "2026-07-17T16:30:38Z",
   "kind": "formal",
   "engine": "smtbmc/yices",
   "modes": [
@@ -18,7 +18,7 @@
       "cover": "PASS",
       "raw": {
         "path": "evidence/raw/formal_decode.log",
-        "sha256": "f45bbbc0dbba205af28bf2e769ea0a72e4c2926691d75e042c146f76918899ca"
+        "sha256": "31523035ed6e153db0968243bcfc37011b6a032e4fb385e325870592bfcd5981"
       }
     },
     {
@@ -28,7 +28,7 @@
       "cover": "PASS",
       "raw": {
         "path": "evidence/raw/formal_config.log",
-        "sha256": "4bee63697585c0420e216211ba5954d8f1f559b79a74a0b40d0479af02eeab60"
+        "sha256": "df9454fb9989c8be81a95017dc29aade966e8fb9f19e913fe5b686500b550873"
       }
     },
     {
@@ -38,18 +38,18 @@
       "cover": "PASS",
       "raw": {
         "path": "evidence/raw/formal_tracker.log",
-        "sha256": "9e72989ddf89b8f7ebc790af230266cd648bbc90b95c68f6d26f39e54f4fd431"
+        "sha256": "7e1f669518c6db905912011dba20ff70a7f40f825e5a3381ad8a0c54b97fc433"
       }
     }
   ],
   "non_vacuity": {
     "cover": "all reachable",
     "formal_mutation": {
-      "killed": 7,
+      "killed": 10,
       "survived": 0,
       "raw": {
         "path": "evidence/raw/formal_mutation.log",
-        "sha256": "f47a7bfd14676324d7ce856c440e6343fb61700d51f14afc7f45fd436a3de1bf"
+        "sha256": "9451bc9f16f2f2b94b8a72f59d4ed0c392075212415c650f90243a87fd9a85fd"
       }
     }
   }

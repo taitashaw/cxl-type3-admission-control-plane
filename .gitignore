@@ -28,3 +28,8 @@ formal/*_bmc/
 formal/*_prove/
 formal/tracker/
 formal/tracker_matrix_*/
+formal/credit_matrix_*/
+formal/credit_bmc/
+formal/credit_prove/
+formal/credit_cover/
+tb/vectors/credit_*.vec

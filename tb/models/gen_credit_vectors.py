@@ -23,8 +23,9 @@ N_CYCLES = 4000
 
 def hx(v): return format(int(v) & ((1 << 256) - 1), "x")
 
-OUTF_SCALAR = ["consume_ready","consume_fire","return_accepted","sticky_err",
-               "first_err_type","first_err_pool","first_err_amount",
+OUTF_SCALAR = ["consume_ready","consume_fire","return_accepted",
+               "cfg_commit_fire","cfg_reject","cfg_reason",
+               "sticky_err","first_err_type","first_err_pool","first_err_amount",
                "consume_ok_count","consume_blocked_count","return_ok_count",
                "return_illegal_count","cfg_reject_count"]
 OUTF_VEC    = ["used","available","configured_max","hwm_used","pool_full","pool_empty"]
@@ -33,6 +34,7 @@ def gen_one(N, COUNT_W, AMT_W, RESET_MAX, tally):
     m = Credit(N, COUNT_W, AMT_W, RESET_MAX)
     amax = (1 << AMT_W) - 1
     cmax_lim = (1 << COUNT_W) - 1
+    mreq_max = (1 << (COUNT_W + 1)) - 1     # requested-max field is COUNT_W+1 bits
     lines = []
     for cyc in range(N_CYCLES):
         # amounts: biased small, sometimes zero, sometimes oversized (illegal)
@@ -55,7 +57,10 @@ def gen_one(N, COUNT_W, AMT_W, RESET_MAX, tally):
         # configuration attempts: some legal (frozen+empty), some rejected
         config_commit = 1 if random.random() < 0.06 else 0
         frozen_and_empty = 1 if random.random() < 0.5 else 0
-        committed_max = [random.choice([0,1,2,3,7,8,cmax_lim,random.randint(0,cmax_lim)]) for _ in range(N)]
+        # requested maxima: legal values, boundary values, and DELIBERATELY
+        # non-representable ones (> cmax_lim, up to mreq_max) to exercise rejection.
+        committed_max = [random.choice([0,1,2,3,cmax_lim,cmax_lim+1,mreq_max,
+                                        random.randint(0,cmax_lim), random.randint(0,mreq_max)]) for _ in range(N)]
         diagnostic_clear = 1 if random.random() < 0.02 else 0
 
         inp = dict(consume_valid=consume_valid, consume_amount=consume_amount,
@@ -72,8 +77,9 @@ def gen_one(N, COUNT_W, AMT_W, RESET_MAX, tally):
         if consume_valid and not o['consume_ready']: tally['consume_blocked'] += 1
         if o['return_accepted']: tally['return_ok'] += 1
         if return_valid and not o['return_accepted']: tally['return_illegal'] += 1
-        if config_commit and frozen_and_empty and all(u==0 for u in o['used']) and not o['consume_fire']: tally['cfg_apply'] += 1
-        if config_commit and not (frozen_and_empty and all(u==0 for u in o['used']) and not o['consume_fire']): tally['cfg_refuse'] += 1
+        if o['cfg_commit_fire']: tally['cfg_apply'] += 1
+        if o['cfg_reject']:      tally['cfg_refuse'] += 1
+        if o['cfg_reject'] and o['cfg_reason']==3: tally['cfg_unrep'] += 1
         if any(o['pool_full']): tally['pool_full'] += 1
         if consume_valid and not o['consume_ready'] and N > 1 and \
            sum(1 for q in range(N) if consume_amount[q] > o['available'][q]) == 1:
@@ -92,7 +98,7 @@ def gen_one(N, COUNT_W, AMT_W, RESET_MAX, tally):
 def main():
     tot = 0
     tally = dict(consume_fire=0, consume_blocked=0, return_ok=0, return_illegal=0,
-                 cfg_apply=0, cfg_refuse=0, pool_full=0, one_pool_blocks=0, simultaneous=0)
+                 cfg_apply=0, cfg_refuse=0, cfg_unrep=0, pool_full=0, one_pool_blocks=0, simultaneous=0)
     for (N, C, A, R) in CONFIGS:
         m, lines = gen_one(N, C, A, R, tally)
         path = os.path.join(OUT, f"credit_{N}p_{C}c_{A}a.vec")

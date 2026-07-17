@@ -15,7 +15,7 @@ source "$ENV"
 echo "using $(yosys --version 2>/dev/null | head -1); $(sby --help 2>&1 | head -1 | sed 's/usage:.*//')sby present"
 
 fail=0
-for job in decode config tracker; do
+for job in decode config tracker credit; do
   rm -rf "formal/${job}_bmc" "formal/${job}_prove" "formal/${job}_cover"
   sby -f "formal/${job}.sby" > "$RAW/formal_${job}.log" 2>&1
   bmc=$(grep -c "\[formal/${job}_bmc\] DONE (PASS" "$RAW/formal_${job}.log")
@@ -33,6 +33,12 @@ sby -f formal/tracker_matrix.sby > "$RAW/formal_tracker_matrix.log" 2>&1
 mtot=$(grep -c "DONE (" "$RAW/formal_tracker_matrix.log"); mpass=$(grep -c "DONE (PASS" "$RAW/formal_tracker_matrix.log")
 echo "   tracker matrix: $mpass/$mtot tasks PASS"
 [ "$mpass" = "$mtot" ] && [ "$mtot" -gt 0 ] || fail=1
+echo "-- credit formal parameter instances (5 tuples, each prove+cover = 10 tasks) --"
+for d in formal/credit_matrix_*; do rm -rf "$d"; done
+sby -f formal/credit_matrix.sby > "$RAW/formal_credit_matrix.log" 2>&1
+cmtot=$(grep -c "DONE (" "$RAW/formal_credit_matrix.log"); cmpass=$(grep -c "DONE (PASS" "$RAW/formal_credit_matrix.log")
+echo "   credit matrix: $cmpass/$cmtot tasks PASS"
+[ "$cmpass" = "$cmtot" ] && [ "$cmtot" -gt 0 ] || fail=1
 echo "-- non-vacuity: proofs must fail when protections are broken --"
 bash scripts/run_formal_mutation.sh > "$RAW/formal_mutation.log" 2>&1
 grep -E "killed=|SURVIVED" "$RAW/formal_mutation.log" | sed 's/^/   /'

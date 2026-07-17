@@ -35,6 +35,7 @@ lint:
 regression:
 	@bash scripts/run_hdm_regression.sh
 	@bash scripts/run_tracker_sweep.sh
+	@bash scripts/run_credit_sweep.sh
 
 mutation:
 	@bash scripts/run_mutation_tests.sh
