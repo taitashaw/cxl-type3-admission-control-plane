@@ -23,3 +23,6 @@ formal/config/
 tb/vectors/*.vec
 evidence/raw/
 tb/vectors/tracker_*.vec
+formal/*_cover/
+formal/*_bmc/
+formal/*_prove/
