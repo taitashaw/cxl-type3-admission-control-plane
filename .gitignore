@@ -33,3 +33,4 @@ formal/credit_bmc/
 formal/credit_prove/
 formal/credit_cover/
 tb/vectors/credit_*.vec
+formal/*/
