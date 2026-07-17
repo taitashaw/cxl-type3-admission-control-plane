@@ -62,9 +62,14 @@ module outstanding_tracker #(
   output logic [META_W-1:0]    retired_meta,
 
   // ---- reclaim (recovery: frees an already-quarantined slot) ----
+  // Carries the FULL composite tag: a slot-only reclaim could free a newer
+  // occupant if the requester used stale state. reclaim_class is the observable
+  // result. Reclaim is single-cycle and always accepted (implicit ready=1), so
+  // no backpressure channel is required; the result appears combinationally.
   input  logic                 reclaim_req,
-  input  logic [SLOT_W-1:0]    reclaim_slot,
-  output logic                 reclaim_done,
+  input  logic [TAG_W-1:0]     reclaim_tag,     // {gen, slot}
+  output logic                 reclaim_done,    // == (reclaim_req && class==RCL_OK)
+  output logic [2:0]           reclaim_class,   // see RCL_* below
 
   // ---- status / counters ----
   output logic [OCC_W-1:0]     occupancy,
@@ -84,6 +89,9 @@ module outstanding_tracker #(
   output logic [2:0]           err_first_class
 );
   localparam logic [2:0] RC_VALID=0, RC_INVALID_SLOT=1, RC_NON_LIVE=2, RC_STALE_GEN=3;
+  // reclaim result classes
+  localparam logic [2:0] RCL_OK=0, RCL_INVALID_SLOT=1, RCL_NOT_LIVE=2,
+                         RCL_NOT_QUARANTINED=3, RCL_STALE_GEN=4, RCL_SUPERSEDED=5;
 
   // saturating helpers (funcname= style; no return/ternary -> portable to Yosys)
   function automatic logic [CNT_W-1:0] sat_add1(input logic [CNT_W-1:0] c);
@@ -141,17 +149,36 @@ module outstanding_tracker #(
   assign retired_meta  = (resp_valid && r_slot_ok) ? meta[r_slot]  : '0;
 
   // ---- timeout threshold contract ------------------------------------------
-  logic timeout_enabled, thresh_in_range, timeout_active, thresh_bad;
-  assign timeout_enabled = (timeout_thresh != '0);
-  assign thresh_in_range = (timeout_thresh < (TS_W'(1) << (TS_W-1)));  // < 2^(TS_W-1)
-  assign timeout_active  = timeout_enabled && thresh_in_range;
-  assign thresh_bad      = timeout_enabled && !thresh_in_range;
+  // A legal threshold is 0 (disabled) or 0 < t < 2^(TS_W-1). An ILLEGAL value is
+  // REJECTED (not latched, active_thresh unchanged) and flags timeout_cfg_bad —
+  // it is not silently reinterpreted as "disabled". The threshold is only
+  // latched while the tracker is EMPTY (occupancy==0), so an administrative
+  // write can never instantly time out already-live traffic. Live entries
+  // therefore always age against the threshold in force when they were issued.
+  logic [TS_W-1:0] active_thresh;
+  logic thresh_legal_in, timeout_active;
+  assign thresh_legal_in = (timeout_thresh == '0) || (timeout_thresh < (TS_W'(1) << (TS_W-1)));
+  assign timeout_active  = (active_thresh != '0);
 
-  // ---- reclaim: only an already-quarantined live slot; response wins -------
-  assign reclaim_done = reclaim_req
-                     && ({{(32-SLOT_W){1'b0}}, reclaim_slot} < DEPTH)
-                     && live[reclaim_slot] && timed_out[reclaim_slot]
-                     && !(resp_retire && r_slot == reclaim_slot);
+  // ---- reclaim: composite-tag checked; only an already-quarantined slot -----
+  logic [SLOT_W-1:0] rc_slot;
+  logic [GEN_W-1:0]  rc_gen;
+  logic              rc_slot_ok;
+  assign rc_slot    = reclaim_tag[SLOT_W-1:0];
+  assign rc_gen     = reclaim_tag[TAG_W-1:SLOT_W];
+  assign rc_slot_ok = ({{(32-SLOT_W){1'b0}}, rc_slot} < DEPTH);
+  always_comb begin
+    reclaim_class = RCL_OK;
+    if (reclaim_req) begin
+      if (!rc_slot_ok)                                 reclaim_class = RCL_INVALID_SLOT;
+      else if (!live[rc_slot])                         reclaim_class = RCL_NOT_LIVE;
+      else if (rc_gen != gen[rc_slot])                 reclaim_class = RCL_STALE_GEN;
+      else if (!timed_out[rc_slot])                    reclaim_class = RCL_NOT_QUARANTINED;
+      else if (resp_retire && (r_slot == rc_slot))     reclaim_class = RCL_SUPERSEDED; // response wins
+      else                                             reclaim_class = RCL_OK;
+    end
+  end
+  assign reclaim_done = reclaim_req && (reclaim_class == RCL_OK);
 
   // ---- timeout marking with event priority ---------------------------------
   logic [DEPTH-1:0] new_timeout;
@@ -163,9 +190,9 @@ module outstanding_tracker #(
       // new timeout only if: live, not already timed_out, age expired, timeouts
       // active, and NOT being validly retired or reclaimed this cycle.
       assign new_timeout[gt] = live[gt] && !timed_out[gt] && timeout_active
-                            && (age >= timeout_thresh)
-                            && !(resp_retire  && r_slot == gt[SLOT_W-1:0])
-                            && !(reclaim_done && reclaim_slot == gt[SLOT_W-1:0]);
+                            && (age >= active_thresh)
+                            && !(resp_retire  && r_slot  == gt[SLOT_W-1:0])
+                            && !(reclaim_done && rc_slot == gt[SLOT_W-1:0]);
     end
   endgenerate
   logic [OCC_W-1:0] n_new_timeout;
@@ -203,9 +230,12 @@ module outstanding_tracker #(
       occupancy<='0; high_watermark<='0;
       alloc_count<='0; retire_count<='0; full_count<='0; timeout_count<='0; reclaim_count<='0;
       invalid_slot_count<='0; non_live_count<='0; stale_gen_count<='0;
-      err_sticky<=1'b0; err_first_class<=RC_VALID; timeout_cfg_bad<=1'b0;
+      err_sticky<=1'b0; err_first_class<=RC_VALID; timeout_cfg_bad<=1'b0; active_thresh<='0;
     end else begin
-      if (thresh_bad) timeout_cfg_bad <= 1'b1;
+      // threshold: reject illegal values (flag, do not latch); latch a legal
+      // value only while the tracker is EMPTY so live traffic is never affected.
+      if (!thresh_legal_in) timeout_cfg_bad <= 1'b1;
+      else if (occupancy == '0) active_thresh <= timeout_thresh;
 
       // timeout marking (sticky) + aggregate saturating counter
       for (i = 0; i < DEPTH; i++) if (new_timeout[i]) timed_out[i] <= 1'b1;
@@ -231,9 +261,9 @@ module outstanding_tracker #(
 
       // reclaim (recovery) — frees a quarantined slot (response already excluded)
       if (do_reclaim) begin
-        live[reclaim_slot]      <= 1'b0;
-        timed_out[reclaim_slot] <= 1'b0;
-        reclaim_count           <= sat_add1(reclaim_count);
+        live[rc_slot]      <= 1'b0;
+        timed_out[rc_slot] <= 1'b0;
+        reclaim_count      <= sat_add1(reclaim_count);
       end
 
       // allocation (free_slot distinct from any same-cycle retiring/reclaimed slot)
@@ -283,9 +313,9 @@ module outstanding_tracker #(
       assert (full == (occupancy == OCC_W'(DEPTH)));
       if (!f_alloc0) assert (epoch[0] == f_pep0);
       // reclaim only frees an already-quarantined slot (recovery contract)
-      if (reclaim_done) assert (live[reclaim_slot] && timed_out[reclaim_slot]);
+      if (reclaim_done) assert (live[rc_slot] && timed_out[rc_slot] && (rc_gen == gen[rc_slot]));
       // a valid response and a reclaim never target the same slot (response wins)
-      if (resp_retire && reclaim_done) assert (r_slot != reclaim_slot);
+      if (resp_retire && reclaim_done) assert (r_slot != rc_slot);
       // timeout_count advances by exactly the number of newly-timed-out slots,
       // with SATURATION — mirror the RTL's saturating add exactly (inductive).
       assert (timeout_count == sat_addn(f_ptmo, f_pn_new));

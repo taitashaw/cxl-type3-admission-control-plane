@@ -85,15 +85,15 @@ mutate "tracker generation bump" rtl/core/outstanding_tracker.sv \
   tb_outstanding_tracker "$OT" "$OVEC" "$OTDEF"
 # M10 recovery contract broken: reclaim frees a NON-quarantined live slot
 mutate "tracker reclaim needs quarantine" rtl/core/outstanding_tracker.sv \
-  "s/&& live\[reclaim_slot\] && timed_out\[reclaim_slot\]/\&\& live[reclaim_slot]/" \
+  "s/else if (!timed_out\[rc_slot\])                    reclaim_class = RCL_NOT_QUARANTINED;/else if (1'b0)                                  reclaim_class = RCL_NOT_QUARANTINED;/" \
   tb_outstanding_tracker "$OT" "$OVEC" "$OTDEF"
 # M11 event priority broken: a validly-retiring slot still gets timeout-marked
 mutate "tracker timeout-vs-retire priority" rtl/core/outstanding_tracker.sv \
-  "s/&& !(resp_retire  && r_slot == gt\[SLOT_W-1:0\])/\&\& 1'b1/" \
+  "s/&& !(resp_retire  && r_slot  == gt\[SLOT_W-1:0\])/\&\& 1'b1/" \
   tb_outstanding_tracker "$OT" "$OVEC" "$OTDEF"
 # M12 threshold contract broken: out-of-range threshold still enables timeouts
-mutate "tracker threshold range contract" rtl/core/outstanding_tracker.sv \
-  "s/assign timeout_active  = timeout_enabled && thresh_in_range;/assign timeout_active  = timeout_enabled;/" \
+mutate "tracker thresh latch-when-empty" rtl/core/outstanding_tracker.sv \
+  "s/else if (occupancy == '0) active_thresh <= timeout_thresh;/else active_thresh <= timeout_thresh;/" \
   tb_outstanding_tracker "$OT" "$OVEC" "$OTDEF"
 
 echo "=================================================="

@@ -32,7 +32,7 @@ THRESH = 24     # < 2^(TS_W-1)=128
 def hx(v): return format(int(v) & ((1<<256)-1), "x")
 
 OUTFIELDS = ["alloc_gnt","alloc_tag","alloc_slot","full","resp_retire","resp_class",
-             "retired_epoch","retired_op","retired_meta","reclaim_done","occupancy",
+             "retired_epoch","retired_op","retired_meta","reclaim_done","reclaim_class","occupancy",
              "high_watermark","quarantined_count","timeout_any","timeout_cfg_bad",
              "alloc_count","retire_count","full_count","timeout_count","reclaim_count",
              "invalid_slot_count","non_live_count","stale_gen_count",
@@ -73,18 +73,27 @@ def gen_one(DEPTH, GEN_W):
                 resp_tag = (random.randint(0,(1<<GEN_W)-1) << m.SLOT_W) | bad_slot  # maybe invalid slot
 
         reclaim_req = 1 if random.random() < 0.15 else 0
-        reclaim_slot = random.randint(0, (1<<m.SLOT_W)-1)
+        # composite reclaim tag: often a real granted tag (hits OK / NOT_QUARANTINED),
+        # sometimes gen-corrupted (STALE_GEN) or random (NOT_LIVE / INVALID_SLOT)
+        rr = random.random()
+        if granted and rr < 0.55:
+            reclaim_tag = random.choice(granted)[0]
+        elif granted and rr < 0.7:
+            t, _sl = random.choice(granted)
+            reclaim_tag = t ^ (random.randint(1,(1<<GEN_W)-1) << m.SLOT_W)
+        else:
+            reclaim_tag = random.randint(0, (1<<m.TAG_W)-1)
 
         inp = dict(current_ts=ts, timeout_thresh=thr, alloc_req=alloc_req,
                    alloc_epoch=alloc_epoch, alloc_op=alloc_op, alloc_meta=alloc_meta,
                    resp_valid=resp_valid, resp_tag=resp_tag,
-                   reclaim_req=reclaim_req, reclaim_slot=reclaim_slot)
+                   reclaim_req=reclaim_req, reclaim_tag=reclaim_tag)
         o = m.outputs(inp)
         if o["alloc_gnt"]:
             granted.append((o["alloc_tag"], o["alloc_slot"]))
             if len(granted) > 64: granted.pop(0)
         toks = [hx(ts),hx(thr),hx(alloc_req),hx(alloc_epoch),hx(alloc_op),hx(alloc_meta),
-                hx(resp_valid),hx(resp_tag),hx(reclaim_req),hx(reclaim_slot)]
+                hx(resp_valid),hx(resp_tag),hx(reclaim_req),hx(reclaim_tag)]
         toks += [hx(o[f]) for f in OUTFIELDS]
         lines.append(" ".join(toks))
         m.step(inp)

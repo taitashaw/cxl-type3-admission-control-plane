@@ -59,12 +59,17 @@ This is formalized (asserted), not left to statement ordering. Occupancy delta �
 {+1, 0, −1, −2}. Retiring metadata is read before any write to that slot.
 
 ## Timeout contract (hard)
-- `timeout_thresh == 0` ⇒ **disabled** (no timeouts).
-- otherwise require `0 < timeout_thresh < 2^(TS_W−1)` so modulo age is
-  unambiguous. A **nonzero out-of-range** threshold is treated as **disabled**
-  and raises sticky **`timeout_cfg_bad`**.
-- `age = (current_ts − issue_ts) mod 2^TS_W`. Threshold changes apply to
-  already-live entries **using their original `issue_ts`**.
+- A **legal** threshold is `0` (⇒ timeouts **disabled**) or `0 < t < 2^(TS_W−1)`
+  (so modulo age is unambiguous).
+- An **illegal** (nonzero, out-of-range) threshold is **REJECTED at the boundary**:
+  it is *not latched*, `active_thresh` keeps its previous legal value, and sticky
+  **`timeout_cfg_bad`** is raised. It is **not** silently reinterpreted as
+  "disabled" (which could freeze the tracker indefinitely).
+- **Mutability contract: the threshold is latched ONLY while the tracker is EMPTY**
+  (`occupancy == 0`). An administrative write can therefore never instantly time
+  out already-live traffic, and no per-entry threshold storage is needed. Live
+  entries always age against the threshold in force when they were issued.
+- `age = (current_ts − issue_ts) mod 2^TS_W`, using the entry's original `issue_ts`.
 - A timed-out entry is **quarantined**: flagged, counted, and **kept live** — its
   slot is never silently freed, so a late response cannot alias a new
   transaction. Timestamp wrap during quarantine does not free the entry.
@@ -74,25 +79,59 @@ This is formalized (asserted), not left to statement ordering. Occupancy delta �
 `reclaim` is the recovery authority for quarantined entries:
 - `reclaim_done` requires `live && timed_out` (already quarantined **before**
   this cycle) and no same-cycle valid response to that slot.
-- A reclaimed slot is freed; the **next allocation bumps its generation**, so any
+- Reclaim carries the **full composite tag** `reclaim_tag = {generation, slot}` —
+  a slot-only reclaim could free a *newer* occupant if the requester acted on
+  stale state. Reclaim succeeds only when
+  `slot < DEPTH && live[slot] && timed_out[slot] && generation[slot] == reclaim_generation`.
+- Observable result `reclaim_class`:
+
+  | class | meaning |
+  |---|---|
+  | `RCL_OK` | slot freed (`reclaim_done`) |
+  | `RCL_INVALID_SLOT` | slot ≥ DEPTH |
+  | `RCL_NOT_LIVE` | slot not live |
+  | `RCL_STALE_GEN` | generation mismatch (requester used stale state) |
+  | `RCL_NOT_QUARANTINED` | live+matching but not timed out — reclaim refused |
+  | `RCL_SUPERSEDED` | a valid response retired the slot this cycle (response wins) |
+
+  Reclaim is single-cycle and always accepted (implicit `ready=1`), so no
+  backpressure channel is needed; the result is combinational.
+- A reclaimed slot is freed; the **next allocation bumps its generation**, so a
   later response to the old transaction is `NON_LIVE` (before realloc) or
-  `STALE_GEN` (after) — **never** able to retire a new transaction.
-- Reclaim does **not** require the composite tag (it is a slot-level recovery op);
-  authority is whoever drives `reclaim_req` (software/recovery FSM). Reset is the
-  bulk alternative: it invalidates every live entry.
+  `STALE_GEN` (after). **Qualification:** a late response after reclaim cannot
+  retire a new transaction **unless that slot's generation field has wrapped**;
+  production safety therefore requires a generation width and a bounded response
+  lifetime that prevent such aliasing (see *Generation-wrap bound* below).
+- Authority is whoever drives `reclaim_req` (software / recovery FSM). Reset is
+  the bulk alternative: it invalidates every live entry.
 - `quarantined_count` (current live+timed_out) and `reclaim_count` are exposed so
   a system can detect and bound quarantine accumulation.
+
+## Per-slot vs global priority (explicit)
+The priority order is **per slot**, not global. Independent operations on
+*different* slots proceed in the same cycle:
+- **Global**: only `reset` (clears everything).
+- **Per-slot**: response > reclaim > timeout-marking > allocation, applied to
+  that slot's state only.
+- **Independent**: a valid response retiring slot *i* never suppresses an
+  allocation into a different free slot *j* (`alloc_gnt` depends only on
+  `alloc_req && have_free && !full`). Because allocation targets a *free* slot and
+  a response targets a *live* slot, they are necessarily different slots — the
+  `alloc_gnt && resp_retire` cover (DEPTH>1) demonstrates this concurrency.
+- **Aggregate**: occupancy/counter deltas are computed *after* all per-slot
+  decisions (`occ_next = occ + alloc − retire − reclaim`).
 
 ## Counters / status
 occupancy, high-watermark, **quarantined_count**, alloc/retire/full/timeout/
 **reclaim**/invalid-slot/non-live/stale-generation counts (**saturating**),
 `timeout_any`, `timeout_cfg_bad`, sticky first-error class.
 
-## Formal parameter matrix (exact instances proved)
+## Formal parameter instances (exact tuples proved)
 
 One `.sby` instance does **not** prove all parameter values. Safety properties
-were **formally verified for the documented parameter instances** below
-(`formal/tracker_matrix.sby`, each run as `prove`/induction **and** `cover`):
+were **formally verified for the documented parameter instances** below —
+**five selected tuples, each run as `prove`/induction and `cover` = 10 tasks**.
+This is a *selected set*, **not** a Cartesian product of the listed values:
 
 | instance | DEPTH | GEN_W | TS_W | rationale |
 |---|---|---|---|---|
@@ -127,9 +166,20 @@ aggregate is broken.
   slot is reallocated), **not** a distinct `DUPLICATE`. A distinct duplicate
   class would require bounded retired-tag history. No duplicate-detection claim
   is made.
-- **Generation-wrap bound:** stale detection holds provided fewer than `2^GEN_W`
+- **Generation-wrap bound:** stale detection — and the "a late response cannot
+  retire a new transaction" guarantee — hold **only while fewer than `2^GEN_W`
   reallocations of a given slot occur while a stale response for it is still in
-  flight. Size `GEN_W` accordingly.
+  flight**. Beyond that the generation aliases and an old response could match a
+  new occupant. Production configuration should therefore use **`GEN_W = 16`**
+  unless interface width forbids it, together with a bounded response lifetime
+  (timeout + quarantine) that makes wrap-around aliasing impossible.
+  The formal instances deliberately use tiny `GEN_W` (1–2) to *exercise* wrap;
+  they do not imply small `GEN_W` is safe in production.
+- **Vendor-adapter caveat:** the project-owned interface returns the full
+  `{generation, slot}` tag. If a vendor IP boundary returns fewer tag bits, the
+  adapter must either preserve the generation in an internal mapping table, or
+  enforce a quarantine/reuse policy that guarantees old responses cannot alias.
+  The tracker alone cannot fix a boundary that discards generation information.
 - **Liveness (not proved):** eventual retirement is a liveness property requiring
   environmental assumptions about response delivery; only **safety** is proved
   here. A response that never arrives leaves the slot occupied until `reclaim` or

@@ -1,7 +1,7 @@
 {
-  "git_commit": "04ae7d1cd98c8c7b8acb84090ce19ea456e25b40",
+  "git_commit": "2cc565ac4f674211ba249bcd09c2d1fbd073dac3",
   "git_dirty": true,
-  "utc": "2026-07-17T06:06:26Z",
+  "utc": "2026-07-17T06:54:10Z",
   "kind": "formal",
   "engine": "smtbmc/yices",
   "modes": [
@@ -18,7 +18,7 @@
       "cover": "PASS",
       "raw": {
         "path": "evidence/raw/formal_decode.log",
-        "sha256": "4a26dc0ecda6bde2fd20fc92c6b94f6827e7f3f044d5d79a56e62cfdb58a1d57"
+        "sha256": "450ae0fac6e200870ec259903f25832fa34e77d666311d4c86e3fb69a8d23c3b"
       }
     },
     {
@@ -28,7 +28,7 @@
       "cover": "PASS",
       "raw": {
         "path": "evidence/raw/formal_config.log",
-        "sha256": "2f61f86914904ac6f18594c193dc61286e4db7ff1408a35aeb03562e061f70c1"
+        "sha256": "592ee720d1f4f73527a6168ad824b62d77be09f1349491fe72bbb14555c98c41"
       }
     },
     {
@@ -38,7 +38,7 @@
       "cover": "PASS",
       "raw": {
         "path": "evidence/raw/formal_tracker.log",
-        "sha256": "d032950795e4f76910b3202525e0c68f4418b4607868bb67f23ea1d995cefb53"
+        "sha256": "3a80fb4a3446bdb1c7d03b77ee2c0b61212ec67db2676d5318452346a30303d6"
       }
     }
   ],

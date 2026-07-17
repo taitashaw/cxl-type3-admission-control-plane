@@ -33,7 +33,8 @@ module formal_tracker #(
   logic [OP_W-1:0]    retired_op;
   logic [META_W-1:0]  retired_meta;
   logic               reclaim_req, reclaim_done;
-  logic [SLOT_W-1:0]  reclaim_slot;
+  logic [TAG_W-1:0]   reclaim_tag;
+  logic [2:0]         reclaim_class;
   logic [OCC_W-1:0]   occupancy, high_watermark, quarantined_count;
   logic               timeout_any, timeout_cfg_bad, err_sticky;
   logic [2:0]         err_first_class;
