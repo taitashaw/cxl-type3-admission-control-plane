@@ -15,7 +15,9 @@ OUT=evidence/manifest.json
     [ $first -eq 0 ] && echo ","
     first=0
     printf '    {"path": "%s", "sha256": "%s"}' "$f" "$h"
-  done < <(find rtl tb/models tb/sv formal scripts docs -type f \( -name '*.sv' -o -name '*.py' -o -name '*.sh' -o -name '*.sby' -o -name '*.md' \) | sort)
+  done < <(find rtl tb/models tb/sv formal scripts docs \
+             -path '*_bmc/*' -prune -o -path '*_prove/*' -prune -o -path '*_cover/*' -prune -o \
+             -type f \( -name '*.sv' -o -name '*.py' -o -name '*.sh' -o -name '*.sby' -o -name '*.md' \) -print | sort)
   echo ""
   echo "  ]"
   echo "}"
