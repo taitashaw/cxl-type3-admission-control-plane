@@ -87,7 +87,7 @@ def gen_one(N, COUNT_W, AMT_W, RESET_MAX, DIAG_W, tally):
            sum(1 for q in range(N) if consume_amount[q] > o['available'][q]) == 1:
             tally['one_pool_blocks'] += 1
         if o['consume_fire'] and o['return_accepted']: tally['simultaneous'] += 1
-        if o['consume_ok_count'] == (1<<DIAG_W)-1: tally['diag_saturated'] += 1
+        if o['consume_ok_count'] == (1<<DIAG_W)-1: tally['diag_saturated_state_obs'] += 1
         toks = [hx(consume_valid)] + [hx(x) for x in consume_amount] \
              + [hx(return_valid)]  + [hx(x) for x in return_amount] \
              + [hx(x) for x in committed_max] \
@@ -101,7 +101,7 @@ def gen_one(N, COUNT_W, AMT_W, RESET_MAX, DIAG_W, tally):
 def main():
     tot = 0
     tally = dict(consume_fire=0, consume_blocked=0, return_ok=0, return_illegal=0,
-                 cfg_apply=0, cfg_refuse=0, cfg_unrep=0, pool_full=0, one_pool_blocks=0, simultaneous=0, diag_saturated=0)
+                 cfg_apply=0, cfg_refuse=0, cfg_unrep=0, pool_full=0, one_pool_blocks=0, simultaneous=0, diag_saturated_state_obs=0)
     for (N, C, A, R, D) in CONFIGS:
         m, lines = gen_one(N, C, A, R, D, tally)
         path = os.path.join(OUT, f"credit_{N}p_{C}c_{A}a_{D}d.vec")
