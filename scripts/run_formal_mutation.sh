@@ -58,6 +58,9 @@ fmut "credit: net delta" formal/credit.sby rtl/core/credit_manager.sv \
 fmut "credit: cfg blocks consume" formal/credit.sby rtl/core/credit_manager.sv \
   "s/assign consume_fire    = rst_n \&\& consume_valid \&\& consume_legal \&\& !cfg_commit_fire;/assign consume_fire    = rst_n \&\& consume_valid \&\& consume_legal;/" bmc
 
+# credit: saturation -> wrap breaks the no-wrap (monotone) diagnostic assert
+fmut "credit: diag saturation" formal/credit.sby rtl/core/credit_manager.sv \
+  "s/if (&c) sat1 = c;/if (1'b0) sat1 = c;/" bmc
 echo "=================================================="
 echo "formal mutations killed=$kills survived=$survivors"
 [ $survivors -eq 0 ] && { echo "FORMAL MUTATION: PASS (proofs are non-vacuous)"; exit 0; } || { echo "FORMAL MUTATION: FAIL"; exit 1; }

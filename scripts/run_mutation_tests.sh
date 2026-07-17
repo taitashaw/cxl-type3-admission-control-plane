@@ -133,6 +133,11 @@ mutate "credit representability" rtl/core/credit_manager.sv \
   "s/assign cfg_representable = ~(|cmax_unrep);/assign cfg_representable = 1'b1;/" \
   tb_credit_manager "$CM" "$CMVEC" "$CMDEF"
 
+# saturation replaced by wraparound -> caught by the DIAG_W=3 config (counter wraps at max)
+mutate "credit diag saturation" rtl/core/credit_manager.sv \
+  "s/if (&c) sat1 = c;/if (1'b0) sat1 = c;/" \
+  tb_credit_manager "$CM" "tb/vectors/credit_2p_4c_2a_3d.vec" "-DNPOOLS=2 -DCOUNTW=4 -DAMTW=2 -DRESETMAX=3 -DDIAGW=3"
+
 echo "=================================================="
 echo "mutations killed=$kills survived=$survivors"
 [ $survivors -eq 0 ] && { echo "MUTATION TESTS: PASS (all protections observable)"; exit 0; } || { echo "MUTATION TESTS: FAIL"; exit 1; }

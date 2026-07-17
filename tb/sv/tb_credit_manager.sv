@@ -25,12 +25,16 @@
 `ifndef RESETMAX
  `define RESETMAX 3
 `endif
+`ifndef DIAGW
+ `define DIAGW 32
+`endif
 
 module tb_credit_manager;
   localparam int unsigned N_POOLS   = `NPOOLS;
   localparam int unsigned COUNT_W   = `COUNTW;
   localparam int unsigned AMT_W     = `AMTW;
   localparam int unsigned RESET_MAX = `RESETMAX;
+  localparam int unsigned DIAG_W    = `DIAGW;
   localparam int unsigned PIDX_W    = (N_POOLS <= 1) ? 1 : $clog2(N_POOLS);
   localparam int unsigned MREQ_W    = COUNT_W + 1;
   localparam int unsigned AFLAT     = N_POOLS*AMT_W;
@@ -51,11 +55,11 @@ module tb_credit_manager;
   logic [2:0]          first_err_type;
   logic [PIDX_W-1:0]   first_err_pool;
   logic [AMT_W-1:0]    first_err_amount;
-  logic [31:0]         consume_ok_count, consume_blocked_count, return_ok_count,
+  logic [DIAG_W-1:0]   consume_ok_count, consume_blocked_count, return_ok_count,
                        return_illegal_count, cfg_reject_count;
 
   credit_manager #(.N_POOLS(N_POOLS), .COUNT_W(COUNT_W), .AMT_W(AMT_W),
-                   .RESET_MAX(RESET_MAX)) dut (.*);
+                   .RESET_MAX(RESET_MAX), .DIAG_W(DIAG_W)) dut (.*);
 
   // read-only slice views
   function automatic logic [COUNT_W-1:0] cs(input logic [CFLAT-1:0] v, input int p);
@@ -63,7 +67,7 @@ module tb_credit_manager;
   endfunction
 
   integer fd, rc, count, i, p, errors, checks;
-  integer f_n, f_c, f_a, f_r;
+  integer f_n, f_c, f_a, f_r, f_d;
   string  vecfile;
   logic [63:0] t;
   logic [AFLAT-1:0] a1, a2;
@@ -122,9 +126,9 @@ module tb_credit_manager;
     if (!$value$plusargs("VEC=%s", vecfile)) begin $display("TB_RESULT: FAIL (no +VEC)"); $finish; end
     fd = $fopen(vecfile,"r");
     if (fd==0) begin $display("TB_RESULT: FAIL (open)"); $finish; end
-    rc = $fscanf(fd,"%d %d %d %d %d", f_n,f_c,f_a,f_r,count);
-    if (f_n!=N_POOLS||f_c!=COUNT_W||f_a!=AMT_W||f_r!=RESET_MAX) begin
-      $display("TB_RESULT: FAIL (param mismatch %0d/%0d/%0d/%0d)",f_n,f_c,f_a,f_r); $finish; end
+    rc = $fscanf(fd,"%d %d %d %d %d %d", f_n,f_c,f_a,f_r,f_d,count);
+    if (f_n!=N_POOLS||f_c!=COUNT_W||f_a!=AMT_W||f_r!=RESET_MAX||f_d!=DIAG_W) begin
+      $display("TB_RESULT: FAIL (param mismatch %0d/%0d/%0d/%0d/%0d)",f_n,f_c,f_a,f_r,f_d); $finish; end
     errors=0; checks=0;
     $display("=== tb_credit_manager N_POOLS=%0d COUNT_W=%0d AMT_W=%0d RESET_MAX=%0d cycles=%0d ===",
              N_POOLS, COUNT_W, AMT_W, RESET_MAX, count);
@@ -164,11 +168,11 @@ module tb_credit_manager;
       rc=$fscanf(fd,"%h",t); chk("first_err_type",0,first_err_type,t,3);
       rc=$fscanf(fd,"%h",t); chk("first_err_pool",0,first_err_pool,t,PIDX_W);
       rc=$fscanf(fd,"%h",t); chk("first_err_amount",0,first_err_amount,t,AMT_W);
-      rc=$fscanf(fd,"%h",t); chk("consume_ok_count",0,consume_ok_count,t,32);
-      rc=$fscanf(fd,"%h",t); chk("consume_blk_count",0,consume_blocked_count,t,32);
-      rc=$fscanf(fd,"%h",t); chk("return_ok_count",0,return_ok_count,t,32);
-      rc=$fscanf(fd,"%h",t); chk("return_ill_count",0,return_illegal_count,t,32);
-      rc=$fscanf(fd,"%h",t); chk("cfg_reject_count",0,cfg_reject_count,t,32);
+      rc=$fscanf(fd,"%h",t); chk("consume_ok_count",0,consume_ok_count,t,DIAG_W);
+      rc=$fscanf(fd,"%h",t); chk("consume_blk_count",0,consume_blocked_count,t,DIAG_W);
+      rc=$fscanf(fd,"%h",t); chk("return_ok_count",0,return_ok_count,t,DIAG_W);
+      rc=$fscanf(fd,"%h",t); chk("return_ill_count",0,return_illegal_count,t,DIAG_W);
+      rc=$fscanf(fd,"%h",t); chk("cfg_reject_count",0,cfg_reject_count,t,DIAG_W);
       for (p=0;p<N_POOLS;p++) begin
         if (cs(used,p) > cs(configured_max,p)) begin errors++; $display("   [FAIL] cyc %0d INVARIANT used>max pool %0d",i,p); end
         if (cs(available,p) !== (cs(configured_max,p)-cs(used,p))) begin errors++; $display("   [FAIL] cyc %0d INVARIANT avail!=max-used pool %0d",i,p); end

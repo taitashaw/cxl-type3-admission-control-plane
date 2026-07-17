@@ -18,7 +18,9 @@ OUT = os.path.join(os.path.dirname(__file__), "..", "vectors")
 os.makedirs(OUT, exist_ok=True)
 
 # (N_POOLS, COUNT_W, AMT_W, RESET_MAX) -- maxima incl. 1,2,3,7 and pow2 boundaries
-CONFIGS = [(1, 4, 2, 1), (2, 4, 2, 3), (3, 5, 3, 7), (2, 6, 3, 8), (1, 3, 2, 2)]
+# (N_POOLS, COUNT_W, AMT_W, RESET_MAX, DIAG_W). Last entry uses DIAG_W=3 so the
+# saturating diagnostic counters actually reach maximum in simulation.
+CONFIGS = [(1,4,2,1,32),(2,4,2,3,32),(3,5,3,7,32),(2,6,3,8,32),(1,3,2,2,32),(2,4,2,3,3)]
 N_CYCLES = 4000
 
 def hx(v): return format(int(v) & ((1 << 256) - 1), "x")
@@ -30,8 +32,8 @@ OUTF_SCALAR = ["consume_ready","consume_fire","return_accepted",
                "return_illegal_count","cfg_reject_count"]
 OUTF_VEC    = ["used","available","configured_max","hwm_used","pool_full","pool_empty"]
 
-def gen_one(N, COUNT_W, AMT_W, RESET_MAX, tally):
-    m = Credit(N, COUNT_W, AMT_W, RESET_MAX)
+def gen_one(N, COUNT_W, AMT_W, RESET_MAX, DIAG_W, tally):
+    m = Credit(N, COUNT_W, AMT_W, RESET_MAX, DIAG_W)
     amax = (1 << AMT_W) - 1
     cmax_lim = (1 << COUNT_W) - 1
     mreq_max = (1 << (COUNT_W + 1)) - 1     # requested-max field is COUNT_W+1 bits
@@ -85,6 +87,7 @@ def gen_one(N, COUNT_W, AMT_W, RESET_MAX, tally):
            sum(1 for q in range(N) if consume_amount[q] > o['available'][q]) == 1:
             tally['one_pool_blocks'] += 1
         if o['consume_fire'] and o['return_accepted']: tally['simultaneous'] += 1
+        if o['consume_ok_count'] == (1<<DIAG_W)-1: tally['diag_saturated'] += 1
         toks = [hx(consume_valid)] + [hx(x) for x in consume_amount] \
              + [hx(return_valid)]  + [hx(x) for x in return_amount] \
              + [hx(x) for x in committed_max] \
@@ -98,12 +101,12 @@ def gen_one(N, COUNT_W, AMT_W, RESET_MAX, tally):
 def main():
     tot = 0
     tally = dict(consume_fire=0, consume_blocked=0, return_ok=0, return_illegal=0,
-                 cfg_apply=0, cfg_refuse=0, cfg_unrep=0, pool_full=0, one_pool_blocks=0, simultaneous=0)
-    for (N, C, A, R) in CONFIGS:
-        m, lines = gen_one(N, C, A, R, tally)
-        path = os.path.join(OUT, f"credit_{N}p_{C}c_{A}a.vec")
+                 cfg_apply=0, cfg_refuse=0, cfg_unrep=0, pool_full=0, one_pool_blocks=0, simultaneous=0, diag_saturated=0)
+    for (N, C, A, R, D) in CONFIGS:
+        m, lines = gen_one(N, C, A, R, D, tally)
+        path = os.path.join(OUT, f"credit_{N}p_{C}c_{A}a_{D}d.vec")
         with open(path, "w") as f:
-            f.write(f"{N} {C} {A} {R} {len(lines)}\n")
+            f.write(f"{N} {C} {A} {R} {D} {len(lines)}\n")
             f.write("\n".join(lines) + "\n")
         tot += len(lines)
     print(f"credit vectors: {tot} cycles across {len(CONFIGS)} configs")

@@ -17,12 +17,12 @@ Diagnostic counters saturate. Credits returned this cycle do NOT enable a consum
 in the same cycle (legality uses registered pre-cycle state).
 """
 ERR_NONE, ERR_RETURN_UNDERFLOW, ERR_CFG_BUSY, ERR_CFG_UNREP = 0, 1, 2, 3
-CNT_MAX = (1 << 32) - 1
-def sat1(c): return c if c >= CNT_MAX else c + 1
+def _sat1(c, mx): return c if c >= mx else c + 1
 
 class Credit:
-    def __init__(self, N_POOLS=2, COUNT_W=8, AMT_W=4, RESET_MAX=0):
+    def __init__(self, N_POOLS=2, COUNT_W=8, AMT_W=4, RESET_MAX=0, DIAG_W=32):
         self.N = N_POOLS; self.COUNT_W = COUNT_W; self.AMT_W = AMT_W
+        self.DIAG_MAX = (1 << DIAG_W) - 1
         self.cmax_lim = (1 << COUNT_W) - 1      # largest representable max
         self.used = [0]*N_POOLS
         self.cmax = [RESET_MAX]*N_POOLS
@@ -37,6 +37,7 @@ class Credit:
     def all_unused(self):         return all(u == 0 for u in self.used)
     def representable(self, cmax): return all(c <= self.cmax_lim for c in cmax)
 
+    def _s1(self, c): return _sat1(c, self.DIAG_MAX)
     def _decode(self, inp):
         camt = inp['consume_amount']; ramt = inp['return_amount']
         c_ok = self.consume_legal(camt); r_ok = self.return_legal(ramt)
@@ -88,17 +89,17 @@ class Credit:
             self.c = dict(cons_ok=0, cons_blk=0, ret_ok=0, ret_ill=0, cfg_rej=0)
             self.hwm = list(new_used)
         else:
-            if d['cfire']: self.c['cons_ok'] = sat1(self.c['cons_ok'])
-            if inp['consume_valid'] and not d['c_ok'] and not d['cfg_fire']: self.c['cons_blk'] = sat1(self.c['cons_blk'])
-            if d['racc']:  self.c['ret_ok'] = sat1(self.c['ret_ok'])
+            if d['cfire']: self.c['cons_ok'] = self._s1(self.c['cons_ok'])
+            if inp['consume_valid'] and not d['c_ok'] and not d['cfg_fire']: self.c['cons_blk'] = self._s1(self.c['cons_blk'])
+            if d['racc']:  self.c['ret_ok'] = self._s1(self.c['ret_ok'])
             if d['illegal_ret']:
-                self.c['ret_ill'] = sat1(self.c['ret_ill'])
+                self.c['ret_ill'] = self._s1(self.c['ret_ill'])
                 if not self.sticky:
                     self.sticky = 1; self.err_type = ERR_RETURN_UNDERFLOW
                     bad = [p for p in range(self.N) if ramt[p] > self.used[p]]
                     self.err_pool = bad[0]; self.err_amt = ramt[bad[0]]
             if d['cfg_refuse']:
-                self.c['cfg_rej'] = sat1(self.c['cfg_rej'])
+                self.c['cfg_rej'] = self._s1(self.c['cfg_rej'])
                 if not self.sticky:
                     self.sticky = 1; self.err_type = d['cfg_reason']
                     if not d['rep']:

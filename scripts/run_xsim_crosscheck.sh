@@ -23,7 +23,7 @@ PY
 reduce tb/vectors/dec_4w_40x32.vec "$XD/dec_red.vec" 400
 reduce tb/vectors/cfg_4w_40x32.vec "$XD/cfg_red.vec" 400
 reduce tb/vectors/tracker_8d_4g.vec "$XD/ot_red.vec" 400
-reduce tb/vectors/credit_2p_4c_2a.vec "$XD/cm_red.vec" 400
+reduce tb/vectors/credit_2p_4c_2a_32d.vec "$XD/cm_red.vec" 400
 
 fail=0
 run_xsim() { # tb srcs vecbasename tag defines
@@ -52,7 +52,7 @@ run_xsim tb_outstanding_tracker \
   "ot_red.vec" ot "-d DEPTH=8 -d GENW=4 -d EPOCHW=16 -d OPW=2 -d METAW=16 -d TSW=8"
 run_xsim tb_credit_manager \
   "../../rtl/core/credit_manager.sv ../../tb/sv/tb_credit_manager.sv" \
-  "cm_red.vec" cm "-d NPOOLS=2 -d COUNTW=4 -d AMTW=2 -d RESETMAX=3"
+  "cm_red.vec" cm "-d NPOOLS=2 -d COUNTW=4 -d AMTW=2 -d RESETMAX=3 -d DIAGW=32"
 
 [ $fail -eq 0 ] && echo "XSIM CROSSCHECK: PASS" || echo "XSIM CROSSCHECK: FAIL"
 exit $fail

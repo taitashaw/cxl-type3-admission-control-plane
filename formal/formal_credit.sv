@@ -7,6 +7,7 @@ module formal_credit #(
   parameter int unsigned COUNT_W   = 3,
   parameter int unsigned AMT_W     = 2,
   parameter int unsigned RESET_MAX = 2,
+  parameter int unsigned DIAG_W    = 3,
   parameter int unsigned PIDX_W    = (N_POOLS <= 1) ? 1 : $clog2(N_POOLS),
   parameter int unsigned MREQ_W    = COUNT_W + 1
 )(
@@ -26,11 +27,11 @@ module formal_credit #(
   logic [2:0]          first_err_type;
   logic [PIDX_W-1:0]   first_err_pool;
   logic [AMT_W-1:0]    first_err_amount;
-  logic [31:0]         consume_ok_count, consume_blocked_count, return_ok_count,
+  logic [DIAG_W-1:0]   consume_ok_count, consume_blocked_count, return_ok_count,
                        return_illegal_count, cfg_reject_count;
 
   credit_manager #(.N_POOLS(N_POOLS), .COUNT_W(COUNT_W), .AMT_W(AMT_W),
-                   .RESET_MAX(RESET_MAX)) dut (.*);
+                   .RESET_MAX(RESET_MAX), .DIAG_W(DIAG_W)) dut (.*);
 
   initial assume (!rst_n);
   logic p_rst; always_ff @(posedge clk) p_rst <= rst_n;
@@ -46,6 +47,8 @@ module formal_credit #(
     cover (rst_n && cfg_reject && cfg_reason != ERR_CFG_UNREP);    // busy/occupied rejected
     cover (rst_n && (&pool_full));                                 // all pools full
     cover (rst_n && diagnostic_clear && sticky_err);              // diagnostic clear with error set
+    cover (rst_n && consume_ok_count == {DIAG_W{1'b1}});         // diagnostic saturation reached
+    cover (rst_n && diagnostic_clear && (consume_fire || return_accepted)); // clear + ledger traffic
     cover (!rst_n);                                                // reset with activity possible
     cover (p_rst == 1'b0 && rst_n == 1'b1);                        // reset deasserts
   end

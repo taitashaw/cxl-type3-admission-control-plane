@@ -27,7 +27,7 @@ module credit_manager #(
   parameter int unsigned N_POOLS   = 2,
   parameter int unsigned COUNT_W   = 8,     // width of used/max
   parameter int unsigned AMT_W     = 4,     // width of consume/return amounts
-  parameter int unsigned CNT_W     = 32,    // diagnostic counter width
+  parameter int unsigned DIAG_W     = 32,    // diagnostic counter width
   parameter int unsigned RESET_MAX = 0,     // per-pool maximum at reset
   parameter int unsigned PIDX_W    = (N_POOLS <= 1) ? 1 : $clog2(N_POOLS),
   parameter int unsigned MREQ_W    = COUNT_W + 1  // requested max: one extra bit so a
@@ -69,18 +69,18 @@ module credit_manager #(
   output logic [2:0]                    first_err_type,
   output logic [PIDX_W-1:0]             first_err_pool,
   output logic [AMT_W-1:0]              first_err_amount,
-  output logic [CNT_W-1:0]              consume_ok_count,
-  output logic [CNT_W-1:0]              consume_blocked_count,
-  output logic [CNT_W-1:0]              return_ok_count,
-  output logic [CNT_W-1:0]              return_illegal_count,
-  output logic [CNT_W-1:0]              cfg_reject_count
+  output logic [DIAG_W-1:0]              consume_ok_count,
+  output logic [DIAG_W-1:0]              consume_blocked_count,
+  output logic [DIAG_W-1:0]              return_ok_count,
+  output logic [DIAG_W-1:0]              return_illegal_count,
+  output logic [DIAG_W-1:0]              cfg_reject_count
 );
   // error / cfg-reason types
   localparam logic [2:0] ERR_NONE=0, ERR_RETURN_UNDERFLOW=1, ERR_CFG_BUSY=2, ERR_CFG_UNREP=3;
 
-  function automatic logic [CNT_W-1:0] sat1(input logic [CNT_W-1:0] c);
+  function automatic logic [DIAG_W-1:0] sat1(input logic [DIAG_W-1:0] c);
     if (&c) sat1 = c;
-    else    sat1 = c + {{(CNT_W-1){1'b0}},1'b1};
+    else    sat1 = c + {{(DIAG_W-1){1'b0}},1'b1};
   endfunction
 
   // registered authoritative state as unpacked arrays (portable element writes)
@@ -229,13 +229,15 @@ module credit_manager #(
   // ---- ledger safety properties (bmc + induction) --------------------------
   logic f_init;
   logic [COUNT_W-1:0] f_pused0, f_pmax0;
-  logic               f_pcfire, f_pracc, f_pcfg;
+  logic               f_pcfire, f_pracc, f_pcfg, f_pdclr;
   logic [AMT_W-1:0]   f_pcamt0, f_pramt0;
+  logic [DIAG_W-1:0]  f_pcok;
   initial f_init = 1'b0;
   always_ff @(posedge clk) begin
     f_init<=1'b1; f_pused0<=used_r[0]; f_pmax0<=cmax_r[0];
     f_pcfire<=consume_fire; f_pracc<=return_accepted; f_pcfg<=cfg_commit_fire;
     f_pcamt0<=consume_amount[0 +: AMT_W]; f_pramt0<=return_amount[0 +: AMT_W];
+    f_pdclr<=diagnostic_clear; f_pcok<=consume_ok_count;
   end
   always @(posedge clk) begin
     if (rst_n && f_init) begin
@@ -272,6 +274,13 @@ module credit_manager #(
                             - (f_pracc  ? {{(COUNT_W-AMT_W){1'b0}}, f_pramt0} : '0)));
       // configured_max changes ONLY on a legal atomic commit
       if (!f_pcfg) assert (cmax_r[0] == f_pmax0);
+      // ---- diagnostic-counter saturation (consume_ok_count witness) ----
+      // diagnostic_clear zeroes the counter
+      if (f_pdclr) assert (consume_ok_count == '0);
+      // NO WRAP: absent a clear, the counter never decreases (monotone) ...
+      if (!f_pdclr) assert (consume_ok_count >= f_pcok);
+      // ... and once at maximum it stays at maximum on further events
+      if (!f_pdclr && (f_pcok == {DIAG_W{1'b1}})) assert (consume_ok_count == {DIAG_W{1'b1}});
     end
   end
 `endif

@@ -5,7 +5,7 @@ set -u
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"; cd "$ROOT"
 RAW=evidence/raw; FL=sim/filelists; mkdir -p "$RAW" sim/icarus sim/verilator
 # N_POOLS COUNT_W AMT_W RESET_MAX  (must match gen_credit_vectors.py CONFIGS)
-CONFIGS=("1 4 2 1" "2 4 2 3" "3 5 3 7" "2 6 3 8" "1 3 2 2")
+CONFIGS=("1 4 2 1 32" "2 4 2 3 32" "3 5 3 7 32" "2 6 3 8 32" "1 3 2 2 32" "2 4 2 3 3")
 fail=0
 echo "## regenerate credit vectors"; ( cd tb/models && python3 gen_credit_vectors.py ) | sed 's/^/   /'
 echo "## lint"
@@ -16,9 +16,9 @@ if [ $lrc -ne 0 ] || grep -qE "%Warning|%Error" "$RAW/lint_credit.log"; then
   echo "   LINT FAIL"; grep -E "%Warning|%Error" "$RAW/lint_credit.log" | sed 's/^/   /'; fail=1
 else echo "   lint clean"; fi
 for c in "${CONFIGS[@]}"; do
-  read -r N CW AW RM <<<"$c"
-  vec="tb/vectors/credit_${N}p_${CW}c_${AW}a.vec"; tag="cm_${N}p_${CW}c_${AW}a"
-  D="-DNPOOLS=$N -DCOUNTW=$CW -DAMTW=$AW -DRESETMAX=$RM"
+  read -r N CW AW RM DW <<<"$c"
+  vec="tb/vectors/credit_${N}p_${CW}c_${AW}a_${DW}d.vec"; tag="cm_${N}p_${CW}c_${AW}a_${DW}d"
+  D="-DNPOOLS=$N -DCOUNTW=$CW -DAMTW=$AW -DRESETMAX=$RM -DDIAGW=$DW"
   iverilog -g2012 $D -c "$FL/tb_credit_manager.f" -o "sim/icarus/${tag}.vvp" >"$RAW/icarus_${tag}_c.log" 2>&1 \
     && vvp "sim/icarus/${tag}.vvp" +VEC=$vec > "$RAW/icarus_${tag}_run.log" 2>&1
   grep -q "TB_RESULT: PASS" "$RAW/icarus_${tag}_run.log" && ip=PASS || { ip=FAIL; fail=1; }
