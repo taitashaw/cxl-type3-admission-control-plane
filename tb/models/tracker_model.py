@@ -20,16 +20,16 @@ def sat1(c): return c if c >= CNT_MAX else c + 1
 def satn(c, n): return CNT_MAX if c + n > CNT_MAX else c + n
 
 class Tracker:
-    def __init__(self, DEPTH=8, GEN_W=4, EPOCH_W=16, OP_W=2, META_W=32, TS_W=16):
+    def __init__(self, DEPTH=8, GEN_W=4, EPOCH_W=16, OP_W=2, META_W=32, TS_W=16, CREDIT_W=16):
         self.DEPTH, self.GEN_W, self.EPOCH_W = DEPTH, GEN_W, EPOCH_W
-        self.OP_W, self.META_W, self.TS_W = OP_W, META_W, TS_W
+        self.OP_W, self.META_W, self.TS_W, self.CREDIT_W = OP_W, META_W, TS_W, CREDIT_W
         self.SLOT_W = 1 if DEPTH <= 1 else (DEPTH - 1).bit_length()
         self.TAG_W = GEN_W + self.SLOT_W
         self.gmask = (1 << GEN_W) - 1
         self.tsmask = (1 << TS_W) - 1
         self.half = 1 << (TS_W - 1)          # 2^(TS_W-1)
         self.live = [0]*DEPTH; self.gen = [0]*DEPTH; self.epoch = [0]*DEPTH
-        self.op = [0]*DEPTH; self.meta = [0]*DEPTH; self.issue_ts = [0]*DEPTH
+        self.op = [0]*DEPTH; self.meta = [0]*DEPTH; self.credit_vec = [0]*DEPTH; self.issue_ts = [0]*DEPTH
         self.timed = [0]*DEPTH
         self.occ = 0; self.hwm = 0
         self.c = dict(alloc=0, retire=0, full=0, timeout=0, reclaim=0, invalid=0, non_live=0, stale=0)
@@ -93,6 +93,10 @@ class Tracker:
         rr_op = self.op[slot] if slot_ok else 0
         rr_me = self.meta[slot] if slot_ok else 0
         # registered reclaim response is STATE (rr_*); ready is derived
+        # combinational functional commit sidebands (pre-edge stored data)
+        rc_slot = self._rc_slot(inp)
+        r_success = self._reclaim_done(inp, resp_retire, slot)   # accept && class==RCL_OK
+        rc_ok_idx = rc_slot < self.DEPTH
         timeout_any = 1 if any(self.live[i] and self.timed[i] for i in range(self.DEPTH)) else 0
         quarantined = sum(1 for i in range(self.DEPTH) if self.live[i] and self.timed[i])
         return dict(alloc_gnt=alloc_gnt, alloc_tag=alloc_tag, alloc_slot=fs, full=1 if full else 0,
@@ -101,6 +105,14 @@ class Tracker:
                     reclaim_req_ready=self._reclaim_ready(),
                     reclaim_rsp_valid=self.rr_valid, reclaim_rsp_class=self.rr_class,
                     reclaim_rsp_tag=self.rr_tag, reclaim_rsp_meta=self.rr_meta,
+                    retire_commit_fire=resp_retire,
+                    retire_commit_credit_vec=(self.credit_vec[slot] if resp_retire else 0),
+                    retire_commit_epoch=(self.epoch[slot] if resp_retire else 0),
+                    retire_commit_meta=(self.meta[slot] if resp_retire else 0),
+                    reclaim_commit_fire=r_success,
+                    reclaim_commit_credit_vec=(self.credit_vec[rc_slot] if (r_success and rc_ok_idx) else 0),
+                    reclaim_commit_epoch=(self.epoch[rc_slot] if (r_success and rc_ok_idx) else 0),
+                    reclaim_commit_meta=(self.meta[rc_slot] if (r_success and rc_ok_idx) else 0),
                     occupancy=self.occ, high_watermark=self.hwm,
                     quarantined_count=quarantined, timeout_any=timeout_any,
                     alloc_count=self.c['alloc'], retire_count=self.c['retire'], full_count=self.c['full'],
@@ -165,7 +177,8 @@ class Tracker:
             self.live[fs] = 1
             self.gen[fs] = (self.gen[fs] + 1) & self.gmask
             self.epoch[fs] = inp['alloc_epoch']; self.op[fs] = inp['alloc_op']
-            self.meta[fs] = inp['alloc_meta']; self.issue_ts[fs] = ts; self.timed[fs] = 0
+            self.meta[fs] = inp['alloc_meta']; self.credit_vec[fs] = inp['alloc_credit_vec']
+            self.issue_ts[fs] = ts; self.timed[fs] = 0
             self.c['alloc'] = sat1(self.c['alloc'])
         if inp['alloc_req'] and (full or not have):
             self.c['full'] = sat1(self.c['full'])

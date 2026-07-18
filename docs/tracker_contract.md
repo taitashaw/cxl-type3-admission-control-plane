@@ -140,6 +140,36 @@ This is formalized (asserted), not left to statement ordering. Occupancy delta �
   informational response; and the reclaim side effect (`reclaim_count`, slot free)
   moves **iff** `reclaim_success_fire` fired on the accept edge — never as a
   function of when/whether the response is later consumed.
+
+## Combinational functional commit sidebands (M4 integration boundary)
+The registered `reclaim_rsp_*` channel is for the requester's **observability**; it
+arrives a cycle after the slot is freed and therefore must **never** drive credit
+return. For same-edge credit return the tracker exposes **combinational** sidebands,
+each carrying the released entry's stored data (`CREDIT_W`-wide credit vector +
+epoch + meta), asserted on the exact edge the slot is released:
+
+| sideband | fires when | payload |
+|---|---|---|
+| `retire_commit_fire` | `resp_retire` (valid retirement of `r_slot`) | `retire_commit_{credit_vec,epoch,meta}` from `r_slot` |
+| `reclaim_commit_fire` | `reclaim_success_fire` (RCL_OK reclaim of `rc_slot`) | `reclaim_commit_{credit_vec,epoch,meta}` from `rc_slot` |
+
+- Each entry stores the per-pool credit vector captured on **allocation**
+  (`alloc_credit_vec`); it is **immutable while the slot stays allocated** (proven).
+- Non-firing sidebands are driven to **0**, so an integration may safely OR /
+  widen-add them.
+- **Simultaneous different-slot commits.** A valid retirement and a successful
+  reclaim may fire the **same cycle on different slots** (guaranteed `r_slot ≠
+  rc_slot`; proven + covered). Both credit vectors are then valid and must be
+  returned exactly once — the M4 credit manager aggregates them with widened
+  per-pool arithmetic. A same-slot response/reclaim collision resolves to
+  `SUPERSEDED` (reclaim is a no-op), so only the response-owned vector returns.
+- Formal: on each `*_commit_fire` the exposed vector/epoch/meta equal the stored
+  values for the committing slot; single and simultaneous commits are covered.
+  Mutation: dropping the alloc-time capture, or sourcing the wrong reclaim vector,
+  are both killed.
+
+> **Do NOT** derive functional credit return from `reclaim_rsp_valid &&
+> reclaim_rsp_ready` — that is the informational channel and is a cycle late.
 - A reclaimed slot is freed; the **next allocation bumps its generation**, so a
   later response to the old transaction is `NON_LIVE` (before realloc) or
   `STALE_GEN` (after). **Qualification:** a late response after reclaim cannot

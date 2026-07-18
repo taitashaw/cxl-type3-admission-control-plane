@@ -31,6 +31,7 @@ module outstanding_tracker #(
   parameter int unsigned OP_W    = 2,
   parameter int unsigned META_W  = 32,
   parameter int unsigned TS_W    = 16,
+  parameter int unsigned CREDIT_W= 16,   // flat per-entry credit vector (M4 integration)
   parameter int unsigned SLOT_W  = (DEPTH <= 1) ? 1 : $clog2(DEPTH),
   parameter int unsigned TAG_W   = GEN_W + SLOT_W,
   parameter int unsigned CNT_W   = 32,
@@ -51,6 +52,7 @@ module outstanding_tracker #(
   input  logic [EPOCH_W-1:0]   alloc_epoch,
   input  logic [OP_W-1:0]      alloc_op,
   input  logic [META_W-1:0]    alloc_meta,
+  input  logic [CREDIT_W-1:0]  alloc_credit_vec,  // per-pool credit vector consumed for this entry
   output logic                 alloc_gnt,
   output logic [TAG_W-1:0]     alloc_tag,     // {gen, slot}
   output logic [SLOT_W-1:0]    alloc_slot,
@@ -64,6 +66,22 @@ module outstanding_tracker #(
   output logic [EPOCH_W-1:0]   retired_epoch,
   output logic [OP_W-1:0]      retired_op,
   output logic [META_W-1:0]    retired_meta,
+
+  // ---- COMBINATIONAL functional commit sidebands (M4 integration) ----
+  // These fire on the SAME edge the slot is released and expose the released
+  // entry's stored credit vector / epoch / meta COMBINATIONALLY, so a downstream
+  // credit manager can return credits on that exact edge. The registered reclaim
+  // response (reclaim_rsp_*) is INFORMATIONAL only and must NOT drive credit
+  // return (it arrives a cycle late). retire and reclaim can fire the SAME cycle
+  // on DIFFERENT slots — both sidebands are then valid and must be handled.
+  output logic                 retire_commit_fire,       // == resp_retire (valid retirement)
+  output logic [CREDIT_W-1:0]  retire_commit_credit_vec,
+  output logic [EPOCH_W-1:0]   retire_commit_epoch,
+  output logic [META_W-1:0]    retire_commit_meta,
+  output logic                 reclaim_commit_fire,      // == reclaim_success_fire
+  output logic [CREDIT_W-1:0]  reclaim_commit_credit_vec,
+  output logic [EPOCH_W-1:0]   reclaim_commit_epoch,
+  output logic [META_W-1:0]    reclaim_commit_meta,
 
   // ---- reclaim: REGISTERED request/response handshake (recovery authority) ----
   // Carries the FULL composite tag {gen,slot}. The response is REGISTERED and
@@ -118,6 +136,7 @@ module outstanding_tracker #(
   logic [EPOCH_W-1:0]  epoch    [DEPTH];
   logic [OP_W-1:0]     op       [DEPTH];
   logic [META_W-1:0]   meta     [DEPTH];
+  logic [CREDIT_W-1:0] credit_vec[DEPTH];
   logic [TS_W-1:0]     issue_ts [DEPTH];
   logic                timed_out[DEPTH];
 
@@ -154,6 +173,15 @@ module outstanding_tracker #(
   assign retired_epoch = (resp_valid && r_slot_ok) ? epoch[r_slot] : '0;
   assign retired_op    = (resp_valid && r_slot_ok) ? op[r_slot]    : '0;
   assign retired_meta  = (resp_valid && r_slot_ok) ? meta[r_slot]  : '0;
+
+  // ---- combinational commit sidebands (functional; see port comment) --------
+  // retire side: valid retirement of r_slot. reclaim side is assigned after
+  // reclaim_success_fire is defined (below). All are zero when not firing so a
+  // consumer can safely OR/aggregate them.
+  assign retire_commit_fire       = resp_retire;
+  assign retire_commit_credit_vec = resp_retire ? credit_vec[r_slot] : '0;
+  assign retire_commit_epoch      = resp_retire ? epoch[r_slot]      : '0;
+  assign retire_commit_meta       = resp_retire ? meta[r_slot]       : '0;
 
   // ---- timeout: committed configuration, used directly ---------------------
   // The tracker does NOT latch or validate the threshold. hdm_config commits
@@ -206,6 +234,12 @@ module outstanding_tracker #(
   // return on the same cycle.
   logic reclaim_success_fire;
   assign reclaim_success_fire = reclaim_accept && (reclaim_class_now == RCL_OK);
+  // reclaim commit sideband: combinational, valid on the accept edge that frees
+  // the slot. rc_slot is guaranteed < DEPTH here (RCL_OK implies rc_slot_ok).
+  assign reclaim_commit_fire       = reclaim_success_fire;
+  assign reclaim_commit_credit_vec = reclaim_success_fire ? credit_vec[rc_slot] : '0;
+  assign reclaim_commit_epoch      = reclaim_success_fire ? epoch[rc_slot]      : '0;
+  assign reclaim_commit_meta       = reclaim_success_fire ? meta[rc_slot]       : '0;
 
   // ---- timeout marking with event priority ---------------------------------
   logic [DEPTH-1:0] new_timeout;
@@ -252,7 +286,7 @@ module outstanding_tracker #(
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
       for (i = 0; i < DEPTH; i++) begin
-        live[i]<=1'b0; gen[i]<='0; epoch[i]<='0; op[i]<='0; meta[i]<='0; issue_ts[i]<='0; timed_out[i]<=1'b0;
+        live[i]<=1'b0; gen[i]<='0; epoch[i]<='0; op[i]<='0; meta[i]<='0; credit_vec[i]<='0; issue_ts[i]<='0; timed_out[i]<=1'b0;
       end
       occupancy<='0; high_watermark<='0;
       alloc_count<='0; retire_count<='0; full_count<='0; timeout_count<='0; reclaim_count<='0;
@@ -308,6 +342,7 @@ module outstanding_tracker #(
         epoch[free_slot]    <= alloc_epoch;
         op[free_slot]       <= alloc_op;
         meta[free_slot]     <= alloc_meta;
+        credit_vec[free_slot] <= alloc_credit_vec;
         issue_ts[free_slot] <= current_ts;
         timed_out[free_slot]<= 1'b0;
         alloc_count         <= sat_add1(alloc_count);
@@ -325,6 +360,7 @@ module outstanding_tracker #(
   logic [OCC_W-1:0]   f_pocc;
   logic               f_plive0, f_alloc0;
   logic [EPOCH_W-1:0] f_pep0;
+  logic [CREDIT_W-1:0] f_pcv0;
   logic [CNT_W-1:0]   f_ptmo;
   logic [OCC_W-1:0]   f_pn_new;
   logic               f_prrsp_v, f_prrsp_rdy, f_prst;
@@ -346,6 +382,7 @@ module outstanding_tracker #(
   end
   always_ff @(posedge clk) begin
     f_init  <= 1'b1;  f_pocc <= occupancy; f_plive0 <= live[0]; f_pep0 <= epoch[0];
+    f_pcv0  <= credit_vec[0];
     f_alloc0<= (do_alloc && free_slot == '0); f_ptmo <= timeout_count; f_pn_new <= n_new_timeout;
     f_prrsp_v<=reclaim_rsp_valid; f_prrsp_rdy<=reclaim_rsp_ready; f_prst<=rst_n;
     f_prrsp_class<=reclaim_rsp_class; f_prrsp_meta<=reclaim_rsp_meta; f_prrsp_tag<=reclaim_rsp_tag;
@@ -365,6 +402,27 @@ module outstanding_tracker #(
       if (alloc_gnt)   assert (!full && have_free);
       assert (full == (occupancy == OCC_W'(DEPTH)));
       if (!f_alloc0) assert (epoch[0] == f_pep0);
+      // stored credit vector is IMMUTABLE while a slot stays allocated: slot 0's
+      // credit_vec changes only on its own allocation edge.
+      if (!f_alloc0) assert (credit_vec[0] == f_pcv0);
+
+      // ---- combinational commit sidebands expose the committing entry ------
+      if (retire_commit_fire) begin
+        assert (resp_retire && live[r_slot]);
+        assert (retire_commit_credit_vec == credit_vec[r_slot]);
+        assert (retire_commit_epoch      == epoch[r_slot]);
+        assert (retire_commit_meta       == meta[r_slot]);
+      end
+      if (reclaim_commit_fire) begin
+        assert (reclaim_success_fire);
+        assert (reclaim_commit_credit_vec == credit_vec[rc_slot]);
+        assert (reclaim_commit_epoch      == epoch[rc_slot]);
+        assert (reclaim_commit_meta       == meta[rc_slot]);
+      end
+      // when both fire the SAME cycle they are on DIFFERENT slots (no double-free
+      // of one slot); each vector is thus distinct and independently returnable.
+      if (retire_commit_fire && reclaim_commit_fire) assert (r_slot != rc_slot);
+
       // reclaim only frees an already-quarantined slot (recovery contract)
       if (reclaim_success_fire) assert (live[rc_slot] && timed_out[rc_slot] && (rc_gen == gen[rc_slot]));
       // a valid response and a reclaim never target the same slot (response wins)

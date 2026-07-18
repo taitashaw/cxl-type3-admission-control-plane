@@ -105,6 +105,16 @@ mutate "tracker superseded is a no-op" rtl/core/outstanding_tracker.sv \
 mutate "tracker non-OK meta must be zero" rtl/core/outstanding_tracker.sv \
   "s/else                             reclaim_rsp_meta <= '0;/\/\/ mutated: no zeroing/" \
   tb_outstanding_tracker "$OT" "$OVEC" "$OTDEF"
+# M14 commit-sideband storage: the per-entry credit vector must be captured on
+# alloc and returned on commit (drop the capture -> returned vectors are wrong)
+mutate "tracker credit-vec capture on alloc" rtl/core/outstanding_tracker.sv \
+  "s/credit_vec\[free_slot\] <= alloc_credit_vec;/credit_vec[free_slot] <= '0;/" \
+  tb_outstanding_tracker "$OT" "$OVEC" "$OTDEF"
+# M15 commit-sideband source: reclaim commit vector must be the freed slot's
+# stored vector (mutate to zero -> credit return would be wrong at integration)
+mutate "tracker reclaim-commit vec source" rtl/core/outstanding_tracker.sv \
+  "s/assign reclaim_commit_credit_vec = reclaim_success_fire ? credit_vec\[rc_slot\] : '0;/assign reclaim_commit_credit_vec = '0;/" \
+  tb_outstanding_tracker "$OT" "$OVEC" "$OTDEF"
 
 # ---- M3 credit_manager mutations ----
 CM="rtl/core/credit_manager.sv tb/sv/tb_credit_manager.sv"

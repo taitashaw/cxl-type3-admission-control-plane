@@ -1,7 +1,7 @@
 {
-  "git_commit": "6c565541fe8547e57aee35b0b61523fd582157ef",
+  "git_commit": "1cfbffcab78e3b6dc5e9c35e6688a86a5f526043",
   "git_dirty": true,
-  "utc": "2026-07-18T01:45:58Z",
+  "utc": "2026-07-18T08:19:06Z",
   "kind": "formal",
   "engine": "smtbmc/yices",
   "modes": [
@@ -38,7 +38,7 @@
       "cover": "PASS",
       "raw": {
         "path": "evidence/raw/formal_tracker.log",
-        "sha256": "5433a41cd00a3272b52f94c96649fdc1971845c674dd56a4209b23d5a363f6e4"
+        "sha256": "2a7c1ef59c5f85a6eb3aefd44bf410f9a4a1eafb60e3ddcc4afe96078cc209c3"
       }
     }
   ],
