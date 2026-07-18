@@ -34,3 +34,7 @@ formal/credit_prove/
 formal/credit_cover/
 tb/vectors/credit_*.vec
 formal/*/
+tb/vectors/adm_*.vec
+formal/admission_bmc/
+formal/admission_prove/
+formal/admission_cover/

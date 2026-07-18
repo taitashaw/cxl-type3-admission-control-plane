@@ -134,7 +134,7 @@ mutate "credit return legality" rtl/core/credit_manager.sv \
   tb_credit_manager "$CM" "$CMVEC" "$CMDEF"
 # same-cycle update ignores the return term (net delta wrong)
 mutate "credit same-cycle net delta" rtl/core/credit_manager.sv \
-  "s/if (return_accepted) next_used_w\[p\] = next_used_w\[p\] - {{(COUNT_W+1-AMT_W){1'b0}}, return_amount\[p\*AMT_W +: AMT_W\]};/\/\/ mutated: drop return term/" \
+  "s/if (return_accepted) next_used_w\[p\] = next_used_w\[p\] - {{(COUNT_W+1-RET_W){1'b0}}, return_amount\[p\*RET_W +: RET_W\]};/\/\/ mutated: drop return term/" \
   tb_credit_manager "$CM" "$CMVEC" "$CMDEF"
 # allow configuration while credits are used (all_unused ignored)
 mutate "credit cfg needs empty" rtl/core/credit_manager.sv \
@@ -157,6 +157,28 @@ mutate "credit representability" rtl/core/credit_manager.sv \
 mutate "credit diag saturation" rtl/core/credit_manager.sv \
   "s/if (&c) sat1 = c;/if (1'b0) sat1 = c;/" \
   tb_credit_manager "$CM" "tb/vectors/credit_2p_4c_2a_3d.vec" "-DNPOOLS=2 -DCOUNTW=4 -DAMTW=2 -DRESETMAX=3 -DDIAGW=3"
+
+# ---- M4 Phase 2b admission_top integration mutations ----
+ADM="rtl/core/outstanding_tracker.sv rtl/core/credit_manager.sv rtl/core/admission_top.sv tb/sv/tb_admission_top.sv"
+ADMVEC="tb/vectors/adm_2p_3a_6c_8m_4d_4g.vec"
+ADMDEF="-DNPOOLS=2 -DAMTW=3 -DCOUNTW=6 -DRESETMAX=8 -DDEPTH=4 -DGENW=4 -DEPOCHW=8 -DOPW=2 -DMETAW=8 -DTSW=8"
+# PARTIAL ADMISSION: credit consumes even when the request was not accepted
+mutate "admission partial (consume != accept)" rtl/core/admission_top.sv \
+  "s/.consume_valid(req_accept), .consume_amount(req_credit_vec),/.consume_valid(req_valid), .consume_amount(req_credit_vec),/" \
+  tb_admission_top "$ADM" "$ADMVEC" "$ADMDEF"
+# WRONG EPOCH CAPTURE: allocate with a zero epoch instead of the active epoch
+mutate "admission wrong epoch capture" rtl/core/admission_top.sv \
+  "s/.alloc_req(req_accept), .alloc_epoch(active_epoch), .alloc_op(req_op),/.alloc_req(req_accept), .alloc_epoch('0), .alloc_op(req_op),/" \
+  tb_admission_top "$ADM" "$ADMVEC" "$ADMDEF"
+# TRUNCATED DUAL RETURN: narrow the per-pool aggregate to AMT_W (drop the +1 bit)
+# -> a dual return whose per-pool sum exceeds 2^AMT_W-1 truncates
+mutate "admission truncated dual return" rtl/core/admission_top.sv \
+  "s/logic \[RET_W-1:0\] sum_p;/logic [AMT_W-1:0] sum_p;/" \
+  tb_admission_top "$ADM" "$ADMVEC" "$ADMDEF"
+# MISSING RECLAIM RETURN: reclaim commit vector never returned -> ledger leaks
+mutate "admission missing reclaim return" rtl/core/admission_top.sv \
+  "s/assign rcl_p = reclaim_commit_fire ? reclaim_commit_credit_vec\[gp\*AMT_W +: AMT_W\] : '0;/assign rcl_p = '0;/" \
+  tb_admission_top "$ADM" "$ADMVEC" "$ADMDEF"
 
 echo "=================================================="
 echo "mutations killed=$kills survived=$survivors"

@@ -26,7 +26,12 @@
 module credit_manager #(
   parameter int unsigned N_POOLS   = 2,
   parameter int unsigned COUNT_W   = 8,     // width of used/max
-  parameter int unsigned AMT_W     = 4,     // width of consume/return amounts
+  parameter int unsigned AMT_W     = 4,     // width of consume amounts (per pool)
+  parameter int unsigned RET_W     = AMT_W, // width of RETURN amounts per pool; the
+                                            // M4 integration widens this to AMT_W+1 so
+                                            // a same-cycle retire+reclaim return to one
+                                            // pool cannot truncate. Default = AMT_W keeps
+                                            // the standalone M3 interface unchanged.
   parameter int unsigned DIAG_W     = 32,    // diagnostic counter width
   parameter int unsigned RESET_MAX = 0,     // per-pool maximum at reset
   parameter int unsigned PIDX_W    = (N_POOLS <= 1) ? 1 : $clog2(N_POOLS),
@@ -44,7 +49,7 @@ module credit_manager #(
 
   // ---- return ----
   input  logic                          return_valid,
-  input  logic [N_POOLS*AMT_W-1:0]      return_amount,
+  input  logic [N_POOLS*RET_W-1:0]      return_amount,
   output logic                          return_accepted,
 
   // ---- atomic configuration ----  requested max flat: [p*MREQ_W +: MREQ_W]
@@ -78,6 +83,13 @@ module credit_manager #(
   // error / cfg-reason types
   localparam logic [2:0] ERR_NONE=0, ERR_RETURN_UNDERFLOW=1, ERR_CFG_BUSY=2, ERR_CFG_UNREP=3;
 
+  // elaboration width contract: the return amount must fit the ledger arithmetic
+  // (used += consume - return uses a COUNT_W+1 accumulator; the pool-0 delta proof
+  // widens f_pramt0 by COUNT_W-RET_W). RET_W > COUNT_W would truncate.
+  if (RET_W > COUNT_W) begin : g_ret_width_check
+    $error("credit_manager: RET_W (%0d) must be <= COUNT_W (%0d)", RET_W, COUNT_W);
+  end
+
   function automatic logic [DIAG_W-1:0] sat1(input logic [DIAG_W-1:0] c);
     if (&c) sat1 = c;
     else    sat1 = c + {{(DIAG_W-1){1'b0}},1'b1};
@@ -107,9 +119,10 @@ module credit_manager #(
   logic [N_POOLS-1:0] cmax_unrep;
   generate
     for (gp = 0; gp < N_POOLS; gp++) begin : g_legal
-      logic [AMT_W-1:0]  camt, ramt;
+      logic [AMT_W-1:0]  camt;
+      logic [RET_W-1:0]  ramt;
       assign camt = consume_amount[gp*AMT_W +: AMT_W];
-      assign ramt = return_amount [gp*AMT_W +: AMT_W];
+      assign ramt = return_amount [gp*RET_W +: RET_W];
       assign c_ok_pool[gp] = (CMP_W'(camt) <= CMP_W'(cmax_r[gp] - used_r[gp]));
       assign r_ok_pool[gp] = (CMP_W'(ramt) <= CMP_W'(used_r[gp]));
       // representable iff no bit at/above COUNT_W is set (value <= 2^COUNT_W-1)
@@ -149,7 +162,7 @@ module credit_manager #(
   always_comb begin
     first_bad_ret_pool = '0; first_bad_ret_amt = '0; first_unrep_pool = '0;
     for (int p = N_POOLS-1; p >= 0; p--) begin
-      if (!r_ok_pool[p]) begin first_bad_ret_pool = p[PIDX_W-1:0]; first_bad_ret_amt = return_amount[p*AMT_W +: AMT_W]; end
+      if (!r_ok_pool[p]) begin first_bad_ret_pool = p[PIDX_W-1:0]; first_bad_ret_amt = return_amount[p*RET_W +: AMT_W]; end
       if (cmax_unrep[p]) first_unrep_pool = p[PIDX_W-1:0];
     end
   end
@@ -176,7 +189,7 @@ module credit_manager #(
     for (int p = 0; p < N_POOLS; p++) begin
       next_used_w[p] = {1'b0, used_r[p]};
       if (consume_fire)    next_used_w[p] = next_used_w[p] + {{(COUNT_W+1-AMT_W){1'b0}}, consume_amount[p*AMT_W +: AMT_W]};
-      if (return_accepted) next_used_w[p] = next_used_w[p] - {{(COUNT_W+1-AMT_W){1'b0}}, return_amount[p*AMT_W +: AMT_W]};
+      if (return_accepted) next_used_w[p] = next_used_w[p] - {{(COUNT_W+1-RET_W){1'b0}}, return_amount[p*RET_W +: RET_W]};
     end
   end
 
@@ -230,13 +243,14 @@ module credit_manager #(
   logic f_init;
   logic [COUNT_W-1:0] f_pused0, f_pmax0;
   logic               f_pcfire, f_pracc, f_pcfg, f_pdclr;
-  logic [AMT_W-1:0]   f_pcamt0, f_pramt0;
+  logic [AMT_W-1:0]   f_pcamt0;
+  logic [RET_W-1:0]   f_pramt0;
   logic [DIAG_W-1:0]  f_pcok;
   initial f_init = 1'b0;
   always_ff @(posedge clk) begin
     f_init<=1'b1; f_pused0<=used_r[0]; f_pmax0<=cmax_r[0];
     f_pcfire<=consume_fire; f_pracc<=return_accepted; f_pcfg<=cfg_commit_fire;
-    f_pcamt0<=consume_amount[0 +: AMT_W]; f_pramt0<=return_amount[0 +: AMT_W];
+    f_pcamt0<=consume_amount[0 +: AMT_W]; f_pramt0<=return_amount[0 +: RET_W];
     f_pdclr<=diagnostic_clear; f_pcok<=consume_ok_count;
   end
   always @(posedge clk) begin
@@ -265,13 +279,13 @@ module credit_manager #(
                 <= {1'b0, (cmax_r[q] - used_r[q])});
       // an accepted return implies EVERY pool held at least the amount
       if (return_accepted) for (int q = 0; q < N_POOLS; q++)
-        assert ({{(COUNT_W+1-AMT_W){1'b0}}, return_amount[q*AMT_W +: AMT_W]}
+        assert ({{(COUNT_W+1-RET_W){1'b0}}, return_amount[q*RET_W +: RET_W]}
                 <= {1'b0, used_r[q]});
       // pool-0 ledger delta is EXACTLY accepted-consume minus accepted-return
       // (subsumes: illegal/blocked op changes nothing; never clamps/saturates)
       assert (used_r[0] == (f_pused0
                             + (f_pcfire ? {{(COUNT_W-AMT_W){1'b0}}, f_pcamt0} : '0)
-                            - (f_pracc  ? {{(COUNT_W-AMT_W){1'b0}}, f_pramt0} : '0)));
+                            - (f_pracc  ? {{(COUNT_W-RET_W){1'b0}}, f_pramt0} : '0)));
       // configured_max changes ONLY on a legal atomic commit
       if (!f_pcfg) assert (cmax_r[0] == f_pmax0);
       // ---- diagnostic-counter saturation (consume_ok_count witness) ----

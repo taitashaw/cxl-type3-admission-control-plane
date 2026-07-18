@@ -73,6 +73,8 @@ module tb_outstanding_tracker;
   logic [2:0]         err_first_class;
   logic [31:0]        alloc_count, retire_count, full_count, timeout_count, reclaim_count,
                       invalid_slot_count, non_live_count, stale_gen_count;
+  logic [DEPTH-1:0]           dbg_live;
+  logic [DEPTH*CREDIT_W-1:0]  dbg_credit_vec;
 
   outstanding_tracker #(.DEPTH(DEPTH), .GEN_W(GEN_W), .EPOCH_W(EPOCH_W),
                         .OP_W(OP_W), .META_W(META_W), .TS_W(TS_W), .CREDIT_W(CREDIT_W)) dut (.*);

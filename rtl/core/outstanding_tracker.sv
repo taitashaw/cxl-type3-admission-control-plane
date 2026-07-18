@@ -111,7 +111,13 @@ module outstanding_tracker #(
   output logic [CNT_W-1:0]     non_live_count,
   output logic [CNT_W-1:0]     stale_gen_count,
   output logic                 err_sticky,
-  output logic [2:0]           err_first_class
+  output logic [2:0]           err_first_class,
+
+  // ---- debug/integration observability: flat exposure of per-slot live + stored
+  // credit vector (lets an integration prove credit conservation without a
+  // cross-module hierarchical reference). Combinational; trimmed if unused.
+  output logic [DEPTH-1:0]           dbg_live,
+  output logic [DEPTH*CREDIT_W-1:0]  dbg_credit_vec
 );
   localparam logic [2:0] RC_VALID=0, RC_INVALID_SLOT=1, RC_NON_LIVE=2, RC_STALE_GEN=3;
   // reclaim result classes
@@ -173,6 +179,15 @@ module outstanding_tracker #(
   assign retired_epoch = (resp_valid && r_slot_ok) ? epoch[r_slot] : '0;
   assign retired_op    = (resp_valid && r_slot_ok) ? op[r_slot]    : '0;
   assign retired_meta  = (resp_valid && r_slot_ok) ? meta[r_slot]  : '0;
+
+  // ---- debug observability: flat per-slot live + stored credit vector --------
+  genvar gd;
+  generate
+    for (gd = 0; gd < DEPTH; gd++) begin : g_dbg
+      assign dbg_live[gd] = live[gd];
+      assign dbg_credit_vec[gd*CREDIT_W +: CREDIT_W] = credit_vec[gd];
+    end
+  endgenerate
 
   // ---- combinational commit sidebands (functional; see port comment) --------
   // retire side: valid retirement of r_slot. reclaim side is assigned after
