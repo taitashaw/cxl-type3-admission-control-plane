@@ -1,7 +1,7 @@
 {
-  "git_commit": "38ecb7a99b67c7fe6a6621e948f9d488a17dd020",
+  "git_commit": "483ef5a9d2819be75c67cdace9b0b7e4b90b3758",
   "git_dirty": true,
-  "utc": "2026-07-18T17:39:50Z",
+  "utc": "2026-07-18T17:42:03Z",
   "kind": "mutation_sim",
   "killed": 21,
   "survived": 0,

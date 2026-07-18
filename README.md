@@ -24,31 +24,58 @@ make all-free    # inventory + lint + unit
 `make all-free` never invokes Quartus, XSim, or hardware programming, and never
 requires a commercial licence or connected FPGA.
 
-### Current verified status (hardened M1)
-- **RTL_SIMULATED**: FREEZE→DRAIN→atomic-COMMIT config → fail-closed decode →
-  HPA→DPA translate. ~30k differential checks/engine against an **independent
-  Python reference model** across `N_WIN∈{1,2,4,8}` and `(HPA_W,DPA_W)∈
-  {(32,24),(40,32),(44,36)}` on Icarus 12.0 + Verilator 5.020, a reduced **AMD
-  XSim 2025.2** tri-engine cross-check, and **6/6 mutation tests**.
-- **FORMAL (verified)**: `make formal` runs SymbiYosys (local OSS CAD Suite,
-  rootless) — **inductively verified safety properties under documented formal
-  assumptions** (bounded model check + induction), plus **cover** tasks
-  demonstrating non-vacuity, plus a **formal-mutation** check (breaking a
-  protection makes the proof fail). Covers decoder/translator containment +
-  translation, and the config FSM (atomic commit from an immutable pending
-  snapshot, drain-before-commit, TOCTOU-safety, epoch monotonicity, observable
-  busy disposition, reset-recovery from each state).
-- Bounds cover the **complete 64-byte cache line** (HPA+63 in window, DPA+63 <
-  capacity), guard-bit arithmetic throughout.
-- The config controller proves **the active configuration stays stable until
-  admission is frozen and all reported outstanding transactions drain**.
-  Per-request epoch capture is deferred to M2 (needs the outstanding tracker).
-- Defensible résumé wording: *"Implemented a parameterized HDM-style window
-  decoder and HPA-to-DPA translator with fail-closed overlap handling, complete
-  64-byte bounds checking and freeze/drain atomic configuration; cross-simulator
-  verified with Icarus, Verilator and XSim, with safety properties formally
-  verified using SymbiYosys."* Not yet a full "CXL Type-3 validation platform" —
-  see `evidence/claims_matrix.csv`.
+### Current verified status (admission control plane, M1–M4)
+All results are **RTL_SIMULATED + FORMAL** (no silicon/board). Each block is
+differentially verified against an **independent Python reference model** on a
+**two-toolchain** cross-check (system Icarus 12.0 + Verilator 5.020 **and** OSS CAD
+Suite Icarus 14.0 + Verilator 5.051), a reduced **AMD XSim 2025.2** third engine,
+and **SymbiYosys** bmc + induction + cover with formal-mutation non-vacuity.
+
+- **M1 — HDM decode / translate / config**: fail-closed window decode, HPA→DPA
+  translate with complete 64-byte bounds, freeze→drain→atomic-commit config FSM.
+- **M2 — outstanding tracker**: composite `{generation,slot}` tags, stale/non-live
+  classification, timeout **quarantine** (never silently freed), occupancy.
+- **M3 — credit manager**: multi-pool ledger, all-or-nothing consume/return,
+  representability-checked atomic config, saturating diagnostics.
+- **M4 Phase 1 — registered reclaim** handshake (request/response, held under
+  backpressure); classification priority + `SUPERSEDED` proven; commit on accept.
+- **M4 Phase 2a — combinational commit sidebands** + per-entry credit-vector
+  storage (same-edge credit return).
+- **M4 Phase 2b — atomic admission datapath**: one `req_accept` event drives
+  tracker alloc + credit consume + issue enqueue together (proved); credit
+  **conservation** `credit_used[p] == Σ live stored_credit[p]` proved by induction
+  as **mathematical** equality (non-wrapping accumulator + upper-bits-zero); A2 as
+  a DUT theorem; epoch capture.
+- **M4 Phase 2c — one atomic global configuration commit**: HDM/capacity/timeout/
+  credit-maxima/epoch bundled and committed on a **single** `global_cfg_commit_fire`
+  after freeze + full drain; no partial update; no live entry crosses a commit;
+  conservation preserved across commits. Formal single + five-instance matrix
+  (prove+cover), 32/32 sim + 23/23 formal mutations killed.
+
+Per-block contracts: [`docs/config_contract.md`](docs/config_contract.md),
+[`docs/admission_contract.md`](docs/admission_contract.md),
+[`docs/tracker_contract.md`](docs/tracker_contract.md),
+[`docs/credit_contract.md`](docs/credit_contract.md).
+
+**Defensible résumé wording:** *"CXL Type-3 admission and control-plane RTL —
+implemented atomic HDM/timeout/credit configuration, generation-tagged outstanding
+tracking, timeout quarantine and registered reclaim, multi-pool credit
+conservation, and epoch-coupled request admission; differentially tested across
+documented parameter configurations and safety-verified using SymbiYosys."* No CXL
+protocol-compliance, PHY/link-operation, silicon-validation, PCIe-bandwidth or
+tapeout claim; formal results hold for the documented parameter instances, not
+universally.
+
+### Reproduce (control plane)
+```bash
+source tools/oss-cad-suite/environment   # or add tools/oss-cad-suite/bin to PATH
+bash scripts/run_control_plane_sweep.sh   # differential, both engines
+sby -f formal/control_plane.sby           # bmc + prove(induction) + cover
+sby -f formal/control_plane_matrix.sby    # five-instance matrix
+bash scripts/run_mutation_tests.sh        # simulation mutations
+bash scripts/run_formal_mutation.sh       # formal mutations
+bash scripts/run_xsim_crosscheck.sh       # AMD XSim third engine
+```
 
 ### Requirements (present on the reference host)
 Verilator 5.020, Icarus 12.0, GTKWave, Python 3.12, make, gcc. QEMU 8.2.2 (with

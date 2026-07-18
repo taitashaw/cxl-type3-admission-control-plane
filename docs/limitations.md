@@ -118,3 +118,26 @@ No claim is made anywhere in this repo about: PCIe Gen5 link-up, CXL.mem
 enumeration, Type-3 compliance, 32 GT/s SerDes, negotiated x16, eye/BER,
 measured bandwidth/latency, Quartus timing closure, DDR4 operation, or
 SignalTap capture. Those require raw reports/lab logs that do not exist yet.
+
+## M4 admission control plane — verified scope and honest limits (Phase 2c complete)
+
+**Verified (RTL_SIMULATED + FORMAL, documented parameter instances):** the admission
+control plane — outstanding tracker, multi-pool credit manager, registered reclaim,
+atomic admission (`req_accept` drives alloc + consume + issue together), credit
+**conservation** proved by induction as mathematical equality, and **one atomic
+global configuration commit** (HDM/capacity/timeout/credit-maxima/epoch) after
+freeze + full drain. Two-toolchain differential + XSim + SymbiYosys bmc/induction/
+cover + five-instance matrices + sim/formal mutation non-vacuity. See
+`docs/config_contract.md` and `evidence/claims_matrix.csv`.
+
+**NOT claimed / honest limits:**
+- **No general liveness.** Only *safety* is proved. Config drain can remain blocked
+  indefinitely by a non-responding transaction, a quarantined entry that is never
+  reclaimed, a stalled issue buffer, or a requester that never completes recovery.
+- **Formal is per-instance,** not a universal parameter proof (five documented
+  tuples per block, each prove+cover).
+- **HDM address *decode*** is the separately verified M1 block; Phase 2c carries and
+  commits the HDM/capacity fields atomically as configuration words but does not
+  re-derive decode inside the control plane.
+- Unchanged blocked lanes below (Quartus STA, FPGA bring-up, CXL device) still
+  apply: no synthesis, timing closure, silicon, PCIe bandwidth or tapeout is claimed.
