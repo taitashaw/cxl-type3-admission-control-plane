@@ -180,6 +180,27 @@ mutate "admission missing reclaim return" rtl/core/admission_top.sv \
   "s/assign rcl_p = reclaim_commit_fire ? reclaim_commit_credit_vec\[gp\*AMT_W +: AMT_W\] : '0;/assign rcl_p = '0;/" \
   tb_admission_top "$ADM" "$ADMVEC" "$ADMDEF"
 
+# ---- M4 Phase 2c control-plane (global config atomicity) mutations ----
+CP="rtl/core/outstanding_tracker.sv rtl/core/credit_manager.sv rtl/core/admission_top.sv rtl/csr/config_ctrl.sv rtl/core/control_plane_top.sv tb/sv/tb_control_plane_top.sv"
+CPVEC="tb/vectors/cp_2p_3a_6c_8m_4d_4g.vec"
+CPDEF="-DNPOOLS=2 -DAMTW=3 -DCOUNTW=6 -DRESETMAX=8 -DDEPTH=4 -DGENW=4 -DEPOCHW=8 -DOPW=2 -DMETAW=8 -DTSW=8 -DHDMW=16 -DCAPW=16"
+# commit from mutable SHADOW (live input) instead of the immutable pending snapshot
+mutate "cp commit from shadow not pending" rtl/csr/config_ctrl.sv \
+  "s/active_epoch <= p_epoch;/active_epoch <= cfg_epoch;/" \
+  tb_control_plane_top "$CP" "$CPVEC" "$CPDEF"
+# PARTIAL config update: one field (epoch) misses the shared commit
+mutate "cp partial config update (epoch)" rtl/csr/config_ctrl.sv \
+  "s/active_epoch <= p_epoch;/active_epoch <= active_epoch;/" \
+  tb_control_plane_top "$CP" "$CPVEC" "$CPDEF"
+# NOTE: "commit while occupancy/credit nonzero" is proven in FORMAL (B4 quiescence
+# assert), not sim: in reachable DRAINED states conservation couples occupancy and
+# credit_used, so dropping one term is masked in the differential. See
+# run_formal_mutation.sh ("cp commit needs occupancy/credit zero").
+# admission fires while FROZEN (req_accept_enable not gated on IDLE)
+mutate "cp admission fires while frozen" rtl/csr/config_ctrl.sv \
+  "s/assign req_accept_enable = rst_n \&\& (state == S_IDLE);/assign req_accept_enable = rst_n;/" \
+  tb_control_plane_top "$CP" "$CPVEC" "$CPDEF"
+
 echo "=================================================="
 echo "mutations killed=$kills survived=$survivors"
 [ $survivors -eq 0 ] && { echo "MUTATION TESTS: PASS (all protections observable)"; exit 0; } || { echo "MUTATION TESTS: FAIL"; exit 1; }

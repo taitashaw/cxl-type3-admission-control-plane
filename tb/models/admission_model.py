@@ -45,6 +45,24 @@ class Admission:
                 return 0
         return 1
 
+    # ---- credit configuration (Phase 2c) ----
+    def _cmax_list(self, inp):
+        """committed_max per pool, pre-truncation (or zeros if absent)."""
+        return inp.get('cfg_committed_max', [0] * self.N_POOLS)
+
+    def _credit_cfg_fire(self, inp):
+        if not (inp.get('rst_n', 1) and inp.get('cfg_config_commit', 0)
+                and inp.get('cfg_frozen_empty', 0)):
+            return 0
+        all_unused = all(u == 0 for u in self.used)
+        cmx = self._cmax_list(inp)
+        representable = all(v < (1 << self.COUNT_W) for v in cmx)
+        return 1 if (all_unused and representable) else 0
+
+    def _credit_cfg_reject(self, inp):
+        cc = inp.get('rst_n', 1) and inp.get('cfg_config_commit', 0)
+        return 1 if (cc and not self._credit_cfg_fire(inp)) else 0
+
     # ---- combinational admission signals from pre-edge state ----
     def _admit(self, inp):
         full = 1 if self.trk.full() else 0
@@ -87,6 +105,10 @@ class Admission:
             issued_tag=to['alloc_tag'], issue_tag=self.issue_tag,
             resp_retire=to['resp_retire'], resp_class=to['resp_class'],
             retired_epoch=to['retired_epoch'],
+            retire_commit_fire=to['retire_commit_fire'], reclaim_commit_fire=to['reclaim_commit_fire'],
+            quarantined_count=to['quarantined_count'],
+            credit_cfg_commit_fire=self._credit_cfg_fire(inp),
+            credit_cfg_reject=self._credit_cfg_reject(inp),
             reclaim_req_ready=to['reclaim_req_ready'], reclaim_rsp_valid=to['reclaim_rsp_valid'],
             reclaim_rsp_tag=to['reclaim_rsp_tag'], reclaim_rsp_class=to['reclaim_rsp_class'],
             credit_return_valid=ret_valid, credit_return_accepted=ret_valid,
@@ -98,11 +120,17 @@ class Admission:
         tinp = self._tracker_inp(inp, req_accept)
         to = self.trk.outputs(tinp)
         agg, ret_valid = self._return_agg(to)
-        # ledger update (consume on accept, aggregated return once)
+        cfg_fire = self._credit_cfg_fire(inp)
+        # ledger update (consume on accept, aggregated return once). A config commit
+        # blocks consume/return that edge (mirrors credit_manager) and updates cmax.
         for p in range(self.N_POOLS):
-            camt = self._vec_pool(inp['req_credit_vec'], p) if req_accept else 0
-            ramt = agg[p] if ret_valid else 0
+            camt = self._vec_pool(inp['req_credit_vec'], p) if (req_accept and not cfg_fire) else 0
+            ramt = agg[p] if (ret_valid and not cfg_fire) else 0
             self.used[p] = self.used[p] + camt - ramt
+        if cfg_fire:
+            cmx = self._cmax_list(inp)
+            for p in range(self.N_POOLS):
+                self.cmax[p] = cmx[p] & ((1 << self.COUNT_W) - 1)
         # issue buffer
         if self.issue_full and inp['downstream_ready']:
             self.issue_full = 0

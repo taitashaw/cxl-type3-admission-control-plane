@@ -40,3 +40,8 @@ formal/admission_prove/
 formal/admission_cover/
 formal/admission_matrix_*/
 formal/admission_mut_*/
+tb/vectors/cp_*.vec
+formal/control_plane_bmc/
+formal/control_plane_prove/
+formal/control_plane_cover/
+formal/control_plane_matrix_*/

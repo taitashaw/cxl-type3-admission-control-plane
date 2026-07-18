@@ -61,7 +61,6 @@ module formal_control_plane #(
     cover (rst_n && cfg_rsp_valid && cfg_rsp_code == 3'd1);                   // INVALID response
     cover (rst_n && cfg_rsp_valid && cfg_rsp_code == 3'd1 && !global_cfg_commit_fire); // invalid, no commit
     cover (rst_n && dut.u_cfg.state == 3'd1 && occupancy != '0);             // draining with live traffic
-    cover (rst_n && req_accept && occupancy != '0);                          // admit while traffic live
     cover (rst_n && dut.quarantined_count != '0);                           // quarantine present
     cover (rst_n && global_cfg_commit_fire && p_rst);                        // commit after prior activity
     cover (rst_n && cfg_rsp_valid && !cfg_rsp_ready);                        // config response backpressure
@@ -70,7 +69,9 @@ module formal_control_plane #(
   end
 
   generate if (DEPTH > 1) begin : g_multi
-    always @(posedge clk)
+    always @(posedge clk) begin
+      cover (rst_n && req_accept && occupancy != '0);                        // admit while traffic live
       cover (rst_n && req_accept && resp_retire && dut.reclaim_commit_fire); // accept+retire+reclaim
+    end
   end endgenerate
 endmodule

@@ -88,6 +88,25 @@ fmut "admission: wrong epoch capture" "$AMB" "$AMT" \
 fmut "admission: timeout must not free credit" "$AMB" rtl/core/outstanding_tracker.sv \
   "s/for (i = 0; i < DEPTH; i++) if (new_timeout\[i\]) timed_out\[i\] <= 1'b1;/for (i = 0; i < DEPTH; i++) if (new_timeout[i]) begin timed_out[i] <= 1'b1; live[i] <= 1'b0; end/" bmc
 
+# ---- M4 Phase 2c control-plane global-atomicity formal mutations ----
+CPB=formal/control_plane.sby
+# commit from mutable shadow -> "field == $past(pending)" atomicity assert fails
+fmut "cp commit from shadow not pending" "$CPB" rtl/csr/config_ctrl.sv \
+  "s/active_epoch <= p_epoch;/active_epoch <= cfg_epoch;/" bmc
+# a field misses the shared commit (partial update) -> atomicity assert fails
+fmut "cp partial config update" "$CPB" rtl/csr/config_ctrl.sv \
+  "s/active_epoch <= p_epoch;/active_epoch <= active_epoch;/" bmc
+# commit while occupancy nonzero -> no-live-entry-crosses-commit / shared-commit fails
+fmut "cp commit needs occupancy zero" "$CPB" rtl/csr/config_ctrl.sv \
+  "s/assign quiescent = (adm_occupancy == '0) \&\& (adm_quarantined == '0)/assign quiescent = (1'b1) \&\& (adm_quarantined == '0)/" bmc
+# commit while the ISSUE BUFFER is occupied (drop the issue-empty quiescence term)
+# -> commit-quiescence assert (!issue_valid) fails
+fmut "cp commit while issue occupied" "$CPB" rtl/csr/config_ctrl.sv \
+  "s/&& adm_credit_used_zero && !adm_issue_valid && !adm_req_accept/\&\& adm_credit_used_zero \&\& 1'b1 \&\& !adm_req_accept/" bmc
+# admission not frozen while (re)configuring -> freeze assert fails
+fmut "cp admission fires while frozen" "$CPB" rtl/csr/config_ctrl.sv \
+  "s/assign req_accept_enable = rst_n \&\& (state == S_IDLE);/assign req_accept_enable = rst_n;/" bmc
+
 echo "=================================================="
 echo "formal mutations killed=$kills survived=$survivors"
 [ $survivors -eq 0 ] && { echo "FORMAL MUTATION: PASS (proofs are non-vacuous)"; exit 0; } || { echo "FORMAL MUTATION: FAIL"; exit 1; }

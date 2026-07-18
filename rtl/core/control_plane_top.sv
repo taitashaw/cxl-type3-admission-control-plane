@@ -164,8 +164,12 @@ module control_plane_top #(
       if (global_cfg_commit_fire) assert (!credit_cfg_reject);
       // no consumer commits without the shared edge
       assert (credit_cfg_commit_fire == global_cfg_commit_fire);
-      // (B4/B8) no live entry crosses a commit: occupancy is 0 at the commit edge
-      if (global_cfg_commit_fire) assert (occupancy == '0 && quarantined_count == '0);
+      // (B4/B8) no live entry crosses a commit: at the commit edge occupancy is 0,
+      // none quarantined, every pool's credit_used is 0, and the issue buffer is
+      // empty. (credit_used_zero is redundant with occupancy==0 via conservation,
+      // but asserted directly to satisfy the B4 field list.)
+      if (global_cfg_commit_fire) assert (occupancy == '0 && quarantined_count == '0
+                                          && credit_used_zero && !issue_valid);
       // (B5) admission frozen -> no admission side effects while (re)configuring
       if (!req_accept_enable) assert (!req_accept && !tracker_alloc_fire && !credit_consume_fire);
     end
