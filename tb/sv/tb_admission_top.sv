@@ -73,8 +73,16 @@ module tb_admission_top;
   logic [TAG_W-1:0]      reclaim_rsp_tag; logic [2:0] reclaim_rsp_class;
   logic                  tracker_alloc_fire, credit_consume_fire, issue_enqueue;
   logic                  credit_return_valid, credit_return_accepted;
+  logic                  retire_commit_fire, reclaim_commit_fire;
+  logic [OCC_W-1:0]      quarantined_count;
   logic [N_POOLS*COUNT_W-1:0] used, available;
   logic [OCC_W-1:0]      occupancy;
+  // Phase 2b: credit configuration tied off (config commit is a Phase 2c concern)
+  localparam int unsigned MREQ_W = COUNT_W+1;
+  logic [N_POOLS*MREQ_W-1:0] cfg_committed_max = '0;
+  logic                  cfg_config_commit = 1'b0;
+  logic                  cfg_frozen_empty = 1'b0;
+  logic                  credit_cfg_commit_fire, credit_cfg_reject;
 
   admission_top #(.N_POOLS(N_POOLS), .AMT_W(AMT_W), .COUNT_W(COUNT_W), .RESET_MAX(RESET_MAX),
                   .DEPTH(DEPTH), .GEN_W(GEN_W), .EPOCH_W(EPOCH_W), .OP_W(OP_W),

@@ -31,6 +31,7 @@ module admission_top #(
   parameter int unsigned TS_W      = 8,
   // derived
   parameter int unsigned CREDIT_VEC_W = N_POOLS*AMT_W,
+  parameter int unsigned MREQ_W        = COUNT_W+1,       // pre-truncation requested credit max
   parameter int unsigned RET_W        = AMT_W+1,          // dual-return headroom (no truncation)
   parameter int unsigned RETVEC_W     = N_POOLS*RET_W,
   parameter int unsigned SLOT_W       = (DEPTH <= 1) ? 1 : $clog2(DEPTH),
@@ -79,12 +80,23 @@ module admission_top #(
   output logic [TAG_W-1:0]           reclaim_rsp_tag,
   output logic [2:0]                 reclaim_rsp_class,
 
+  // ---- credit configuration (driven by the Phase 2c config controller; tie
+  //      cfg_config_commit=0 for standalone Phase 2b use) ----
+  input  logic [N_POOLS*MREQ_W-1:0]  cfg_committed_max,
+  input  logic                       cfg_config_commit,
+  input  logic                       cfg_frozen_empty,
+  output logic                       credit_cfg_commit_fire,
+  output logic                       credit_cfg_reject,
+
   // ---- observability ----
   output logic                       tracker_alloc_fire,
   output logic                       credit_consume_fire,
   output logic                       issue_enqueue,
   output logic                       credit_return_valid,
   output logic                       credit_return_accepted,
+  output logic                       retire_commit_fire,     // for config-drain quiescence
+  output logic                       reclaim_commit_fire,
+  output logic [OCC_W-1:0]           quarantined_count,
   output logic [N_POOLS*COUNT_W-1:0] used,
   output logic [N_POOLS*COUNT_W-1:0] available,
   output logic [OCC_W-1:0]           occupancy
@@ -123,12 +135,11 @@ module admission_top #(
   // ==========================================================================
   logic [TAG_W-1:0] alloc_tag;
   logic [SLOT_W-1:0] alloc_slot;
-  logic             retire_commit_fire, reclaim_commit_fire;
   logic [CREDIT_VEC_W-1:0] retire_commit_credit_vec, reclaim_commit_credit_vec;
   logic [EPOCH_W-1:0] retire_commit_epoch, reclaim_commit_epoch;
   logic [META_W-1:0]  retire_commit_meta, reclaim_commit_meta;
   logic [OP_W-1:0] retired_op; logic [META_W-1:0] retired_meta;
-  logic [OCC_W-1:0]  hwm_unused, quar_unused; logic timeout_any_unused;
+  logic [OCC_W-1:0]  hwm_unused; logic timeout_any_unused;
   logic [META_W-1:0] reclaim_rsp_meta_unused;
   logic [DEPTH-1:0]              dbg_live;
   logic [DEPTH*CREDIT_VEC_W-1:0] dbg_credit_vec;
@@ -154,7 +165,7 @@ module admission_top #(
     .reclaim_tag(reclaim_tag), .reclaim_rsp_valid(reclaim_rsp_valid),
     .reclaim_rsp_ready(reclaim_rsp_ready), .reclaim_rsp_tag(reclaim_rsp_tag),
     .reclaim_rsp_class(reclaim_rsp_class), .reclaim_rsp_meta(reclaim_rsp_meta_unused),
-    .occupancy(occupancy), .high_watermark(hwm_unused), .quarantined_count(quar_unused),
+    .occupancy(occupancy), .high_watermark(hwm_unused), .quarantined_count(quarantined_count),
     .timeout_any(timeout_any_unused), .alloc_count(ac_u), .retire_count(rc_u),
     .full_count(fc_u), .timeout_count(tc_u), .reclaim_count(rcl_u),
     .invalid_slot_count(is_u), .non_live_count(nl_u), .stale_gen_count(sg_u),
@@ -191,7 +202,6 @@ module admission_top #(
   // ==========================================================================
   logic [N_POOLS*RET_W-1:0]  cm_return_amount;
   logic [N_POOLS*3-1:0]      cfg_reason_u;
-  logic cfg_commit_fire_u, cfg_reject_u;
   logic [N_POOLS*COUNT_W-1:0] configured_max_u, hwm_used_u;
   logic [N_POOLS-1:0] pool_full_u, pool_empty_u;
   logic sticky_err_u; logic [2:0] first_err_type_u;
@@ -206,8 +216,8 @@ module admission_top #(
     .consume_ready(credit_consume_ready), .consume_fire(credit_consume_fire),
     .return_valid(credit_return_valid), .return_amount(cm_return_amount),
     .return_accepted(credit_return_accepted),
-    .committed_max('0), .config_commit(1'b0), .frozen_and_empty(1'b0),
-    .diagnostic_clear(1'b0), .cfg_commit_fire(cfg_commit_fire_u), .cfg_reject(cfg_reject_u),
+    .committed_max(cfg_committed_max), .config_commit(cfg_config_commit), .frozen_and_empty(cfg_frozen_empty),
+    .diagnostic_clear(1'b0), .cfg_commit_fire(credit_cfg_commit_fire), .cfg_reject(credit_cfg_reject),
     .cfg_reason(cfg_reason_u[2:0]),
     .used(used), .available(available), .configured_max(configured_max_u),
     .pool_full(pool_full_u), .pool_empty(pool_empty_u), .hwm_used(hwm_used_u),

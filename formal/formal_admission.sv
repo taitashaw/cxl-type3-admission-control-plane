@@ -42,8 +42,19 @@ module formal_admission #(
   logic [TAG_W-1:0]       reclaim_rsp_tag; logic [2:0] reclaim_rsp_class;
   logic                   tracker_alloc_fire, credit_consume_fire, issue_enqueue;
   logic                   credit_return_valid, credit_return_accepted;
+  logic                   retire_commit_fire, reclaim_commit_fire;
+  logic [OCC_W-1:0]       quarantined_count;
   logic [N_POOLS*COUNT_W-1:0] used, available;
   logic [OCC_W-1:0]       occupancy;
+  // Phase 2b scope: credit configuration is inactive (proved in Phase 2c). Tie the
+  // config-commit inputs off so the standalone admission proofs hold.
+  localparam int unsigned MREQ_W = COUNT_W+1;
+  logic [N_POOLS*MREQ_W-1:0] cfg_committed_max;
+  logic                   cfg_config_commit, cfg_frozen_empty;
+  logic                   credit_cfg_commit_fire, credit_cfg_reject;
+  always_comb begin
+    cfg_committed_max = '0; cfg_config_commit = 1'b0; cfg_frozen_empty = 1'b0;
+  end
 
   admission_top #(.N_POOLS(N_POOLS), .AMT_W(AMT_W), .COUNT_W(COUNT_W), .RESET_MAX(RESET_MAX),
                   .DEPTH(DEPTH), .GEN_W(GEN_W), .EPOCH_W(EPOCH_W), .OP_W(OP_W),

@@ -1,0 +1,27 @@
+[tasks]
+bmc
+prove
+cover
+
+[options]
+bmc: mode bmc
+bmc: depth 18
+prove: mode prove
+prove: depth 18
+cover: mode cover
+cover: depth 24
+
+[engines]
+smtbmc yices
+
+[script]
+read_verilog -sv -formal -DFORMAL outstanding_tracker.sv credit_manager.sv admission_top.sv config_ctrl.sv control_plane_top.sv formal_control_plane.sv
+prep -top formal_control_plane
+
+[files]
+rtl/core/outstanding_tracker.sv
+rtl/core/credit_manager.sv
+rtl/core/admission_top.sv
+rtl/csr/config_ctrl.sv
+rtl/core/control_plane_top.sv
+formal/formal_control_plane.sv
