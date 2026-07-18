@@ -84,33 +84,62 @@ This is formalized (asserted), not left to statement ordering. Occupancy delta �
   a slot-only reclaim could free a *newer* occupant if the requester acted on
   stale state. Reclaim succeeds only when
   `slot < DEPTH && live[slot] && timed_out[slot] && generation[slot] == reclaim_generation`.
-- Observable result `reclaim_rsp_class`:
+- Observable result `reclaim_rsp_class`. **Exact classification priority** (each
+  level is reachable only when every level above it fails), identical in the RTL,
+  the independent model, and (for the shared checks) the response-path classifier:
 
-  | class | meaning |
-  |---|---|
-  | `RCL_OK` | slot freed |
-  | `RCL_INVALID_SLOT` | slot ≥ DEPTH |
-  | `RCL_NOT_LIVE` | slot not live |
-  | `RCL_STALE_GEN` | generation mismatch (requester used stale state) |
-  | `RCL_NOT_QUARANTINED` | live+matching but not timed out — reclaim refused |
-  | `RCL_SUPERSEDED` | a valid response retired the slot this cycle (response wins) |
+  | # | class | condition |
+  |---|---|---|
+  | 1 | `RCL_INVALID_SLOT` | `slot ≥ DEPTH` |
+  | 2 | `RCL_NOT_LIVE` | slot not live |
+  | 3 | `RCL_STALE_GEN` | live but `generation[slot] ≠ reclaim_generation` (requester used stale state) |
+  | 4 | `RCL_NOT_QUARANTINED` | live + matching gen but **never timed out** — recovery refused |
+  | 5 | `RCL_SUPERSEDED` | an **otherwise-qualified** reclaim (valid slot, live, matching gen, **already quarantined**) that collides with a **valid same-slot retirement this cycle** — the response wins and the reclaim is a **no-op** |
+  | 0 | `RCL_OK` | slot freed by this reclaim |
+
+  `RCL_SUPERSEDED` is therefore *not* "any same-cycle response"; it is specifically
+  the case that would have been `RCL_OK` were it not for a simultaneous valid
+  retirement of the same slot. It is proven (assertion + cover) that under
+  `SUPERSEDED` the response retires the slot exactly once and the reclaim performs
+  **no** state change (no second free).
 
   **Registered request/response handshake (M4 Phase 1).** Reclaim is a decoupled
   channel, not a combinational pulse:
   - `reclaim_req_valid` / `reclaim_req_ready` accept a request; `reclaim_req_ready
-    = rst_n && !reclaim_rsp_valid` (one classification in flight at a time).
+    = rst_n && !reclaim_rsp_valid` (**at most one classification in flight**; this
+    imposes an intentional one-cycle turnaround bubble — a new request is accepted
+    only after the previous response is consumed).
   - `reclaim_accept = reclaim_req_valid && reclaim_req_ready`. On accept the class
     is computed **combinationally from pre-edge state** (so a same-cycle valid
     response's freeing of the slot does **not** change the classification) and is
-    **registered** into `reclaim_rsp_class`, with the freed slot's stored meta into
-    `reclaim_rsp_meta` on `RCL_OK`.
-  - `reclaim_rsp_valid` / `reclaim_rsp_ready` return the result; the response is
-    **held stable under backpressure** (`!reclaim_rsp_ready`) until consumed —
-    verified formally (`reclaim_rsp_valid`/`class`/`meta` invariant while waiting)
-    and by cover. Recovery therefore never depends on sampling a transient value.
-  - The classification priority is `INVALID_SLOT > NOT_LIVE > STALE_GEN >
-    NOT_QUARANTINED > SUPERSEDED > OK` — identical between RTL and the independent
-    model, and to the response-path classifier.
+    **registered** into `reclaim_rsp_class`, `reclaim_rsp_tag` (echo of the accepted
+    request), and `reclaim_rsp_meta`.
+  - `reclaim_rsp_meta` is the freed slot's stored meta **only on `RCL_OK`**; for
+    every non-OK class it is **forced to 0** (asserted), so a consumer can never
+    latch stale metadata from a prior successful reclaim.
+  - `reclaim_rsp_valid` / `reclaim_rsp_ready` return the result; class, tag and meta
+    are **held stable under backpressure** (`!reclaim_rsp_ready`) until consumed —
+    proven by induction and reached by cover. Recovery never depends on sampling a
+    transient value.
+
+  **Commit point (unambiguous).** A successful reclaim (`reclaim_success_fire =
+  reclaim_accept && class == RCL_OK`) fires on the **accept edge**
+  (`reclaim_req_fire`), *not* on the response fire. On that single edge the slot is
+  freed and its meta is captured immutably into the response. The registered
+  response is purely **informational**: backpressure can neither repeat nor defer
+  the functional side effect, and reset may cancel a pending response but cannot
+  undo an already-committed reclaim. M4 integration returns the slot's stored credit
+  vector on this **same** `reclaim_success_fire` edge, keeping slot release and
+  credit return on one cycle (never split), preserving
+  `credit_used[p] = Σ live_slot_credit[p]`.
+
+  **Handshake accounting (proven by induction).** `accepted − completed ∈ {0,1}`
+  and equals `reclaim_rsp_valid`; no response appears without a prior accepted
+  request; exactly one response per accepted request (no double response); a
+  completion with no new accept clears the channel; reset clears a pending
+  informational response; and the reclaim side effect (`reclaim_count`, slot free)
+  moves **iff** `reclaim_success_fire` fired on the accept edge — never as a
+  function of when/whether the response is later consumed.
 - A reclaimed slot is freed; the **next allocation bumps its generation**, so a
   later response to the old transaction is `NON_LIVE` (before realloc) or
   `STALE_GEN` (after). **Qualification:** a late response after reclaim cannot

@@ -35,7 +35,7 @@ class Tracker:
         self.c = dict(alloc=0, retire=0, full=0, timeout=0, reclaim=0, invalid=0, non_live=0, stale=0)
         self.err_sticky = 0; self.err_first = RC_VALID
         # registered reclaim-response state (handshake)
-        self.rr_valid = 0; self.rr_class = RCL_OK; self.rr_meta = 0
+        self.rr_valid = 0; self.rr_class = RCL_OK; self.rr_meta = 0; self.rr_tag = 0
 
     def _reclaim_ready(self):
         return 0 if self.rr_valid else 1     # one in flight
@@ -100,7 +100,7 @@ class Tracker:
                     retired_epoch=rr_ep, retired_op=rr_op, retired_meta=rr_me,
                     reclaim_req_ready=self._reclaim_ready(),
                     reclaim_rsp_valid=self.rr_valid, reclaim_rsp_class=self.rr_class,
-                    reclaim_rsp_meta=self.rr_meta,
+                    reclaim_rsp_tag=self.rr_tag, reclaim_rsp_meta=self.rr_meta,
                     occupancy=self.occ, high_watermark=self.hwm,
                     quarantined_count=quarantined, timeout_any=timeout_any,
                     alloc_count=self.c['alloc'], retire_count=self.c['retire'], full_count=self.c['full'],
@@ -153,9 +153,9 @@ class Tracker:
         if self.rr_valid and inp['reclaim_rsp_ready']:
             self.rr_valid = 0
         if reclaim_accept:
-            self.rr_valid = 1; self.rr_class = reclaim_cls
-            if reclaim_cls == RCL_OK:
-                self.rr_meta = reclaim_meta_snap
+            self.rr_valid = 1; self.rr_class = reclaim_cls; self.rr_tag = inp['reclaim_tag']
+            # meta meaningful only on RCL_OK; force 0 otherwise (no stale metadata)
+            self.rr_meta = reclaim_meta_snap if reclaim_cls == RCL_OK else 0
         # reclaim (recovery): free the quarantined slot
         if do_reclaim:
             self.live[rc_slot] = 0; self.timed[rc_slot] = 0

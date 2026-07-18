@@ -95,6 +95,16 @@ mutate "tracker reclaim needs quarantine" rtl/core/outstanding_tracker.sv \
 mutate "tracker timeout-vs-retire priority" rtl/core/outstanding_tracker.sv \
   "s/&& !(resp_retire  && r_slot  == gt\[SLOT_W-1:0\])/\&\& 1'b1/" \
   tb_outstanding_tracker "$OT" "$OVEC" "$OTDEF"
+# M12 SUPERSEDED must be a NO-OP: mutate so a superseded reclaim also frees the
+# slot (double-frees the same slot the response is retiring this cycle)
+mutate "tracker superseded is a no-op" rtl/core/outstanding_tracker.sv \
+  "s/assign reclaim_success_fire = reclaim_accept \&\& (reclaim_class_now == RCL_OK);/assign reclaim_success_fire = reclaim_accept \&\& (reclaim_class_now == RCL_OK || reclaim_class_now == RCL_SUPERSEDED);/" \
+  tb_outstanding_tracker "$OT" "$OVEC" "$OTDEF"
+# M13 metadata hygiene: drop the zeroing of reclaim_rsp_meta on a non-OK class
+# (stale metadata from a prior successful reclaim leaks into a refusal response)
+mutate "tracker non-OK meta must be zero" rtl/core/outstanding_tracker.sv \
+  "s/else                             reclaim_rsp_meta <= '0;/\/\/ mutated: no zeroing/" \
+  tb_outstanding_tracker "$OT" "$OVEC" "$OTDEF"
 
 # ---- M3 credit_manager mutations ----
 CM="rtl/core/credit_manager.sv tb/sv/tb_credit_manager.sv"

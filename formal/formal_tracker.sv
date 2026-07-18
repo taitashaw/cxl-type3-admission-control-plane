@@ -36,6 +36,7 @@ module formal_tracker #(
   logic               reclaim_req_valid, reclaim_req_ready;
   logic [TAG_W-1:0]   reclaim_tag;
   logic               reclaim_rsp_valid, reclaim_rsp_ready;
+  logic [TAG_W-1:0]   reclaim_rsp_tag;
   logic [2:0]         reclaim_rsp_class;
   logic [META_W-1:0]  reclaim_rsp_meta;
   logic [OCC_W-1:0]   occupancy, high_watermark, quarantined_count;
@@ -59,6 +60,7 @@ module formal_tracker #(
     cover (rst_n && timeout_any);                                // timeout reached
     cover (rst_n && occupancy == OCC_W'(DEPTH));                 // fully occupied
     cover (rst_n && reclaim_rsp_valid && reclaim_rsp_class == 3'd0); // successful (RCL_OK) reclaim response
+    cover (rst_n && reclaim_rsp_valid && reclaim_rsp_class == 3'd5); // SUPERSEDED: reclaim lost to same-slot retire
     cover (rst_n && reclaim_req_valid && reclaim_req_ready);      // reclaim request accepted
     cover (rst_n && reclaim_rsp_valid && !reclaim_rsp_ready);     // response held under backpressure
     cover (rst_n && quarantined_count != '0);                    // a slot is quarantined

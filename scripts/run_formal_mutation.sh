@@ -48,6 +48,10 @@ fmut "tracker: timeout aggregate" formal/tracker.sby rtl/core/outstanding_tracke
 # tracker: retire without generation match -> stale response wrongly retires
 fmut "tracker: generation check" formal/tracker.sby rtl/core/outstanding_tracker.sv \
   "s/else if (r_gen != gen\[r_slot\])  resp_class = RC_STALE_GEN;/else if (1'b0)                  resp_class = RC_STALE_GEN;/" bmc
+# tracker: SUPERSEDED must be a no-op -> mutate it to also free the slot, so a
+# reclaim and a valid response free the SAME slot (r_slot==rc_slot assert fails)
+fmut "tracker: superseded no-op" formal/tracker.sby rtl/core/outstanding_tracker.sv \
+  "s/assign reclaim_success_fire = reclaim_accept \&\& (reclaim_class_now == RCL_OK);/assign reclaim_success_fire = reclaim_accept \&\& (reclaim_class_now == RCL_OK || reclaim_class_now == RCL_SUPERSEDED);/" bmc
 # credit: config commits while pools are in use -> used<=max invariant breaks
 fmut "credit: cfg needs empty" formal/credit.sby rtl/core/credit_manager.sv \
   "s/config_commit \&\& frozen_and_empty \&\& all_unused \&\& cfg_representable;/config_commit \&\& frozen_and_empty \&\& cfg_representable;/" bmc

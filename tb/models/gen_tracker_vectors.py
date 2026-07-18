@@ -32,7 +32,7 @@ THRESH = 24     # < 2^(TS_W-1)=128
 def hx(v): return format(int(v) & ((1<<256)-1), "x")
 
 OUTFIELDS = ["alloc_gnt","alloc_tag","alloc_slot","full","resp_retire","resp_class",
-             "retired_epoch","retired_op","retired_meta","reclaim_req_ready","reclaim_rsp_valid","reclaim_rsp_class","reclaim_rsp_meta","occupancy",
+             "retired_epoch","retired_op","retired_meta","reclaim_req_ready","reclaim_rsp_valid","reclaim_rsp_tag","reclaim_rsp_class","reclaim_rsp_meta","occupancy",
              "high_watermark","quarantined_count","timeout_any",
              "alloc_count","retire_count","full_count","timeout_count","reclaim_count",
              "invalid_slot_count","non_live_count","stale_gen_count",
@@ -109,6 +109,18 @@ def gen_one(DEPTH, GEN_W):
                 sl = random.choice(nq)
                 reclaim_req_valid = 1
                 reclaim_tag = (m.gen[sl] << m.SLOT_W) | sl
+
+        # TARGETED: RCL_SUPERSEDED -- an otherwise-qualified reclaim (live, matching
+        # generation, ALREADY quarantined) that collides with a valid same-slot
+        # retirement on the accept cycle. The response wins; the reclaim must be a
+        # no-op. Only meaningful when the channel can accept (no response pending).
+        if m.rr_valid == 0 and random.random() < 0.10:
+            q = [x for x in range(DEPTH) if m.live[x] and m.timed[x]]
+            if q:
+                sl = random.choice(q)
+                vtag = (m.gen[sl] << m.SLOT_W) | sl
+                reclaim_req_valid = 1; reclaim_tag = vtag
+                resp_valid = 1; resp_tag = vtag        # valid same-slot retire -> SUPERSEDED
 
         inp = dict(current_ts=ts, timeout_enable=to_en, timeout_thresh=thr, alloc_req=alloc_req,
                    alloc_epoch=alloc_epoch, alloc_op=alloc_op, alloc_meta=alloc_meta,

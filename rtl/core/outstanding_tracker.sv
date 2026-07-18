@@ -75,8 +75,9 @@ module outstanding_tracker #(
   input  logic [TAG_W-1:0]     reclaim_tag,     // {gen, slot}
   output logic                 reclaim_rsp_valid,
   input  logic                 reclaim_rsp_ready,
+  output logic [TAG_W-1:0]     reclaim_rsp_tag,    // echoes the accepted request tag
   output logic [2:0]           reclaim_rsp_class,  // see RCL_* below
-  output logic [META_W-1:0]    reclaim_rsp_meta,   // freed slot's stored meta on RCL_OK
+  output logic [META_W-1:0]    reclaim_rsp_meta,   // freed slot's stored meta on RCL_OK, else 0
 
   // ---- status / counters ----
   output logic [OCC_W-1:0]     occupancy,
@@ -175,6 +176,16 @@ module outstanding_tracker #(
   assign rc_slot_ok = ({{(32-SLOT_W){1'b0}}, rc_slot} < DEPTH);
   assign reclaim_req_ready = rst_n && !reclaim_rsp_valid;   // one in flight
   assign reclaim_accept    = reclaim_req_valid && reclaim_req_ready;
+  // Classification is COMBINATIONAL on PRE-EDGE state at the accept edge, with a
+  // FIXED priority (each level is only reachable when all higher levels fail):
+  //   1 RCL_INVALID_SLOT     slot >= DEPTH
+  //   2 RCL_NOT_LIVE         slot not live
+  //   3 RCL_STALE_GEN        live but generation mismatch (requester used stale state)
+  //   4 RCL_NOT_QUARANTINED  live+matching but never timed out (recovery refused)
+  //   5 RCL_SUPERSEDED       OTHERWISE-QUALIFIED reclaim (valid slot, live, matching
+  //                          gen, quarantined) that collides with a valid same-slot
+  //                          retirement THIS cycle -- the response wins, reclaim is a no-op
+  //   0 RCL_OK               freed by this reclaim
   always_comb begin
     reclaim_class_now = RCL_OK;
     if (reclaim_accept) begin
@@ -186,8 +197,15 @@ module outstanding_tracker #(
       else                                             reclaim_class_now = RCL_OK;
     end
   end
-  logic reclaim_done;
-  assign reclaim_done = reclaim_accept && (reclaim_class_now == RCL_OK);
+  // COMMIT POINT: a successful reclaim fires on the ACCEPT edge (reclaim_req_fire),
+  // NOT on the response fire. On this single edge the slot is freed and its stored
+  // meta is captured immutably into the (informational) response. Response
+  // backpressure holds only the observable copy; it can neither repeat nor defer
+  // the functional side effect. This is the event that M4 integration will also
+  // use to return the slot's stored credit vector, keeping slot release and credit
+  // return on the same cycle.
+  logic reclaim_success_fire;
+  assign reclaim_success_fire = reclaim_accept && (reclaim_class_now == RCL_OK);
 
   // ---- timeout marking with event priority ---------------------------------
   logic [DEPTH-1:0] new_timeout;
@@ -201,7 +219,7 @@ module outstanding_tracker #(
       assign new_timeout[gt] = live[gt] && !timed_out[gt] && timeout_active
                             && (age >= timeout_thresh)
                             && !(resp_retire  && r_slot  == gt[SLOT_W-1:0])
-                            && !(reclaim_done && rc_slot == gt[SLOT_W-1:0]);
+                            && !(reclaim_success_fire && rc_slot == gt[SLOT_W-1:0]);
     end
   endgenerate
   logic [OCC_W-1:0] n_new_timeout;
@@ -219,7 +237,7 @@ module outstanding_tracker #(
   logic do_alloc, do_retire, do_reclaim;
   assign do_alloc   = alloc_gnt;
   assign do_retire  = resp_retire;
-  assign do_reclaim = reclaim_done;   // already excludes same-slot valid response
+  assign do_reclaim = reclaim_success_fire;   // already excludes same-slot valid response
 
   logic [OCC_W-1:0] occ_next;
   always_comb begin
@@ -240,7 +258,7 @@ module outstanding_tracker #(
       alloc_count<='0; retire_count<='0; full_count<='0; timeout_count<='0; reclaim_count<='0;
       invalid_slot_count<='0; non_live_count<='0; stale_gen_count<='0;
       err_sticky<=1'b0; err_first_class<=RC_VALID;
-      reclaim_rsp_valid<=1'b0; reclaim_rsp_class<=RCL_OK; reclaim_rsp_meta<='0;
+      reclaim_rsp_valid<=1'b0; reclaim_rsp_class<=RCL_OK; reclaim_rsp_meta<='0; reclaim_rsp_tag<='0;
     end else begin
       // timeout marking (sticky) + aggregate saturating counter
       for (i = 0; i < DEPTH; i++) if (new_timeout[i]) timed_out[i] <= 1'b1;
@@ -270,7 +288,11 @@ module outstanding_tracker #(
       if (reclaim_accept) begin
         reclaim_rsp_valid <= 1'b1;
         reclaim_rsp_class <= reclaim_class_now;
+        reclaim_rsp_tag   <= reclaim_tag;                    // echo the accepted request
+        // meta is meaningful ONLY on RCL_OK; force 0 otherwise so a consumer can
+        // never latch stale metadata from a prior successful reclaim.
         if (reclaim_class_now == RCL_OK) reclaim_rsp_meta <= meta[rc_slot];
+        else                             reclaim_rsp_meta <= '0;
       end
       // reclaim (recovery) — frees a quarantined slot (response already excluded)
       if (do_reclaim) begin
@@ -305,17 +327,30 @@ module outstanding_tracker #(
   logic [EPOCH_W-1:0] f_pep0;
   logic [CNT_W-1:0]   f_ptmo;
   logic [OCC_W-1:0]   f_pn_new;
-  logic               f_prrsp_v, f_prrsp_rdy;
+  logic               f_prrsp_v, f_prrsp_rdy, f_prst;
   logic [2:0]         f_prrsp_class;
   logic [META_W-1:0]  f_prrsp_meta;
+  logic [TAG_W-1:0]   f_prrsp_tag;
+  logic               f_p_accept, f_p_complete, f_p_success;
+  logic [CNT_W-1:0]   f_p_reclaim_cnt;
+  logic [1:0]         f_outstanding;              // accepted - completed (proven in {0,1})
   initial f_init = 1'b0;
   logic [OCC_W-1:0] live_pop;
   always_comb begin live_pop = '0; for (int j=0;j<DEPTH;j++) live_pop += OCC_W'(live[j]); end
+  // reclaim in-flight accounting: +1 on accept, -1 on response consumption
+  always_ff @(posedge clk or negedge rst_n) begin
+    if (!rst_n) f_outstanding <= 2'd0;
+    else f_outstanding <= f_outstanding
+                        + (reclaim_accept ? 2'd1 : 2'd0)
+                        - ((reclaim_rsp_valid && reclaim_rsp_ready) ? 2'd1 : 2'd0);
+  end
   always_ff @(posedge clk) begin
     f_init  <= 1'b1;  f_pocc <= occupancy; f_plive0 <= live[0]; f_pep0 <= epoch[0];
     f_alloc0<= (do_alloc && free_slot == '0); f_ptmo <= timeout_count; f_pn_new <= n_new_timeout;
-    f_prrsp_v<=reclaim_rsp_valid; f_prrsp_rdy<=reclaim_rsp_ready;
-    f_prrsp_class<=reclaim_rsp_class; f_prrsp_meta<=reclaim_rsp_meta;
+    f_prrsp_v<=reclaim_rsp_valid; f_prrsp_rdy<=reclaim_rsp_ready; f_prst<=rst_n;
+    f_prrsp_class<=reclaim_rsp_class; f_prrsp_meta<=reclaim_rsp_meta; f_prrsp_tag<=reclaim_rsp_tag;
+    f_p_accept<=reclaim_accept; f_p_complete<=(reclaim_rsp_valid && reclaim_rsp_ready);
+    f_p_success<=reclaim_success_fire; f_p_reclaim_cnt<=reclaim_count;
   end
   always @(posedge clk) begin
     if (rst_n && f_init) begin
@@ -331,16 +366,44 @@ module outstanding_tracker #(
       assert (full == (occupancy == OCC_W'(DEPTH)));
       if (!f_alloc0) assert (epoch[0] == f_pep0);
       // reclaim only frees an already-quarantined slot (recovery contract)
-      if (reclaim_done) assert (live[rc_slot] && timed_out[rc_slot] && (rc_gen == gen[rc_slot]));
+      if (reclaim_success_fire) assert (live[rc_slot] && timed_out[rc_slot] && (rc_gen == gen[rc_slot]));
       // a valid response and a reclaim never target the same slot (response wins)
-      if (resp_retire && reclaim_done) assert (r_slot != rc_slot);
+      if (resp_retire && reclaim_success_fire) assert (r_slot != rc_slot);
       // reclaim handshake: ready is low while a response is pending (one in flight)
       assert (!reclaim_req_ready || !reclaim_rsp_valid);
-      // response held STABLE under backpressure (class+meta fixed until consumed)
+      // response held STABLE under backpressure (class+meta+tag fixed until consumed)
       if (f_prrsp_v && !f_prrsp_rdy) begin
         assert (reclaim_rsp_valid);
         assert (reclaim_rsp_class == f_prrsp_class);
         assert (reclaim_rsp_meta  == f_prrsp_meta);
+        assert (reclaim_rsp_tag   == f_prrsp_tag);
+      end
+      // metadata hygiene: meta is 0 for every non-OK class (no stale meta consumed)
+      if (reclaim_rsp_valid && reclaim_rsp_class != RCL_OK) assert (reclaim_rsp_meta == '0);
+
+      // SUPERSEDED is an OTHERWISE-QUALIFIED reclaim (valid slot, live, matching
+      // gen, quarantined) losing to a valid same-slot retirement THIS cycle: the
+      // response retires, and the reclaim makes NO state change (no second free).
+      if (reclaim_accept && reclaim_class_now == RCL_SUPERSEDED) begin
+        assert (rc_slot_ok && live[rc_slot] && timed_out[rc_slot] && (rc_gen == gen[rc_slot]));
+        assert (resp_retire && (r_slot == rc_slot));
+        assert (!reclaim_success_fire);
+      end
+
+      // ---- handshake accounting -------------------------------------------
+      assert (f_outstanding <= 2'd1);                        // accepted - completed in {0,1}
+      assert (f_outstanding == {1'b0, reclaim_rsp_valid});   // the in-flight bit IS rsp_valid
+      // no response may appear without a prior accepted request
+      if (reclaim_rsp_valid && !f_prrsp_v) assert (f_p_accept);
+      if (f_prst) begin
+        // exactly one response per accepted request; a completion with no new
+        // accept clears it (no double response) — both require no reset between.
+        if (f_p_accept) assert (reclaim_rsp_valid);
+        if (f_p_complete && !f_p_accept) assert (!reclaim_rsp_valid);
+        // response backpressure NEVER repeats/defers the functional side effect:
+        // reclaim_count moves iff a success fired on the accept edge, regardless
+        // of whether/when the informational response is later consumed.
+        assert (reclaim_count == (f_p_success ? sat_add1(f_p_reclaim_cnt) : f_p_reclaim_cnt));
       end
       // timeout_count advances by exactly the number of newly-timed-out slots,
       // with SATURATION — mirror the RTL's saturating add exactly (inductive).
