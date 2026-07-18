@@ -60,9 +60,6 @@ module formal_admission #(
 
   always @(posedge clk) begin
     cover (rst_n && req_accept);                                              // ordinary admit
-    cover (rst_n && tracker_alloc_fire && resp_retire);                       // alloc + retire same cycle
-    cover (rst_n && tracker_alloc_fire && resp_retire && dut.reclaim_commit_fire); // alloc+retire+reclaim
-    cover (rst_n && dut.retire_commit_fire && dut.reclaim_commit_fire);       // dual return
     cover (rst_n && credit_return_valid && credit_return_accepted);           // a credit return
     cover (rst_n && !req_accept_enable && req_valid);                         // A2 gate active with a request
     cover (rst_n && req_valid && req_accept_enable && dut.tracker_full);      // blocked by tracker full
@@ -72,4 +69,14 @@ module formal_admission #(
     cover (!rst_n && p_occ != 0);                                            // reset with live entries
     cover (p_rst == 1'b0 && rst_n == 1'b1);                                  // reset deasserts
   end
+
+  // multi-slot events need DEPTH>1 (a single slot can't alloc+retire the same
+  // cycle, and retire+reclaim must land on distinct slots).
+  generate if (DEPTH > 1) begin : g_multi
+    always @(posedge clk) begin
+      cover (rst_n && tracker_alloc_fire && resp_retire);                        // alloc + retire same cycle
+      cover (rst_n && tracker_alloc_fire && resp_retire && dut.reclaim_commit_fire); // alloc+retire+reclaim
+      cover (rst_n && dut.retire_commit_fire && dut.reclaim_commit_fire);        // dual return (distinct slots)
+    end
+  end endgenerate
 endmodule

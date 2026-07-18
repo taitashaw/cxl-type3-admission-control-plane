@@ -38,3 +38,5 @@ tb/vectors/adm_*.vec
 formal/admission_bmc/
 formal/admission_prove/
 formal/admission_cover/
+formal/admission_matrix_*/
+formal/admission_mut_*/

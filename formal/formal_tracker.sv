@@ -52,6 +52,7 @@ module formal_tracker #(
                       invalid_slot_count, non_live_count, stale_gen_count;
   logic [DEPTH-1:0]           dbg_live;
   logic [DEPTH*CREDIT_W-1:0]  dbg_credit_vec;
+  logic [DEPTH*EPOCH_W-1:0]   dbg_epoch;
 
   outstanding_tracker #(.DEPTH(DEPTH), .GEN_W(GEN_W), .EPOCH_W(EPOCH_W),
                         .OP_W(OP_W), .META_W(META_W), .TS_W(TS_W), .CREDIT_W(CREDIT_W)) dut (.*);

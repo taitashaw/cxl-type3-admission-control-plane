@@ -117,7 +117,8 @@ module outstanding_tracker #(
   // credit vector (lets an integration prove credit conservation without a
   // cross-module hierarchical reference). Combinational; trimmed if unused.
   output logic [DEPTH-1:0]           dbg_live,
-  output logic [DEPTH*CREDIT_W-1:0]  dbg_credit_vec
+  output logic [DEPTH*CREDIT_W-1:0]  dbg_credit_vec,
+  output logic [DEPTH*EPOCH_W-1:0]   dbg_epoch
 );
   localparam logic [2:0] RC_VALID=0, RC_INVALID_SLOT=1, RC_NON_LIVE=2, RC_STALE_GEN=3;
   // reclaim result classes
@@ -186,6 +187,7 @@ module outstanding_tracker #(
     for (gd = 0; gd < DEPTH; gd++) begin : g_dbg
       assign dbg_live[gd] = live[gd];
       assign dbg_credit_vec[gd*CREDIT_W +: CREDIT_W] = credit_vec[gd];
+      assign dbg_epoch[gd*EPOCH_W +: EPOCH_W] = epoch[gd];
     end
   endgenerate
 

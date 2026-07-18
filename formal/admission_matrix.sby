@@ -1,0 +1,62 @@
+[tasks]
+d1_p
+d1_c
+d3np_p
+d3np_c
+mp3_p
+mp3_c
+cwb_p
+cwb_c
+dr_p
+dr_c
+
+[options]
+d1_p: mode prove
+d1_p: depth 16
+d1_c: mode cover
+d1_c: depth 18
+d3np_p: mode prove
+d3np_p: depth 16
+d3np_c: mode cover
+d3np_c: depth 18
+mp3_p: mode prove
+mp3_p: depth 16
+mp3_c: mode cover
+mp3_c: depth 18
+cwb_p: mode prove
+cwb_p: depth 16
+cwb_c: mode cover
+cwb_c: depth 18
+dr_p: mode prove
+dr_p: depth 16
+dr_c: mode cover
+dr_c: depth 18
+
+[engines]
+smtbmc yices
+
+[script]
+read_verilog -sv -formal -DFORMAL outstanding_tracker.sv credit_manager.sv admission_top.sv formal_admission.sv
+# five selected instances (NOT a Cartesian product): each run prove + cover.
+# d1  : DEPTH=1 edge (single slot)
+# d3np: non-power-of-two DEPTH=3, multi-pool
+# mp3 : three pools
+# cwb : COUNT_W = AMT_W+1 boundary
+# dr  : wider AMT_W so a same-pool dual return can exceed 2^AMT_W-1
+d1_p:   chparam -set N_POOLS 1 -set AMT_W 2 -set COUNT_W 3 -set RESET_MAX 2 -set DEPTH 1 -set GEN_W 1 formal_admission
+d1_c:   chparam -set N_POOLS 1 -set AMT_W 2 -set COUNT_W 3 -set RESET_MAX 2 -set DEPTH 1 -set GEN_W 1 formal_admission
+d3np_p: chparam -set N_POOLS 2 -set AMT_W 2 -set COUNT_W 4 -set RESET_MAX 3 -set DEPTH 3 -set GEN_W 2 formal_admission
+d3np_c: chparam -set N_POOLS 2 -set AMT_W 2 -set COUNT_W 4 -set RESET_MAX 3 -set DEPTH 3 -set GEN_W 2 formal_admission
+mp3_p:  chparam -set N_POOLS 3 -set AMT_W 2 -set COUNT_W 4 -set RESET_MAX 3 -set DEPTH 2 -set GEN_W 2 formal_admission
+mp3_c:  chparam -set N_POOLS 3 -set AMT_W 2 -set COUNT_W 4 -set RESET_MAX 3 -set DEPTH 2 -set GEN_W 2 formal_admission
+cwb_p:  chparam -set N_POOLS 2 -set AMT_W 2 -set COUNT_W 3 -set RESET_MAX 3 -set DEPTH 2 -set GEN_W 2 formal_admission
+cwb_c:  chparam -set N_POOLS 2 -set AMT_W 2 -set COUNT_W 3 -set RESET_MAX 3 -set DEPTH 2 -set GEN_W 2 formal_admission
+dr_p:   chparam -set N_POOLS 2 -set AMT_W 3 -set COUNT_W 5 -set RESET_MAX 6 -set DEPTH 2 -set GEN_W 2 formal_admission
+dr_c:   chparam -set N_POOLS 2 -set AMT_W 3 -set COUNT_W 5 -set RESET_MAX 6 -set DEPTH 2 -set GEN_W 2 formal_admission
+prep -top formal_admission
+
+[files]
+rtl/core/outstanding_tracker.sv
+rtl/core/credit_manager.sv
+rtl/core/admission_top.sv
+formal/formal_admission.sv

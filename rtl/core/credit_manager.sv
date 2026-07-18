@@ -30,8 +30,9 @@ module credit_manager #(
   parameter int unsigned RET_W     = AMT_W, // width of RETURN amounts per pool; the
                                             // M4 integration widens this to AMT_W+1 so
                                             // a same-cycle retire+reclaim return to one
-                                            // pool cannot truncate. Default = AMT_W keeps
-                                            // the standalone M3 interface unchanged.
+                                            // pool cannot truncate. Backward-compatible
+                                            // under the default RET_W=AMT_W (the original
+                                            // M3 configurations were fully reverified).
   parameter int unsigned DIAG_W     = 32,    // diagnostic counter width
   parameter int unsigned RESET_MAX = 0,     // per-pool maximum at reset
   parameter int unsigned PIDX_W    = (N_POOLS <= 1) ? 1 : $clog2(N_POOLS),

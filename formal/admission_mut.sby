@@ -1,0 +1,22 @@
+[tasks]
+bmc
+
+[options]
+bmc: mode bmc
+bmc: depth 22
+
+[engines]
+smtbmc yices
+
+[script]
+read_verilog -sv -formal -DFORMAL outstanding_tracker.sv credit_manager.sv admission_top.sv formal_admission.sv
+# config tuned so mutation effects are REACHABLE: RESET_MAX (6) > 2^AMT_W-1 (3),
+# so a same-pool dual return can exceed AMT_W and a narrowed accumulator truncates.
+chparam -set N_POOLS 2 -set AMT_W 2 -set COUNT_W 4 -set RESET_MAX 6 -set DEPTH 3 -set GEN_W 2 formal_admission
+prep -top formal_admission
+
+[files]
+rtl/core/outstanding_tracker.sv
+rtl/core/credit_manager.sv
+rtl/core/admission_top.sv
+formal/formal_admission.sv

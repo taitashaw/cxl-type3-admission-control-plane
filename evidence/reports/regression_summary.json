@@ -1,7 +1,7 @@
 {
-  "git_commit": "5b69cfb9d9f9f82b8d9a20384c3d12e52f209f2d",
+  "git_commit": "f8ceeeb392539bac7d7699372284261c9f21e067",
   "git_dirty": true,
-  "utc": "2026-07-18T10:03:32Z",
+  "utc": "2026-07-18T12:21:31Z",
   "kind": "regression",
   "engines": [
     "icarus",
@@ -254,31 +254,31 @@
   "raw_logs": [
     {
       "path": "evidence/raw/icarus_ot_16d_4g_run.log",
-      "sha256": "6467e7324f098083e20d5b2958140b2d3856bf34101b939a2f8a393efffb1037"
+      "sha256": "aaf4bb055c7c928d74aa07752b0cd36eda3b1feb1aec9f4638ce85a479ba6250"
     },
     {
       "path": "evidence/raw/icarus_ot_1d_2g_run.log",
-      "sha256": "04499d73d9906e724f4a64447894508e156f8928e8d9e543989f6f37f980a080"
+      "sha256": "27bd7aab45552ccc52f11cd92426e80f046c9d88a95580bd2f8b125e1a001f2e"
     },
     {
       "path": "evidence/raw/icarus_ot_2d_4g_run.log",
-      "sha256": "ab59c70b75e0236dfd90ed13005acfbd879faac18108cdfd66a5f65759f677bc"
+      "sha256": "8fa0d69f1ca322ff2a911985d74dfd9477a424d21561ac19c90c168de0e3ebc0"
     },
     {
       "path": "evidence/raw/icarus_ot_3d_2g_run.log",
-      "sha256": "d88fa6244e5d37ad3899ed9d760f1a74de64f4f997bb2aec23375dce3dd01c72"
+      "sha256": "255fc1696b9f3b197abdfa6527315b0e66c9a4021d86c1c8910519a2687a23bd"
     },
     {
       "path": "evidence/raw/icarus_ot_4d_4g_run.log",
-      "sha256": "fae4a16f90de91a855ca6d439e3138d26725ba3273b484b3b0075e1218c5b1da"
+      "sha256": "5d7728751b1dacd50d0b78d5a1c9411df022eb0b96a3016c2ed59b6542ccd3c8"
     },
     {
       "path": "evidence/raw/icarus_ot_7d_2g_run.log",
-      "sha256": "6bc177368781e70ed6fc2955c48429e258697a05ffb1b6137ff31612ec1d2b54"
+      "sha256": "88ef2ac4a67c350806ceeb9c02ba0158d8d623ac3606ae8bdcce73b4a03b8804"
     },
     {
       "path": "evidence/raw/icarus_ot_8d_4g_run.log",
-      "sha256": "3718fb6b542445fa7f040ac4632244c35ebf15930a15c814c37e2ca4fb25f9fd"
+      "sha256": "1af6c131b548c6a718b2b4df87f8a04fe550dca006f908a20ab17d1ba42f5804"
     },
     {
       "path": "evidence/raw/icarus_tb_hdm_config_1w_32x24_run.log",
@@ -314,31 +314,31 @@
     },
     {
       "path": "evidence/raw/verilator_ot_16d_4g_run.log",
-      "sha256": "a63aaf5112ffe55821eb195378e1c3a2a74666974c264267fdf12945a2b5fd57"
+      "sha256": "04639e299a369e7cf327cd5b71b5be7f463d9c1b7ec5c5fdb94e71b5fd708e48"
     },
     {
       "path": "evidence/raw/verilator_ot_1d_2g_run.log",
-      "sha256": "479eb4cccdca674c77a3621025adbe90e96984aed183749960877581ef6386d9"
+      "sha256": "f9b8720a7b138223cecc9f24bbadf32616806dd255d288a46cf66c5891f8a899"
     },
     {
       "path": "evidence/raw/verilator_ot_2d_4g_run.log",
-      "sha256": "6815fd7f179f4d642250f6ed1e8154a60c0e9fea69be711b65aa9a7e932e3cdf"
+      "sha256": "928654879fcfba46ecb29372fc3e370f4accd517102519bd2f636b254debc832"
     },
     {
       "path": "evidence/raw/verilator_ot_3d_2g_run.log",
-      "sha256": "3a163ea9fed0a3b051c911c5fbd56700f1ed212804fdcf629e423638d7be2ec6"
+      "sha256": "35a4ab6ace9ac13ac162cefa6aac6604b3b7512b1a4fc6df80918db1f6a2a8da"
     },
     {
       "path": "evidence/raw/verilator_ot_4d_4g_run.log",
-      "sha256": "e19745b75f14ff3013e7479cf406bfaad327c47ebb54f3ecfa31d038f66164d3"
+      "sha256": "32a0a98a82e1a765f14fcd223dc1777d136cef0d321603a612b39ecb616f32cc"
     },
     {
       "path": "evidence/raw/verilator_ot_7d_2g_run.log",
-      "sha256": "056cb75d6912ec8c06043991a487514459a73491a16903647b198a993969b288"
+      "sha256": "a9b9673d77153777ae030e94c0908725d2da8e5140e917554bc3028c9db576aa"
     },
     {
       "path": "evidence/raw/verilator_ot_8d_4g_run.log",
-      "sha256": "b121623a75d42c0d07daebc1f251248990575388326f21ec888feb45dee72a43"
+      "sha256": "16c6b9fd2bcdfbdc11a883bb712a02269e26da2b640d2dcb586f2341d90a8e56"
     },
     {
       "path": "evidence/raw/verilator_tb_hdm_config_1w_32x24_run.log",

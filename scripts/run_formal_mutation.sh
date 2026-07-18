@@ -57,7 +57,7 @@ fmut "credit: cfg needs empty" formal/credit.sby rtl/core/credit_manager.sv \
   "s/config_commit \&\& frozen_and_empty \&\& all_unused \&\& cfg_representable;/config_commit \&\& frozen_and_empty \&\& cfg_representable;/" bmc
 # credit: drop return term in net delta -> ledger delta property fails
 fmut "credit: net delta" formal/credit.sby rtl/core/credit_manager.sv \
-  "s/if (return_accepted) next_used_w\[p\] = next_used_w\[p\] - {{(COUNT_W+1-AMT_W){1'b0}}, return_amount\[p\*AMT_W +: AMT_W\]};/\/\/ mutated/" bmc
+  "s/if (return_accepted) next_used_w\[p\] = next_used_w\[p\] - {{(COUNT_W+1-RET_W){1'b0}}, return_amount\[p\*RET_W +: RET_W\]};/\/\/ mutated/" bmc
 # credit: config does not block consume -> commit-blocks-both property fails
 fmut "credit: cfg blocks consume" formal/credit.sby rtl/core/credit_manager.sv \
   "s/assign consume_fire    = rst_n \&\& consume_valid \&\& consume_legal \&\& !cfg_commit_fire;/assign consume_fire    = rst_n \&\& consume_valid \&\& consume_legal;/" bmc
@@ -65,6 +65,29 @@ fmut "credit: cfg blocks consume" formal/credit.sby rtl/core/credit_manager.sv \
 # credit: saturation -> wrap breaks the no-wrap (monotone) diagnostic assert
 fmut "credit: diag saturation" formal/credit.sby rtl/core/credit_manager.sv \
   "s/if (&c) sat1 = c;/if (1'b0) sat1 = c;/" bmc
+
+# ---- M4 Phase 2b admission integration formal mutations (base: admission_mut.sby,
+# RESET_MAX>2^AMT_W-1 so dual-return truncation is reachable) ----
+AMB=formal/admission_mut.sby; AMT=rtl/core/admission_top.sv
+# partial admission: consume without accept -> all-fire + conservation fail
+fmut "admission: partial admission" "$AMB" "$AMT" \
+  "s/.consume_valid(req_accept), .consume_amount(req_credit_vec),/.consume_valid(req_valid), .consume_amount(req_credit_vec),/" bmc
+# missing reclaim return: reclaim frees a slot but returns no credit -> conservation
+fmut "admission: missing reclaim return" "$AMB" "$AMT" \
+  "s/assign rcl_p = reclaim_commit_fire ? reclaim_commit_credit_vec\[gp\*AMT_W +: AMT_W\] : '0;/assign rcl_p = '0;/" bmc
+# narrowed dual-return accumulator: modulo-wrap could hide a dual return -> conservation
+fmut "admission: narrowed dual-return accumulator" "$AMB" "$AMT" \
+  "s/logic \[RET_W-1:0\] sum_p;/logic [AMT_W-1:0] sum_p;/" bmc
+# wrong pool slice: every pool returns pool-0's credit -> conservation fails for p>0
+fmut "admission: wrong pool slice" "$AMB" "$AMT" \
+  "s/assign ret_p = retire_commit_fire  ? retire_commit_credit_vec \[gp\*AMT_W +: AMT_W\] : '0;/assign ret_p = retire_commit_fire  ? retire_commit_credit_vec [0 +: AMT_W] : '0;/" bmc
+# wrong epoch capture: allocate with epoch 0 -> epoch-capture assert fails
+fmut "admission: wrong epoch capture" "$AMB" "$AMT" \
+  "s/.alloc_req(req_accept), .alloc_epoch(active_epoch), .alloc_op(req_op),/.alloc_req(req_accept), .alloc_epoch('0), .alloc_op(req_op),/" bmc
+# timeout frees a credit-bearing slot -> live_sum drops with no return -> conservation
+fmut "admission: timeout must not free credit" "$AMB" rtl/core/outstanding_tracker.sv \
+  "s/for (i = 0; i < DEPTH; i++) if (new_timeout\[i\]) timed_out\[i\] <= 1'b1;/for (i = 0; i < DEPTH; i++) if (new_timeout[i]) begin timed_out[i] <= 1'b1; live[i] <= 1'b0; end/" bmc
+
 echo "=================================================="
 echo "formal mutations killed=$kills survived=$survivors"
 [ $survivors -eq 0 ] && { echo "FORMAL MUTATION: PASS (proofs are non-vacuous)"; exit 0; } || { echo "FORMAL MUTATION: FAIL"; exit 1; }

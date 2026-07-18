@@ -39,8 +39,10 @@ Credits return via the tracker's **combinational** commit sidebands (Phase 2a),
 never via the registered informational `reclaim_rsp_*`. Per pool the retire and
 reclaim commit vectors are added at **`RET_W = AMT_W+1`** *before* the ledger sees
 them, so a same-cycle dual return to one pool cannot truncate. The
-`credit_manager` return path is parameterized `RET_W` (default `AMT_W`, so the
-standalone M3 interface is unchanged) and widened to `AMT_W+1` here.
+`credit_manager` return path is parameterized `RET_W` and widened to `AMT_W+1`
+here. It is **backward-compatible under the default `RET_W=AMT_W`; the original M3
+configurations were fully reverified** (credit sweep + `credit.sby` 3/3 +
+`credit_matrix` 10/10 all still pass).
 
 A valid retirement and a successful reclaim may fire the **same cycle on different
 slots** (`r_slot ≠ rc_slot`, proved + covered); both vectors return. A same-slot
@@ -51,7 +53,13 @@ the retirement vector returns.
 - **Conservation (the headline invariant):** for every pool,
   `credit_used[p] == Σ over live tracker entries of stored_credit[p]`. Quarantined
   (timed-out) entries remain **live** and stay in the sum; timeout alone returns
-  no credit.
+  no credit. The sum uses an **explicitly widened accumulator** `SUM_W = max(COUNT_W,
+  AMT_W + $clog2(DEPTH+1)) + 1` that cannot wrap for the mathematical sum of every
+  live entry, so this is **true equality — not equality modulo 2^COUNT_W**. Two
+  companion asserts pin it down: the sum's bits above `COUNT_W` are **zero** (no
+  hidden excess stored credit), and the sum is `<= configured_max`.
+- **Epoch capture:** one cycle after `req_accept`, the allocated slot holds the
+  **presented** active epoch (a wrong/mis-wired epoch is caught).
 - One authoritative event (all three consumers fire together).
 - **A2 as a DUT theorem:** `!req_accept_enable ⇒ !req_accept && !tracker_alloc_fire
   && !credit_consume_fire && !issue_enqueue`.
@@ -68,9 +76,17 @@ the retirement vector returns.
   × 4000 cycles, two-toolchain cross-check (system Icarus 12.0 + Verilator 5.020
   **and** OSS CAD Suite Icarus 14.0 + Verilator 5.051), 0 errors. The independent
   model self-checks conservation and ledger bounds every cycle.
-- **Formal** — bmc + prove(induction) + cover PASS, 0 unreached covers.
-- **Mutation** — admission mutations killed: partial admission (consume ≠ accept),
-  wrong epoch capture, truncated dual return, missing reclaim return.
+- **Formal** — `admission.sby` bmc + prove(induction) + cover PASS, 0 unreached.
+  `admission_matrix.sby` = **five selected instances** — `DEPTH=1`; non-power-of-two
+  `DEPTH=3`; three pools; `COUNT_W=AMT_W+1` boundary; a wider-`AMT_W` dual-return
+  config — each run prove + cover: **10/10 tasks** (five instances, not a Cartesian
+  product), reported separately from the tracker/credit matrices.
+- **Sim mutation** — 29/29 killed incl. partial admission (consume ≠ accept), wrong
+  epoch capture, truncated dual return, missing reclaim return.
+- **Formal mutation** — 6 integration mutations killed on a `RESET_MAX > 2^AMT_W-1`
+  config (so effects are reachable): partial admission, missing reclaim return,
+  **narrowed dual-return accumulator** (modulo-wrap would hide a dual return),
+  wrong pool slice, wrong epoch capture, and timeout freeing a credit-bearing slot.
 - **XSim** — reduced third-engine cross-check PASS.
 - **Clean clone** — exact-commit reproduction under `env -i`.
 

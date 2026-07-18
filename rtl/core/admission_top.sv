@@ -132,6 +132,7 @@ module admission_top #(
   logic [META_W-1:0] reclaim_rsp_meta_unused;
   logic [DEPTH-1:0]              dbg_live;
   logic [DEPTH*CREDIT_VEC_W-1:0] dbg_credit_vec;
+  logic [DEPTH*EPOCH_W-1:0]      dbg_epoch;
   logic [31:0] ac_u, rc_u, fc_u, tc_u, rcl_u, is_u, nl_u, sg_u; logic es_u; logic [2:0] efc_u;
 
   outstanding_tracker #(.DEPTH(DEPTH), .GEN_W(GEN_W), .EPOCH_W(EPOCH_W), .OP_W(OP_W),
@@ -158,7 +159,7 @@ module admission_top #(
     .full_count(fc_u), .timeout_count(tc_u), .reclaim_count(rcl_u),
     .invalid_slot_count(is_u), .non_live_count(nl_u), .stale_gen_count(sg_u),
     .err_sticky(es_u), .err_first_class(efc_u),
-    .dbg_live(dbg_live), .dbg_credit_vec(dbg_credit_vec)
+    .dbg_live(dbg_live), .dbg_credit_vec(dbg_credit_vec), .dbg_epoch(dbg_epoch)
   );
   assign issued_tag = alloc_tag;
 
@@ -229,19 +230,32 @@ module admission_top #(
 `ifdef FORMAL
   // -------- integration properties -----------------------------------------
   logic f_init; initial f_init = 1'b0;
-  always_ff @(posedge clk) f_init <= 1'b1;
+  logic f_pacc; logic [SLOT_W-1:0] f_paslot; logic [EPOCH_W-1:0] f_pae;
+  always_ff @(posedge clk) begin
+    f_init <= 1'b1;
+    f_pacc <= req_accept; f_paslot <= alloc_slot; f_pae <= active_epoch;
+  end
 
   // per-pool live credit sum over the tracker's DEBUG PORTS (dbg_live/dbg_credit_vec
   // are real outputs -> no cross-module hierarchical reference). Quarantined
   // entries remain live and stay in the sum.
-  logic [COUNT_W:0] live_sum [N_POOLS];
+  //
+  // SUM_W is wide enough for the MATHEMATICAL sum of every live entry's per-pool
+  // credit (DEPTH * (2^AMT_W-1)) WITHOUT wrap, plus a headroom bit, so the equality
+  // below is true equality — never equality modulo 2^COUNT_W. The upper-bits-zero
+  // assert then confirms the (non-wrapping) sum actually fits in COUNT_W.
+  localparam int unsigned SUM_W =
+      ((COUNT_W > (AMT_W + $clog2(DEPTH+1))) ? COUNT_W : (AMT_W + $clog2(DEPTH+1))) + 1;
+  logic [SUM_W-1:0] live_sum [N_POOLS];
+  logic [SUM_W-1:0] used_ext [N_POOLS];
   always_comb begin
     for (int p = 0; p < N_POOLS; p++) begin
       live_sum[p] = '0;
       for (int s = 0; s < DEPTH; s++)
         if (dbg_live[s])
           live_sum[p] = live_sum[p]
-                      + {1'b0, dbg_credit_vec[s*CREDIT_VEC_W + p*AMT_W +: AMT_W]};
+                      + {{(SUM_W-AMT_W){1'b0}}, dbg_credit_vec[s*CREDIT_VEC_W + p*AMT_W +: AMT_W]};
+      used_ext[p] = {{(SUM_W-COUNT_W){1'b0}}, used[p*COUNT_W +: COUNT_W]};
     end
   end
 
@@ -257,10 +271,21 @@ module admission_top #(
       end
       // (item 8) return is NEVER rejected (conservation makes it always legal)
       if (credit_return_valid) assert (credit_return_accepted);
+      // (item 8) EPOCH CAPTURE: one cycle after an accept, the allocated slot holds
+      // the PRESENTED active epoch (catches a mis-wired/wrong epoch capture).
+      if (f_pacc) assert (dbg_epoch[f_paslot*EPOCH_W +: EPOCH_W] == f_pae);
       // (item 6) CROSS-BLOCK CONSERVATION: ledger used == sum of live entries'
-      // stored credit vectors, per pool (quarantined entries remain live).
-      for (int p = 0; p < N_POOLS; p++)
-        assert ({1'b0, used[p*COUNT_W +: COUNT_W]} == live_sum[p]);
+      // stored credit vectors, per pool (quarantined entries remain live). Proved
+      // as MATHEMATICAL equality on a non-wrapping SUM_W accumulator, plus:
+      //  - the sum's bits above COUNT_W are zero (no hidden excess stored credit);
+      //  - the sum never exceeds the pool maximum RESET_MAX.
+      for (int p = 0; p < N_POOLS; p++) begin
+        assert (live_sum[p] == used_ext[p]);                       // equality, no truncation
+        assert (live_sum[p][SUM_W-1:COUNT_W] == '0);               // upper bits zero
+        // within the pool maximum: live_sum == used <= configured_max (the ledger's
+        // own used<=max is a proven lemma, so this is inductive).
+        assert (live_sum[p] <= {{(SUM_W-COUNT_W){1'b0}}, configured_max_u[p*COUNT_W +: COUNT_W]});
+      end
     end
   end
 `endif
