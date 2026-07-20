@@ -201,6 +201,27 @@ mutate "cp admission fires while frozen" rtl/csr/config_ctrl.sv \
   "s/assign req_accept_enable = rst_n \&\& (state == S_IDLE);/assign req_accept_enable = rst_n;/" \
   tb_control_plane_top "$CP" "$CPVEC" "$CPDEF"
 
+# ---- M5 rw_scheduler mutations ----
+SCH="rtl/core/rw_scheduler.sv tb/sv/tb_rw_scheduler.sv"
+SCHVEC="tb/vectors/sch_6t_2a_8d_4n.vec"
+SCHDEF="-DTAGW=6 -DADDRW=2 -DDATAW=8 -DDEPTH=4"
+# drop the same-address hazard interlock -> younger same-addr issues before older done
+mutate "sched drop hazard interlock" rtl/core/rw_scheduler.sv \
+  "s/if (vld\[j\] \&\& older\[j\]\[i\] \&\& (adr\[j\] == adr\[i\]) \&\& !done\[j\]) blk = 1'b1;/if (1'b0) blk = 1'b1;/" \
+  tb_rw_scheduler "$SCH" "$SCHVEC" "$SCHDEF"
+# ignore the address in the interlock (block on ANY older un-done, over-serialize)
+mutate "sched interlock ignores address" rtl/core/rw_scheduler.sv \
+  "s/if (vld\[j\] \&\& older\[j\]\[i\] \&\& (adr\[j\] == adr\[i\]) \&\& !done\[j\]) blk = 1'b1;/if (vld[j] \&\& older[j][i] \&\& (1'b1) \&\& !done[j]) blk = 1'b1;/" \
+  tb_rw_scheduler "$SCH" "$SCHVEC" "$SCHDEF"
+# respond before completion (rsp selects any live entry, not just done)
+mutate "sched respond before done" rtl/core/rw_scheduler.sv \
+  "s/for (int i = DEPTH-1; i >= 0; i--) if (vld\[i\] \&\& done\[i\]) begin rsp_valid = 1'b1; rsp_sel = i\[IDX_W-1:0\]; end/for (int i = DEPTH-1; i >= 0; i--) if (vld[i]) begin rsp_valid = 1'b1; rsp_sel = i[IDX_W-1:0]; end/" \
+  tb_rw_scheduler "$SCH" "$SCHVEC" "$SCHDEF"
+# do not establish age on accept -> ordering matrix broken
+mutate "sched age not set on accept" rtl/core/rw_scheduler.sv \
+  "s/if (k\[IDX_W-1:0\] != free_slot) older\[k\]\[free_slot\] <= vld\[k\];/if (k[IDX_W-1:0] != free_slot) older[k][free_slot] <= 1'b0;/" \
+  tb_rw_scheduler "$SCH" "$SCHVEC" "$SCHDEF"
+
 echo "=================================================="
 echo "mutations killed=$kills survived=$survivors"
 [ $survivors -eq 0 ] && { echo "MUTATION TESTS: PASS (all protections observable)"; exit 0; } || { echo "MUTATION TESTS: FAIL"; exit 1; }

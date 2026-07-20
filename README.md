@@ -51,6 +51,13 @@ and **SymbiYosys** bmc + induction + cover with formal-mutation non-vacuity.
   after freeze + full drain; no partial update; no live entry crosses a commit;
   conservation preserved across commits. Formal single + five-instance matrix
   (prove+cover), 32/32 sim + 23/23 formal mutations killed.
+- **M5 — read/write scheduler** (`rw_scheduler`): after admission, schedules
+  transactions to an abstract tagged memory backend with **cross-address reordering
+  but per-address program order preserved** by an age-matrix hazard interlock.
+  Proved by induction: the age matrix is a strict total order, a younger
+  same-address access never reaches memory before the older one completes,
+  done⇒issued, response integrity. Five-instance matrix; 36/36 sim + 26/26 formal
+  mutations killed. **Safety only — no liveness/fairness claim.**
 
 Per-block contracts: [`docs/config_contract.md`](docs/config_contract.md),
 [`docs/admission_contract.md`](docs/admission_contract.md),

@@ -107,6 +107,18 @@ fmut "cp commit while issue occupied" "$CPB" rtl/csr/config_ctrl.sv \
 fmut "cp admission fires while frozen" "$CPB" rtl/csr/config_ctrl.sv \
   "s/assign req_accept_enable = rst_n \&\& (state == S_IDLE);/assign req_accept_enable = rst_n;/" bmc
 
+# ---- M5 rw_scheduler formal mutations ----
+SCHB=formal/scheduler.sby
+# drop hazard interlock -> per-address ordering assert fails
+fmut "sched drop hazard interlock" "$SCHB" rtl/core/rw_scheduler.sv \
+  "s/if (vld\[j\] \&\& older\[j\]\[i\] \&\& (adr\[j\] == adr\[i\]) \&\& !done\[j\]) blk = 1'b1;/if (1'b0) blk = 1'b1;/" bmc
+# respond before completion -> rsp_valid => done assert fails
+fmut "sched respond before done" "$SCHB" rtl/core/rw_scheduler.sv \
+  "s/for (int i = DEPTH-1; i >= 0; i--) if (vld\[i\] \&\& done\[i\]) begin rsp_valid = 1'b1; rsp_sel = i\[IDX_W-1:0\]; end/for (int i = DEPTH-1; i >= 0; i--) if (vld[i]) begin rsp_valid = 1'b1; rsp_sel = i[IDX_W-1:0]; end/" bmc
+# age not established on accept -> age strict-total-order assert fails
+fmut "sched age not set on accept" "$SCHB" rtl/core/rw_scheduler.sv \
+  "s/if (k\[IDX_W-1:0\] != free_slot) older\[k\]\[free_slot\] <= vld\[k\];/if (k[IDX_W-1:0] != free_slot) older[k][free_slot] <= 1'b0;/" bmc
+
 echo "=================================================="
 echo "formal mutations killed=$kills survived=$survivors"
 [ $survivors -eq 0 ] && { echo "FORMAL MUTATION: PASS (proofs are non-vacuous)"; exit 0; } || { echo "FORMAL MUTATION: FAIL"; exit 1; }

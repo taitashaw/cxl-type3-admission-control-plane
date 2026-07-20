@@ -26,6 +26,7 @@ reduce tb/vectors/tracker_8d_4g.vec "$XD/ot_red.vec" 400
 reduce tb/vectors/credit_2p_4c_2a_32d.vec "$XD/cm_red.vec" 400
 reduce tb/vectors/adm_2p_3a_6c_8m_4d_4g.vec "$XD/adm_red.vec" 400
 reduce tb/vectors/cp_2p_3a_6c_8m_4d_4g.vec "$XD/cp_red.vec" 400
+reduce tb/vectors/sch_6t_2a_8d_4n.vec "$XD/sch_red.vec" 400
 
 fail=0
 run_xsim() { # tb srcs vecbasename tag defines
@@ -61,6 +62,9 @@ run_xsim tb_admission_top \
 run_xsim tb_control_plane_top \
   "../../rtl/core/outstanding_tracker.sv ../../rtl/core/credit_manager.sv ../../rtl/core/admission_top.sv ../../rtl/csr/config_ctrl.sv ../../rtl/core/control_plane_top.sv ../../tb/sv/tb_control_plane_top.sv" \
   "cp_red.vec" cp "-d NPOOLS=2 -d AMTW=3 -d COUNTW=6 -d RESETMAX=8 -d DEPTH=4 -d GENW=4 -d EPOCHW=8 -d OPW=2 -d METAW=8 -d TSW=8 -d HDMW=16 -d CAPW=16"
+run_xsim tb_rw_scheduler \
+  "../../rtl/core/rw_scheduler.sv ../../tb/sv/tb_rw_scheduler.sv" \
+  "sch_red.vec" sch "-d TAGW=6 -d ADDRW=2 -d DATAW=8 -d DEPTH=4"
 
 [ $fail -eq 0 ] && echo "XSIM CROSSCHECK: PASS" || echo "XSIM CROSSCHECK: FAIL"
 exit $fail

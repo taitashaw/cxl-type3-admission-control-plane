@@ -45,3 +45,8 @@ formal/control_plane_bmc/
 formal/control_plane_prove/
 formal/control_plane_cover/
 formal/control_plane_matrix_*/
+tb/vectors/sch_*.vec
+formal/scheduler_bmc/
+formal/scheduler_prove/
+formal/scheduler_cover/
+formal/scheduler_matrix_*/

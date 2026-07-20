@@ -1,0 +1,58 @@
+[tasks]
+d1_p
+d1_c
+d3np_p
+d3np_c
+d4_p
+d4_c
+a1_p
+a1_c
+wide_p
+wide_c
+
+[options]
+d1_p: mode prove
+d1_p: depth 16
+d1_c: mode cover
+d1_c: depth 20
+d3np_p: mode prove
+d3np_p: depth 16
+d3np_c: mode cover
+d3np_c: depth 20
+d4_p: mode prove
+d4_p: depth 16
+d4_c: mode cover
+d4_c: depth 20
+a1_p: mode prove
+a1_p: depth 16
+a1_c: mode cover
+a1_c: depth 20
+wide_p: mode prove
+wide_p: depth 16
+wide_c: mode cover
+wide_c: depth 20
+
+[engines]
+smtbmc yices
+
+[script]
+read_verilog -sv -formal -DFORMAL rw_scheduler.sv formal_scheduler.sv
+# five selected instances (NOT a Cartesian product): each prove + cover.
+# d1  : DEPTH=1 edge; d3np: non-power-of-two DEPTH=3, 2 addresses (hazards);
+# d4  : DEPTH=4, 4 addresses; a1: DEPTH=4, ONE address bit (max same-address
+# collisions); wide: wider data, DEPTH=2.
+d1_p:   chparam -set TAG_W 2 -set ADDR_W 1 -set DATA_W 2 -set DEPTH 1 formal_scheduler
+d1_c:   chparam -set TAG_W 2 -set ADDR_W 1 -set DATA_W 2 -set DEPTH 1 formal_scheduler
+d3np_p: chparam -set TAG_W 2 -set ADDR_W 1 -set DATA_W 2 -set DEPTH 3 formal_scheduler
+d3np_c: chparam -set TAG_W 2 -set ADDR_W 1 -set DATA_W 2 -set DEPTH 3 formal_scheduler
+d4_p:   chparam -set TAG_W 3 -set ADDR_W 2 -set DATA_W 2 -set DEPTH 4 formal_scheduler
+d4_c:   chparam -set TAG_W 3 -set ADDR_W 2 -set DATA_W 2 -set DEPTH 4 formal_scheduler
+a1_p:   chparam -set TAG_W 3 -set ADDR_W 1 -set DATA_W 2 -set DEPTH 4 formal_scheduler
+a1_c:   chparam -set TAG_W 3 -set ADDR_W 1 -set DATA_W 2 -set DEPTH 4 formal_scheduler
+wide_p: chparam -set TAG_W 2 -set ADDR_W 2 -set DATA_W 3 -set DEPTH 2 formal_scheduler
+wide_c: chparam -set TAG_W 2 -set ADDR_W 2 -set DATA_W 3 -set DEPTH 2 formal_scheduler
+prep -top formal_scheduler
+
+[files]
+rtl/core/rw_scheduler.sv
+formal/formal_scheduler.sv
