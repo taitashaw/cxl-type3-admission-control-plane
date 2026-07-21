@@ -28,6 +28,10 @@ module tb_rw_scheduler;
   logic mc_valid; logic [TAG_W-1:0] mc_tag; logic [DATA_W-1:0] mc_rdata;
   logic rsp_valid, rsp_ready; logic [TAG_W-1:0] rsp_tag; logic [DATA_W-1:0] rsp_rdata;
   logic [OCC_W-1:0] occupancy;
+  logic [DEPTH-1:0] dbg_vld, dbg_wr, dbg_issd, dbg_done;
+  logic [DEPTH*ADDR_W-1:0] dbg_adr; logic [DEPTH*DATA_W-1:0] dbg_rdat;
+  logic [DEPTH*DATA_W-1:0] dbg_wdat; logic [DEPTH*TAG_W-1:0] dbg_tag; logic [DEPTH*DEPTH-1:0] dbg_older;
+  logic [IDX_W-1:0] dbg_alloc_slot, dbg_rsp_slot;
 
   rw_scheduler #(.TAG_W(TAG_W), .ADDR_W(ADDR_W), .DATA_W(DATA_W), .DEPTH(DEPTH)) dut (.*);
 

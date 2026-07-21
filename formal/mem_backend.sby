@@ -1,0 +1,23 @@
+[tasks]
+bmc
+prove
+cover
+
+[options]
+bmc: mode bmc
+bmc: depth 16
+prove: mode prove
+prove: depth 16
+cover: mode cover
+cover: depth 18
+
+[engines]
+smtbmc yices
+
+[script]
+read_verilog -sv -formal -DFORMAL mem_backend.sv formal_mem_backend.sv
+prep -top formal_mem_backend
+
+[files]
+rtl/core/mem_backend.sv
+formal/formal_mem_backend.sv

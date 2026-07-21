@@ -27,6 +27,8 @@ reduce tb/vectors/credit_2p_4c_2a_32d.vec "$XD/cm_red.vec" 400
 reduce tb/vectors/adm_2p_3a_6c_8m_4d_4g.vec "$XD/adm_red.vec" 400
 reduce tb/vectors/cp_2p_3a_6c_8m_4d_4g.vec "$XD/cp_red.vec" 400
 reduce tb/vectors/sch_6t_2a_8d_4n.vec "$XD/sch_red.vec" 400
+reduce tb/vectors/mem_6t_4a_8d_4q.vec "$XD/mem_red.vec" 400
+reduce tb/vectors/msy_6t_2a_8d_4n_4q.vec "$XD/msy_red.vec" 400
 
 fail=0
 run_xsim() { # tb srcs vecbasename tag defines
@@ -65,6 +67,12 @@ run_xsim tb_control_plane_top \
 run_xsim tb_rw_scheduler \
   "../../rtl/core/rw_scheduler.sv ../../tb/sv/tb_rw_scheduler.sv" \
   "sch_red.vec" sch "-d TAGW=6 -d ADDRW=2 -d DATAW=8 -d DEPTH=4"
+run_xsim tb_mem_backend \
+  "../../rtl/core/mem_backend.sv ../../tb/sv/tb_mem_backend.sv" \
+  "mem_red.vec" mem "-d TAGW=6 -d ADDRW=4 -d DATAW=8 -d CQD=4"
+run_xsim tb_mem_subsys_top \
+  "../../rtl/core/rw_scheduler.sv ../../rtl/core/mem_backend.sv ../../rtl/core/mem_subsys_top.sv ../../tb/sv/tb_mem_subsys_top.sv" \
+  "msy_red.vec" msy "-d TAGW=6 -d ADDRW=2 -d DATAW=8 -d DEPTH=4 -d CQD=4"
 
 [ $fail -eq 0 ] && echo "XSIM CROSSCHECK: PASS" || echo "XSIM CROSSCHECK: FAIL"
 exit $fail

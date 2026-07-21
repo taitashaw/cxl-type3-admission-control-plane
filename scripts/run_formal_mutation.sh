@@ -119,6 +119,34 @@ fmut "sched respond before done" "$SCHB" rtl/core/rw_scheduler.sv \
 fmut "sched age not set on accept" "$SCHB" rtl/core/rw_scheduler.sv \
   "s/if (k\[IDX_W-1:0\] != free_slot) older\[k\]\[free_slot\] <= vld\[k\];/if (k[IDX_W-1:0] != free_slot) older[k][free_slot] <= 1'b0;/" bmc
 
+# ---- M6 mem_backend formal mutations ----
+MEMB=formal/mem_backend.sby
+# req_ready ignores full -> cnt bound / req_ready==!full assert fails
+fmut "mem req_ready ignores full" "$MEMB" rtl/core/mem_backend.sv \
+  "s/assign req_ready = rst_n \&\& (cnt != CCNT_W'(CQ_DEPTH));/assign req_ready = rst_n;/" bmc
+# a write is not stored -> write-reflected-in-array assert fails
+fmut "mem write not stored" "$MEMB" rtl/core/mem_backend.sv \
+  "s/if (req_write) mem\[req_addr\] <= req_wdata;/if (1'b0) mem[req_addr] <= req_wdata;/" bmc
+# pointer never wraps -> head/tail range assert fails
+fmut "mem pointer no wrap" "$MEMB" rtl/core/mem_backend.sv \
+  "s/else                          pinc = p + CPTR_W'(1);/else                          pinc = p + CPTR_W'(1); \/\/ ok/;s/if (p == CPTR_W'(CQ_DEPTH-1)) pinc = '0;/if (1'b0) pinc = '0;/" bmc
+
+# ---- M6 mem_subsys END-TO-END read-after-write formal mutations (these break the
+# integration's unique property; the component proofs alone do NOT catch them) ----
+MSYB=formal/mem_subsys.sby
+# read returns 0 instead of the captured memory value -> end-to-end rsp_rdata wrong.
+# NOTE: the standalone mem_backend proof has no read-after-write reference and does
+# NOT catch this; only the mem_subsys end-to-end induction property does.
+fmut "memsubsys read returns zero" "$MSYB" rtl/core/mem_backend.sv \
+  "s/assign rd_val = mem\[req_addr\];/assign rd_val = '0;/" bmc
+# scheduler completion latches 0 instead of the returned data -> response wrong
+fmut "memsubsys completion drops data" "$MSYB" rtl/core/rw_scheduler.sv \
+  "s/done\[k\]<=1'b1; rdat\[k\]<=mc_rdata;/done[k]<=1'b1; rdat[k]<='0;/" bmc
+# drop the same-address hazard interlock -> a read can reorder ahead of an older
+# same-address write and return a STALE value -> end-to-end property fails
+fmut "memsubsys drop hazard interlock" "$MSYB" rtl/core/rw_scheduler.sv \
+  "s/if (vld\[j\] \&\& older\[j\]\[i\] \&\& (adr\[j\] == adr\[i\]) \&\& !done\[j\]) blk = 1'b1;/if (1'b0) blk = 1'b1;/" bmc
+
 echo "=================================================="
 echo "formal mutations killed=$kills survived=$survivors"
 [ $survivors -eq 0 ] && { echo "FORMAL MUTATION: PASS (proofs are non-vacuous)"; exit 0; } || { echo "FORMAL MUTATION: FAIL"; exit 1; }

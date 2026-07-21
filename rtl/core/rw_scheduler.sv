@@ -47,7 +47,21 @@ module rw_scheduler #(
   output logic [DATA_W-1:0] rsp_rdata,
 
   // ---- observability ----
-  output logic [OCC_W-1:0]  occupancy
+  output logic [OCC_W-1:0]  occupancy,
+
+  // ---- debug/observation ports (flat per-slot state; let an integration prove
+  // end-to-end properties by INDUCTION without a cross-module array index). ----
+  output logic [DEPTH-1:0]         dbg_vld,
+  output logic [DEPTH-1:0]         dbg_wr,
+  output logic [DEPTH-1:0]         dbg_issd,
+  output logic [DEPTH-1:0]         dbg_done,
+  output logic [DEPTH*ADDR_W-1:0]  dbg_adr,
+  output logic [DEPTH*DATA_W-1:0]  dbg_rdat,
+  output logic [DEPTH*DATA_W-1:0]  dbg_wdat,
+  output logic [DEPTH*TAG_W-1:0]   dbg_tag,
+  output logic [DEPTH*DEPTH-1:0]   dbg_older,
+  output logic [IDX_W-1:0]         dbg_alloc_slot,
+  output logic [IDX_W-1:0]         dbg_rsp_slot
 );
   // ---- per-slot state ----
   logic              vld  [DEPTH];
@@ -116,6 +130,24 @@ module rw_scheduler #(
   logic do_mem, do_rsp;
   assign do_mem = mem_valid && mem_ready;
   assign do_rsp = rsp_valid && rsp_ready;
+
+  // ---- debug/observation wiring (flat) ----
+  genvar gd;
+  generate
+    for (gd = 0; gd < DEPTH; gd++) begin : g_dbg
+      assign dbg_vld[gd]  = vld[gd];
+      assign dbg_wr[gd]   = wr[gd];
+      assign dbg_issd[gd] = issd[gd];
+      assign dbg_done[gd] = done[gd];
+      assign dbg_adr[gd*ADDR_W  +: ADDR_W]  = adr[gd];
+      assign dbg_rdat[gd*DATA_W +: DATA_W]  = rdat[gd];
+      assign dbg_wdat[gd*DATA_W +: DATA_W]  = wdat[gd];
+      assign dbg_tag[gd*TAG_W +: TAG_W]     = tag[gd];
+      assign dbg_older[gd*DEPTH +: DEPTH]   = older[gd];
+    end
+  endgenerate
+  assign dbg_alloc_slot = free_slot;
+  assign dbg_rsp_slot   = rsp_sel;
 
   // ---- sequential ----
   integer k;

@@ -1,0 +1,55 @@
+[tasks]
+q1_p
+q1_c
+q3np_p
+q3np_c
+q4_p
+q4_c
+wide_p
+wide_c
+addr_p
+addr_c
+
+[options]
+q1_p: mode prove
+q1_p: depth 16
+q1_c: mode cover
+q1_c: depth 18
+q3np_p: mode prove
+q3np_p: depth 16
+q3np_c: mode cover
+q3np_c: depth 18
+q4_p: mode prove
+q4_p: depth 16
+q4_c: mode cover
+q4_c: depth 18
+wide_p: mode prove
+wide_p: depth 16
+wide_c: mode cover
+wide_c: depth 18
+addr_p: mode prove
+addr_p: depth 16
+addr_c: mode cover
+addr_c: depth 18
+
+[engines]
+smtbmc yices
+
+[script]
+read_verilog -sv -formal -DFORMAL mem_backend.sv formal_mem_backend.sv
+# five instances: CQ=1 edge; non-pow2 CQ=3; CQ=4; wider data; bigger address.
+q1_p:   chparam -set TAG_W 2 -set ADDR_W 1 -set DATA_W 2 -set CQ_DEPTH 1 formal_mem_backend
+q1_c:   chparam -set TAG_W 2 -set ADDR_W 1 -set DATA_W 2 -set CQ_DEPTH 1 formal_mem_backend
+q3np_p: chparam -set TAG_W 2 -set ADDR_W 2 -set DATA_W 2 -set CQ_DEPTH 3 formal_mem_backend
+q3np_c: chparam -set TAG_W 2 -set ADDR_W 2 -set DATA_W 2 -set CQ_DEPTH 3 formal_mem_backend
+q4_p:   chparam -set TAG_W 3 -set ADDR_W 2 -set DATA_W 2 -set CQ_DEPTH 4 formal_mem_backend
+q4_c:   chparam -set TAG_W 3 -set ADDR_W 2 -set DATA_W 2 -set CQ_DEPTH 4 formal_mem_backend
+wide_p: chparam -set TAG_W 2 -set ADDR_W 1 -set DATA_W 3 -set CQ_DEPTH 2 formal_mem_backend
+wide_c: chparam -set TAG_W 2 -set ADDR_W 1 -set DATA_W 3 -set CQ_DEPTH 2 formal_mem_backend
+addr_p: chparam -set TAG_W 3 -set ADDR_W 3 -set DATA_W 2 -set CQ_DEPTH 2 formal_mem_backend
+addr_c: chparam -set TAG_W 3 -set ADDR_W 3 -set DATA_W 2 -set CQ_DEPTH 2 formal_mem_backend
+prep -top formal_mem_backend
+
+[files]
+rtl/core/mem_backend.sv
+formal/formal_mem_backend.sv

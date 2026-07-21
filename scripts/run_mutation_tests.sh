@@ -222,6 +222,45 @@ mutate "sched age not set on accept" rtl/core/rw_scheduler.sv \
   "s/if (k\[IDX_W-1:0\] != free_slot) older\[k\]\[free_slot\] <= vld\[k\];/if (k[IDX_W-1:0] != free_slot) older[k][free_slot] <= 1'b0;/" \
   tb_rw_scheduler "$SCH" "$SCHVEC" "$SCHDEF"
 
+# ---- M6 mem_backend mutations ----
+MEM="rtl/core/mem_backend.sv tb/sv/tb_mem_backend.sv"
+MEMVEC="tb/vectors/mem_6t_4a_8d_4q.vec"
+MEMDEF="-DTAGW=6 -DADDRW=4 -DDATAW=8 -DCQD=4"
+# a write is not stored -> later same-address reads return stale data
+mutate "mem write not stored" rtl/core/mem_backend.sv \
+  "s/if (req_write) mem\[req_addr\] <= req_wdata;/if (1'b0) mem[req_addr] <= req_wdata;/" \
+  tb_mem_backend "$MEM" "$MEMVEC" "$MEMDEF"
+# a read returns 0 instead of the captured memory value
+mutate "mem read wrong data" rtl/core/mem_backend.sv \
+  "s/cq_data\[tail\] <= req_write ? '0 : rd_val;/cq_data[tail] <= '0;/" \
+  tb_mem_backend "$MEM" "$MEMVEC" "$MEMDEF"
+# pop ignoring cmp_ready -> completions lost under backpressure
+mutate "mem pop ignores ready" rtl/core/mem_backend.sv \
+  "s/logic pop; assign pop = cmp_valid \&\& cmp_ready;/logic pop; assign pop = cmp_valid;/" \
+  tb_mem_backend "$MEM" "$MEMVEC" "$MEMDEF"
+# req_ready ignores full -> accepts when full, overflowing the queue
+mutate "mem req_ready ignores full" rtl/core/mem_backend.sv \
+  "s/assign req_ready = rst_n \&\& (cnt != CCNT_W'(CQ_DEPTH));/assign req_ready = rst_n;/" \
+  tb_mem_backend "$MEM" "$MEMVEC" "$MEMDEF"
+
+# ---- M6 mem_subsys END-TO-END mutations (differential vs the shadow-memory model
+# through the FULL integration; the model self-checks read-after-write each cycle) ----
+MSY="rtl/core/rw_scheduler.sv rtl/core/mem_backend.sv rtl/core/mem_subsys_top.sv tb/sv/tb_mem_subsys_top.sv"
+MSYVEC="tb/vectors/msy_6t_2a_8d_4n_4q.vec"
+MSYDEF="-DTAGW=6 -DADDRW=2 -DDATAW=8 -DDEPTH=4 -DCQD=4"
+# backend read returns 0 -> end-to-end response rdata wrong
+mutate "memsubsys read returns zero" rtl/core/mem_backend.sv \
+  "s/assign rd_val = mem\[req_addr\];/assign rd_val = '0;/" \
+  tb_mem_subsys_top "$MSY" "$MSYVEC" "$MSYDEF"
+# scheduler latches 0 instead of the completion data -> response rdata wrong
+mutate "memsubsys completion drops data" rtl/core/rw_scheduler.sv \
+  "s/done\[k\]<=1'b1; rdat\[k\]<=mc_rdata;/done[k]<=1'b1; rdat[k]<='0;/" \
+  tb_mem_subsys_top "$MSY" "$MSYVEC" "$MSYDEF"
+# drop the hazard interlock -> same-address read/write reorder returns a stale value
+mutate "memsubsys drop hazard interlock" rtl/core/rw_scheduler.sv \
+  "s/if (vld\[j\] \&\& older\[j\]\[i\] \&\& (adr\[j\] == adr\[i\]) \&\& !done\[j\]) blk = 1'b1;/if (1'b0) blk = 1'b1;/" \
+  tb_mem_subsys_top "$MSY" "$MSYVEC" "$MSYDEF"
+
 echo "=================================================="
 echo "mutations killed=$kills survived=$survivors"
 [ $survivors -eq 0 ] && { echo "MUTATION TESTS: PASS (all protections observable)"; exit 0; } || { echo "MUTATION TESTS: FAIL"; exit 1; }
