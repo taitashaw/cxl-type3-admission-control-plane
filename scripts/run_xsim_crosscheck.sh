@@ -29,6 +29,7 @@ reduce tb/vectors/cp_2p_3a_6c_8m_4d_4g.vec "$XD/cp_red.vec" 400
 reduce tb/vectors/sch_6t_2a_8d_4n.vec "$XD/sch_red.vec" 400
 reduce tb/vectors/mem_6t_4a_8d_4q.vec "$XD/mem_red.vec" 400
 reduce tb/vectors/msy_6t_2a_8d_4n_4q.vec "$XD/msy_red.vec" 400
+reduce tb/vectors/afifo_8w_3a.vec "$XD/afifo_red.vec" 400
 
 fail=0
 run_xsim() { # tb srcs vecbasename tag defines
@@ -73,6 +74,9 @@ run_xsim tb_mem_backend \
 run_xsim tb_mem_subsys_top \
   "../../rtl/core/rw_scheduler.sv ../../rtl/core/mem_backend.sv ../../rtl/core/mem_subsys_top.sv ../../tb/sv/tb_mem_subsys_top.sv" \
   "msy_red.vec" msy "-d TAGW=6 -d ADDRW=2 -d DATAW=8 -d DEPTH=4 -d CQD=4"
+run_xsim tb_async_fifo \
+  "../../rtl/core/sync_bits.sv ../../rtl/core/async_fifo.sv ../../tb/sv/tb_async_fifo.sv" \
+  "afifo_red.vec" afifo "-d WIDTHP=8 -d ADDRWP=3"
 
 [ $fail -eq 0 ] && echo "XSIM CROSSCHECK: PASS" || echo "XSIM CROSSCHECK: FAIL"
 exit $fail

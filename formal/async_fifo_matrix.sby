@@ -1,0 +1,57 @@
+[tasks]
+w2a2_p
+w2a2_c
+w4a2_p
+w4a2_c
+w2a3_p
+w2a3_c
+w8a3_p
+w8a3_c
+w3a4_p
+w3a4_c
+
+[options]
+multiclock on
+w2a2_p: mode prove
+w2a2_p: depth 14
+w2a2_c: mode cover
+w2a2_c: depth 20
+w4a2_p: mode prove
+w4a2_p: depth 14
+w4a2_c: mode cover
+w4a2_c: depth 20
+w2a3_p: mode prove
+w2a3_p: depth 14
+w2a3_c: mode cover
+w2a3_c: depth 20
+w8a3_p: mode prove
+w8a3_p: depth 14
+w8a3_c: mode cover
+w8a3_c: depth 20
+w3a4_p: mode prove
+w3a4_p: depth 16
+w3a4_c: mode cover
+w3a4_c: depth 60
+
+[engines]
+smtbmc yices
+
+[script]
+read_verilog -sv -formal -DFORMAL sync_bits.sv async_fifo.sv formal_async_fifo.sv
+# five instances: DEPTH4/W2, DEPTH4/W4, DEPTH8/W2, DEPTH8/W8, DEPTH16/W3
+w2a2_p: chparam -set WIDTH 2 -set ADDR_W 2 formal_async_fifo
+w2a2_c: chparam -set WIDTH 2 -set ADDR_W 2 formal_async_fifo
+w4a2_p: chparam -set WIDTH 4 -set ADDR_W 2 formal_async_fifo
+w4a2_c: chparam -set WIDTH 4 -set ADDR_W 2 formal_async_fifo
+w2a3_p: chparam -set WIDTH 2 -set ADDR_W 3 formal_async_fifo
+w2a3_c: chparam -set WIDTH 2 -set ADDR_W 3 formal_async_fifo
+w8a3_p: chparam -set WIDTH 8 -set ADDR_W 3 formal_async_fifo
+w8a3_c: chparam -set WIDTH 8 -set ADDR_W 3 formal_async_fifo
+w3a4_p: chparam -set WIDTH 3 -set ADDR_W 4 formal_async_fifo
+w3a4_c: chparam -set WIDTH 3 -set ADDR_W 4 formal_async_fifo
+prep -top formal_async_fifo
+
+[files]
+rtl/core/sync_bits.sv
+rtl/core/async_fifo.sv
+formal/formal_async_fifo.sv

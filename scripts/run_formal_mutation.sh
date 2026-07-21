@@ -147,6 +147,22 @@ fmut "memsubsys completion drops data" "$MSYB" rtl/core/rw_scheduler.sv \
 fmut "memsubsys drop hazard interlock" "$MSYB" rtl/core/rw_scheduler.sv \
   "s/if (vld\[j\] \&\& older\[j\]\[i\] \&\& (adr\[j\] == adr\[i\]) \&\& !done\[j\]) blk = 1'b1;/if (1'b0) blk = 1'b1;/" bmc
 
+# ---- M7 CDC (async_fifo / reset_sync) formal mutations ----
+AFB=formal/async_fifo.sby
+# drop the full-compare MSB inversion -> full mis-fires -> overflow reachable ->
+# the DEPTH lag-bound (no-overflow) assert fails
+fmut "afifo dropped MSB inversion" "$AFB" rtl/core/async_fifo.sv \
+  "s/assign full = (wgray == {~rgray_s\[PW-1:PW-2\], rgray_s\[PW-3:0\]});/assign full = (wgray == rgray_s);/" bmc
+# store data at the GRAY address -> FIFO ordering broken -> data-integrity fails
+fmut "afifo mem gray-addressed" "$AFB" rtl/core/async_fifo.sv \
+  "s/if (wr_en \&\& !full) mem\[wbin\[ADDR_W-1:0\]\] <= wr_data;/if (wr_en \&\& !full) mem[wgray[ADDR_W-1:0]] <= wr_data;/" bmc
+# weaken w->r synchronizer to a single stage -> sync_bits STAGES>=2 assert fails
+fmut "afifo single-stage sync" "$AFB" rtl/core/async_fifo.sv \
+  "s/sync_bits #(.WIDTH(PW), .STAGES(2)) u_w2r (/sync_bits #(.WIDTH(PW), .STAGES(1)) u_w2r (/" bmc
+# reset_sync: make the reset SYNCHRONOUS (drop async assert) -> async-assert assert fails
+fmut "reset_sync synchronous assert" formal/cdc.sby rtl/core/reset_sync.sv \
+  "s/always_ff @(posedge clk_dst or negedge arst_n_in) begin/always_ff @(posedge clk_dst) begin/" bmc
+
 echo "=================================================="
 echo "formal mutations killed=$kills survived=$survivors"
 [ $survivors -eq 0 ] && { echo "FORMAL MUTATION: PASS (proofs are non-vacuous)"; exit 0; } || { echo "FORMAL MUTATION: FAIL"; exit 1; }

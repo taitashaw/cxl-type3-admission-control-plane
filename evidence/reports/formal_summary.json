@@ -1,7 +1,7 @@
 {
-  "git_commit": "cce4b073e4ad95f84486f5dd7398286fa8c50feb",
+  "git_commit": "bd237acc8f7160011db40e08812d56cc69d7f875",
   "git_dirty": true,
-  "utc": "2026-07-21T11:52:07Z",
+  "utc": "2026-07-21T14:47:11Z",
   "kind": "formal",
   "engine": "smtbmc/yices",
   "modes": [
@@ -45,11 +45,11 @@
   "non_vacuity": {
     "cover": "all reachable",
     "formal_mutation": {
-      "killed": 32,
+      "killed": 36,
       "survived": 0,
       "raw": {
         "path": "evidence/raw/formal_mutation.log",
-        "sha256": "ae225763260374d46daf745c6cdb48dc4d0bcb670647f7b3beecfa870fd1f655"
+        "sha256": "c09b32e4c073060a15f564db1c9a23110787b37abd5f965d1b3e77d1723eeb01"
       }
     }
   }

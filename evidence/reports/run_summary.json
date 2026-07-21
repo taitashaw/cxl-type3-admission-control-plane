@@ -1,7 +1,7 @@
 {
-  "git_commit": "cce4b073e4ad95f84486f5dd7398286fa8c50feb",
+  "git_commit": "bd237acc8f7160011db40e08812d56cc69d7f875",
   "git_dirty": true,
-  "utc": "2026-07-21T11:52:07Z",
+  "utc": "2026-07-21T14:47:11Z",
   "kind": "run_summary",
   "regression": {
     "passed": 30,
@@ -28,10 +28,10 @@
     }
   ],
   "mutation_sim": {
-    "killed": 43,
+    "killed": 46,
     "survived": 0
   },
   "formal_mutation": {
-    "killed": "32"
+    "killed": "36"
   }
 }

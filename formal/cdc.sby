@@ -1,0 +1,23 @@
+[tasks]
+prove
+bmc
+cover
+
+[options]
+prove: mode prove
+prove: depth 12
+bmc: mode bmc
+bmc: depth 14
+cover: mode cover
+cover: depth 14
+
+[engines]
+smtbmc yices
+
+[script]
+read_verilog -sv -formal -DFORMAL reset_sync.sv formal_reset_sync.sv
+prep -top formal_reset_sync
+
+[files]
+rtl/core/reset_sync.sv
+formal/formal_reset_sync.sv

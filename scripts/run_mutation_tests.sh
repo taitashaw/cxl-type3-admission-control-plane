@@ -261,6 +261,25 @@ mutate "memsubsys drop hazard interlock" rtl/core/rw_scheduler.sv \
   "s/if (vld\[j\] \&\& older\[j\]\[i\] \&\& (adr\[j\] == adr\[i\]) \&\& !done\[j\]) blk = 1'b1;/if (1'b0) blk = 1'b1;/" \
   tb_mem_subsys_top "$MSY" "$MSYVEC" "$MSYDEF"
 
+# ---- M7 async_fifo (CDC) mutations, event-driven two-clock differential ----
+AFIFO="rtl/core/sync_bits.sv rtl/core/async_fifo.sv tb/sv/tb_async_fifo.sv"
+AFVEC="tb/vectors/afifo_8w_3a.vec"
+AFDEF="-DWIDTHP=8 -DADDRWP=3"
+# drop the top-two-bit inversion in the full compare -> full is wrong (asserts near
+# empty, deasserts when actually full) -> full/rd_data diverge from the model
+mutate "afifo dropped MSB inversion" rtl/core/async_fifo.sv \
+  "s/assign full = (wgray == {~rgray_s\[PW-1:PW-2\], rgray_s\[PW-3:0\]});/assign full = (wgray == rgray_s);/" \
+  tb_async_fifo "$AFIFO" "$AFVEC" "$AFDEF"
+# write into the memory at the GRAY address -> FIFO order broken -> rd_data diverges
+mutate "afifo mem gray-addressed" rtl/core/async_fifo.sv \
+  "s/if (wr_en \&\& !full) mem\[wbin\[ADDR_W-1:0\]\] <= wr_data;/if (wr_en \&\& !full) mem[wgray[ADDR_W-1:0]] <= wr_data;/" \
+  tb_async_fifo "$AFIFO" "$AFVEC" "$AFDEF"
+# weaken the w->r synchronizer to a single stage -> sync latency changes -> the
+# 2-stage model and 1-stage RTL diverge on full/empty timing
+mutate "afifo single-stage sync" rtl/core/async_fifo.sv \
+  "s/sync_bits #(.WIDTH(PW), .STAGES(2)) u_w2r (/sync_bits #(.WIDTH(PW), .STAGES(1)) u_w2r (/" \
+  tb_async_fifo "$AFIFO" "$AFVEC" "$AFDEF"
+
 echo "=================================================="
 echo "mutations killed=$kills survived=$survivors"
 [ $survivors -eq 0 ] && { echo "MUTATION TESTS: PASS (all protections observable)"; exit 0; } || { echo "MUTATION TESTS: FAIL"; exit 1; }
