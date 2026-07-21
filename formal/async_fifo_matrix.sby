@@ -9,6 +9,10 @@ w8a3_p
 w8a3_c
 w3a4_p
 w3a4_c
+req19_p
+req19_c
+rsp14_p
+rsp14_c
 
 [options]
 multiclock on
@@ -32,6 +36,14 @@ w3a4_p: mode prove
 w3a4_p: depth 16
 w3a4_c: mode cover
 w3a4_c: depth 60
+req19_p: mode prove
+req19_p: depth 14
+req19_c: mode cover
+req19_c: depth 20
+rsp14_p: mode prove
+rsp14_p: depth 14
+rsp14_c: mode cover
+rsp14_c: depth 20
 
 [engines]
 smtbmc yices
@@ -49,6 +61,11 @@ w8a3_p: chparam -set WIDTH 8 -set ADDR_W 3 formal_async_fifo
 w8a3_c: chparam -set WIDTH 8 -set ADDR_W 3 formal_async_fifo
 w3a4_p: chparam -set WIDTH 3 -set ADDR_W 4 formal_async_fifo
 w3a4_c: chparam -set WIDTH 3 -set ADDR_W 4 formal_async_fifo
+# system_top CDC seam widths (default cfg: REQ_W=TAG6+wr1+ADDR4+DATA8=19, RSP_W=TAG6+DATA8=14)
+req19_p: chparam -set WIDTH 19 -set ADDR_W 2 formal_async_fifo
+req19_c: chparam -set WIDTH 19 -set ADDR_W 2 formal_async_fifo
+rsp14_p: chparam -set WIDTH 14 -set ADDR_W 2 formal_async_fifo
+rsp14_c: chparam -set WIDTH 14 -set ADDR_W 2 formal_async_fifo
 prep -top formal_async_fifo
 
 [files]

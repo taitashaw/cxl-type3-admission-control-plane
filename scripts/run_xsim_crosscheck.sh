@@ -78,5 +78,18 @@ run_xsim tb_async_fifo \
   "../../rtl/core/sync_bits.sv ../../rtl/core/async_fifo.sv ../../tb/sv/tb_async_fifo.sv" \
   "afifo_red.vec" afifo "-d WIDTHP=8 -d ADDRWP=3"
 
+# system_top is self-checking (no vector file); run a reduced NTXN under XSim
+( cd "$XD" && rm -rf xsim.dir sys_snap* 2>/dev/null
+  xvlog -sv -d TAGW=6 -d ADDRW=3 -d DATAW=8 -d DEPTHP=4 -d CQDP=4 -d FAWP=2 -d NTXN=300 \
+    ../../rtl/core/sync_bits.sv ../../rtl/core/async_fifo.sv ../../rtl/core/rw_scheduler.sv \
+    ../../rtl/core/mem_backend.sv ../../rtl/core/mem_subsys_top.sv ../../rtl/core/system_top.sv \
+    ../../tb/sv/tb_system_top.sv                                              > xvlog_sys.log 2>&1
+  xelab tb_system_top -s sys_snap -timescale 1ns/1ps                         > xelab_sys.log 2>&1
+  xsim sys_snap -runall                                                      > xsim_sys.log 2>&1 )
+cp "$XD/xsim_sys.log" "$RAW/xsim_sys_run.log" 2>/dev/null
+if grep -q "TB_RESULT: PASS" "$XD/xsim_sys.log"; then
+  echo "   sys : XSim PASS ($(grep -oE 'checks=[0-9]+' "$XD/xsim_sys.log" | head -1))"
+else echo "   sys : XSim FAIL"; grep -E "ERROR|TB_RESULT|Error" "$XD/xsim_sys.log" | head -5; fail=1; fi
+
 [ $fail -eq 0 ] && echo "XSIM CROSSCHECK: PASS" || echo "XSIM CROSSCHECK: FAIL"
 exit $fail

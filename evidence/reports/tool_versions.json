@@ -1,11 +1,11 @@
 {
-  "git_commit": "bd237acc8f7160011db40e08812d56cc69d7f875",
+  "git_commit": "9dd20c5fed62fa6da37209996b1bebe29fa0bf46",
   "git_dirty": true,
-  "utc": "2026-07-21T14:47:11Z",
+  "utc": "2026-07-21T21:17:36Z",
   "tools": {
-    "verilator": "Verilator 5.051 devel rev v5.050-71-g877fc1e81 (mod)",
-    "iverilog": "Icarus Verilog version 14.0 (devel) (s20260301-295-g614607c13-dirty)",
-    "python": "Python 3.11.6",
+    "verilator": "Verilator 5.020 2024-01-01 rev (Debian 5.020-1)",
+    "iverilog": "Icarus Verilog version 12.0 (stable) ()",
+    "python": "Python 3.12.3",
     "yosys": "Yosys 0.67+40 (git sha1 45ea2b8d6-dirty, Release, Clang /usr/bin/clang++ 18.1.8)"
   }
 }

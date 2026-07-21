@@ -1,7 +1,7 @@
 {
-  "git_commit": "bd237acc8f7160011db40e08812d56cc69d7f875",
+  "git_commit": "9dd20c5fed62fa6da37209996b1bebe29fa0bf46",
   "git_dirty": true,
-  "utc": "2026-07-21T14:47:11Z",
+  "utc": "2026-07-21T21:17:36Z",
   "kind": "formal",
   "engine": "smtbmc/yices",
   "modes": [

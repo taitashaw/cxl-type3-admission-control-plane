@@ -280,6 +280,24 @@ mutate "afifo single-stage sync" rtl/core/async_fifo.sv \
   "s/sync_bits #(.WIDTH(PW), .STAGES(2)) u_w2r (/sync_bits #(.WIDTH(PW), .STAGES(1)) u_w2r (/" \
   tb_async_fifo "$AFIFO" "$AFVEC" "$AFDEF"
 
+# ---- M8 system_top end-to-end mutations (two-clock scoreboard; read-after-write
+# across the CDC crossing) ----
+SYS="rtl/core/sync_bits.sv rtl/core/async_fifo.sv rtl/core/rw_scheduler.sv rtl/core/mem_backend.sv rtl/core/mem_subsys_top.sv rtl/core/system_top.sv tb/sv/tb_system_top.sv"
+SYSVEC="tb/vectors/afifo_2w_2a.vec"   # ignored (tb_system_top is self-checking)
+SYSDEF="-DTAGW=6 -DADDRW=3 -DDATAW=8 -DDEPTHP=4 -DCQDP=4 -DFAWP=2 -DNTXN=800"
+# request CDC bridge ignores full -> requests overflow/lost -> read-after-write breaks
+mutate "system req-CDC ignores full" rtl/core/system_top.sv \
+  "s/assign iss_ready = link_rst_n \&\& !req_full;/assign iss_ready = link_rst_n;/" \
+  tb_system_top "$SYS" "$SYSVEC" "$SYSDEF"
+# response CDC bridge ignores full -> responses overflow/lost -> checks miss
+mutate "system rsp-CDC ignores full" rtl/core/system_top.sv \
+  "s/assign ms_rsp_ready = !rsp_full;/assign ms_rsp_ready = 1'b1;/" \
+  tb_system_top "$SYS" "$SYSVEC" "$SYSDEF"
+# drop the read data crossing the response bridge -> reads return 0 -> mismatch
+mutate "system rsp bridge drops rdata" rtl/core/system_top.sv \
+  "s/assign rsp_din      = {ms_rsp_tag, ms_rsp_rdata};/assign rsp_din      = {ms_rsp_tag, {DATA_W{1'b0}}};/" \
+  tb_system_top "$SYS" "$SYSVEC" "$SYSDEF"
+
 echo "=================================================="
 echo "mutations killed=$kills survived=$survivors"
 [ $survivors -eq 0 ] && { echo "MUTATION TESTS: PASS (all protections observable)"; exit 0; } || { echo "MUTATION TESTS: FAIL"; exit 1; }
