@@ -14,6 +14,7 @@ from hdm_model import Window, Config, validate, decode  # noqa: E402
 
 N_WIN, HPA_W, DPA_W, LINE = 4, 40, 32, 64
 OUT = os.path.join(HERE, "..", "..", "tb", "vectors")
+os.makedirs(OUT, exist_ok=True)   # tb/vectors is gitignored -> absent in a fresh clone
 
 def hx(v): return format(int(v) & ((1 << 256) - 1), "x")
 
